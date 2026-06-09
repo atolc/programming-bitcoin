@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, CheckCircle2 } from "lucide-react";
+import { ArrowRight, CheckCircle2, Code2 } from "lucide-react";
 import { useTranslation, Trans } from "react-i18next";
 import { AppHeader } from "../components/AppHeader";
 import { getChapters } from "../data/chapters";
@@ -24,7 +24,7 @@ function preloadPyodide() {
 
 export function LandingPage() {
   const { t } = useTranslation();
-  const { locale, chapterPath } = useLocale();
+  const { locale, chapterPath, practicePath } = useLocale();
   const chapters = getChapters(locale);
   const readChapters = useMemo(() => getReadChapters(), []);
   const firstChapter = chapters[0];
@@ -52,6 +52,33 @@ export function LandingPage() {
               </GradientButton>
             ) : null}
           </div>
+        </section>
+
+        <section className="mb-16">
+          <Card className="overflow-hidden border-primary/20 bg-gradient-to-br from-card/90 to-primary/5">
+            <CardContent className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 p-6 sm:p-8">
+              <div className="space-y-2 max-w-2xl">
+                <div className="flex items-center gap-2 text-primary">
+                  <Code2 className="size-5" />
+                  <span className="text-sm font-semibold uppercase tracking-wide">
+                    {t("practice.badge")}
+                  </span>
+                </div>
+                <h3 className="text-2xl font-bold tracking-tight">
+                  {t("landing.practiceTitle")}
+                </h3>
+                <p className="text-muted-foreground leading-relaxed">
+                  {t("landing.practiceDescription")}
+                </p>
+              </div>
+              <GradientButton
+                render={<Link to={practicePath()} onMouseEnter={preloadPyodide} />}
+              >
+                {t("landing.openPractice")}
+                <ArrowRight className="size-4" />
+              </GradientButton>
+            </CardContent>
+          </Card>
         </section>
 
         <section>

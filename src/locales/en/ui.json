@@ -2,7 +2,8 @@
   "header": {
     "subtitle": "Study Guide & Summaries",
     "toggleNav": "Toggle navigation",
-    "github": "View on GitHub"
+    "github": "View on GitHub",
+    "practice": "Practice"
   },
   "language": {
     "label": "Language",
@@ -17,7 +18,40 @@
     "read": "Read",
     "sandbox": "Includes interactive Python sandboxes",
     "readChapter": "Read chapter",
-    "footer": "Based on <em>Programming Bitcoin: Learn How to Program Bitcoin from Scratch</em> by Jimmy Song."
+    "footer": "Based on <em>Programming Bitcoin: Learn How to Program Bitcoin from Scratch</em> by Jimmy Song.",
+    "practiceTitle": "Interactive Practice",
+    "practiceDescription": "Work through book exercises with an in-browser Python editor, automatic validation, and runnable examples.",
+    "openPractice": "Open Practice"
+  },
+  "practice": {
+    "badge": "Pyodide",
+    "title": "Practice",
+    "subtitle": "Solve book exercises and run coding examples in your browser. Edit Python on the right, read instructions on the left, and click Run to verify your solution.",
+    "exerciseCount": "{{count}} exercises",
+    "chapterExercises": "{{count}} exercises in this chapter",
+    "openChapter": "View exercises",
+    "backToIndex": "All chapters",
+    "backToChapter": "Back to chapter list",
+    "prevExercise": "Previous",
+    "nextExercise": "Next",
+    "noExercises": "No exercises match this filter.",
+    "filterAll": "All",
+    "filterBook": "Book",
+    "filterCoding": "Coding",
+    "filterDemo": "Demos",
+    "filterMath": "Math"
+  },
+  "exercise": {
+    "pass": "Pass",
+    "fail": "Fail",
+    "showSolution": "Show solution",
+    "offline": "Offline",
+    "offlineDescription": "This exercise requires network access or a local Python environment. Read the instructions and try it on your machine using the official book repository.",
+    "progress": "Progress",
+    "progressCount": "{{passed}} / {{total}} passed",
+    "panelInstructions": "Instructions and example",
+    "panelEditor": "Code editor",
+    "example": "Example"
   },
   "chapter": {
     "home": "Home",
@@ -72,7 +106,9 @@
     "mismatch": "Mismatch",
     "noOutput": "(no output)",
     "preparing": "Preparing Python environment...",
-    "pythonUnavailable": "Python engine unavailable"
+    "pythonUnavailable": "Python engine unavailable",
+    "edit": "Edit",
+    "preview": "Preview"
   },
   "theme": {
     "light": "Switch to light mode",

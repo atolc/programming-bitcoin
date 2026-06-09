@@ -2,7 +2,8 @@
   "header": {
     "subtitle": "Guía de Estudio y Resúmenes",
     "toggleNav": "Alternar navegación",
-    "github": "Ver en GitHub"
+    "github": "Ver en GitHub",
+    "practice": "Práctica"
   },
   "language": {
     "label": "Idioma",
@@ -17,7 +18,40 @@
     "read": "Leído",
     "sandbox": "Incluye sandboxes Python interactivos",
     "readChapter": "Leer capítulo",
-    "footer": "Basado en <em>Programming Bitcoin: Learn How to Program Bitcoin from Scratch</em> por Jimmy Song."
+    "footer": "Basado en <em>Programming Bitcoin: Learn How to Program Bitcoin from Scratch</em> por Jimmy Song.",
+    "practiceTitle": "Práctica interactiva",
+    "practiceDescription": "Resuelve los ejercicios del libro con un editor Python en el navegador, validación automática y ejemplos ejecutables.",
+    "openPractice": "Abrir práctica"
+  },
+  "practice": {
+    "badge": "Pyodide",
+    "title": "Práctica",
+    "subtitle": "Resuelve ejercicios del libro y ejecuta ejemplos de código en el navegador. Edita Python a la derecha, lee las instrucciones a la izquierda y pulsa Ejecutar para verificar tu solución.",
+    "exerciseCount": "{{count}} ejercicios",
+    "chapterExercises": "{{count}} ejercicios en este capítulo",
+    "openChapter": "Ver ejercicios",
+    "backToIndex": "Todos los capítulos",
+    "backToChapter": "Volver al listado",
+    "prevExercise": "Anterior",
+    "nextExercise": "Siguiente",
+    "noExercises": "No hay ejercicios con este filtro.",
+    "filterAll": "Todos",
+    "filterBook": "Libro",
+    "filterCoding": "Código",
+    "filterDemo": "Demos",
+    "filterMath": "Matemáticas"
+  },
+  "exercise": {
+    "pass": "Correcto",
+    "fail": "Incorrecto",
+    "showSolution": "Ver solución",
+    "offline": "Sin conexión",
+    "offlineDescription": "Este ejercicio requiere acceso a red o un entorno Python local. Lee las instrucciones e inténtalo en tu máquina con el repositorio oficial del libro.",
+    "progress": "Progreso",
+    "progressCount": "{{passed}} / {{total}} completados",
+    "panelInstructions": "Instrucciones y ejemplo",
+    "panelEditor": "Editor de código",
+    "example": "Ejemplo"
   },
   "chapter": {
     "home": "Inicio",
@@ -72,7 +106,9 @@
     "mismatch": "Difiere",
     "noOutput": "(sin salida)",
     "preparing": "Preparando entorno Python...",
-    "pythonUnavailable": "Motor Python no disponible"
+    "pythonUnavailable": "Motor Python no disponible",
+    "edit": "Editar",
+    "preview": "Vista previa"
   },
   "theme": {
     "light": "Activar modo claro",

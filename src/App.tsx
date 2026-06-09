@@ -1,13 +1,22 @@
 import { Routes, Route, Navigate, Outlet, useParams } from "react-router-dom";
 import { LandingPage } from "./pages/LandingPage";
 import { ChapterLayout } from "./pages/ChapterLayout";
+import { PracticeLayout } from "./pages/PracticeLayout";
+import { PracticeIndexPage } from "./pages/PracticeIndexPage";
+import { PracticeChapterPage } from "./pages/PracticeChapterPage";
+import { ExerciseWorkbenchPage } from "./pages/ExerciseWorkbenchPage";
 import { LocaleProvider } from "./context/LocaleContext";
 import {
   findChapterByIdLegacy,
   findSectionByIdLegacy,
 } from "./data/chapters";
 import { DEFAULT_LOCALE, isLocale, LOCALES, type Locale } from "./lib/locale";
-import { chapterPath, homePath } from "./lib/routes";
+import {
+  chapterPath,
+  homePath,
+  PRACTICE_SEGMENTS,
+  practicePath,
+} from "./lib/routes";
 
 function LocaleLayout({ locale }: { locale: Locale }) {
   return (
@@ -60,6 +69,14 @@ export function App() {
       {LOCALES.map((locale) => (
         <Route key={locale} path={locale} element={<LocaleLayout locale={locale} />}>
           <Route index element={<LandingPage />} />
+          <Route path={PRACTICE_SEGMENTS[locale]} element={<PracticeLayout />}>
+            <Route index element={<PracticeIndexPage />} />
+            <Route path=":chapterSlug" element={<PracticeChapterPage />} />
+            <Route
+              path=":chapterSlug/:exerciseId"
+              element={<ExerciseWorkbenchPage />}
+            />
+          </Route>
           <Route path=":chapterId" element={<ChapterLayout />} />
           <Route path=":chapterId/:sectionId" element={<ChapterLayout />} />
           <Route path="*" element={<Navigate to={homePath(locale)} replace />} />

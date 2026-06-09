@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
-import { BookOpen, Menu, X } from "lucide-react";
+import { BookOpen, Code2, Menu, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { ThemeToggle } from "./ThemeToggle";
 import { LanguageSwitcher } from "./LanguageSwitcher";
@@ -43,7 +43,7 @@ export function AppHeader({
   showMenuButton = false,
 }: AppHeaderProps) {
   const { t } = useTranslation();
-  const { homePath } = useLocale();
+  const { homePath, practicePath } = useLocale();
 
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-background/80 backdrop-blur-md">
@@ -90,6 +90,15 @@ export function AppHeader({
         )}
 
         <div className="flex items-center gap-2 shrink-0">
+          <Button
+            render={<Link to={practicePath()} />}
+            size="sm"
+            variant="outline"
+            className="hidden sm:inline-flex"
+          >
+            <Code2 className="size-4" />
+            {t("header.practice")}
+          </Button>
           <LanguageSwitcher />
           <ThemeToggle />
 

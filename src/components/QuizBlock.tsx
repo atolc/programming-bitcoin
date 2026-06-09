@@ -2,64 +2,14 @@ import { useMemo, useState } from "react";
 import { CheckCircle2, RotateCcw, XCircle } from "lucide-react";
 import { cn } from "../lib/utils";
 
-type Question = {
+export type Question = {
   prompt: string;
   options: string[];
   answer: number;
   explanation: string;
 };
 
-const questions: Question[] = [
-  {
-    prompt: "En F19, ¿cuál es el resultado de 11 + 17?",
-    options: ["28", "9", "17", "0"],
-    answer: 1,
-    explanation: "Primero sumas como enteros y luego aplicas modulo: 28 % 19 = 9.",
-  },
-  {
-    prompt: "¿Por qué se usa un modulo primo para estos campos?",
-    options: [
-      "Porque garantiza inversos multiplicativos para todo elemento no cero.",
-      "Porque hace que todas las operaciones sean mas rapidas que la suma normal.",
-      "Porque evita que existan elementos negativos.",
-      "Porque Bitcoin solo acepta numeros menores que 19.",
-    ],
-    answer: 0,
-    explanation:
-      "En un campo de orden primo, cada elemento distinto de cero tiene inverso multiplicativo.",
-  },
-  {
-    prompt: "¿Qué significa dividir a / b dentro de un campo finito?",
-    options: [
-      "Calcular un decimal y redondearlo.",
-      "Restar b repetidas veces hasta llegar a a.",
-      "Multiplicar a por el inverso multiplicativo de b.",
-      "Usar division entera de Python.",
-    ],
-    answer: 2,
-    explanation: "La division se define como a * b^(-1), siempre que b no sea cero.",
-  },
-  {
-    prompt: "Según el pequeño teorema de Fermat, si p es primo y n no es cero, ¿qué vale n^(p-1) % p?",
-    options: ["0", "1", "p - 1", "n"],
-    answer: 1,
-    explanation: "Ese resultado permite calcular inversos con n^(p-2) dentro de Fp.",
-  },
-  {
-    prompt: "En la clase FieldElement, ¿qué se debe validar antes de sumar dos elementos?",
-    options: [
-      "Que tengan el mismo prime.",
-      "Que ambos numeros sean pares.",
-      "Que el resultado no use modulo.",
-      "Que el exponente sea positivo.",
-    ],
-    answer: 0,
-    explanation:
-      "Sumar elementos de campos distintos no tiene significado dentro de esta abstraccion.",
-  },
-];
-
-export function ChapterQuiz() {
+export function QuizBlock({ questions }: { questions: Question[] }) {
   const [answers, setAnswers] = useState<Record<number, number>>({});
   const answeredCount = Object.keys(answers).length;
 
@@ -67,14 +17,16 @@ export function ChapterQuiz() {
     return questions.reduce((total, question, index) => {
       return total + (answers[index] === question.answer ? 1 : 0);
     }, 0);
-  }, [answers]);
+  }, [answers, questions]);
 
   const complete = answeredCount === questions.length;
+
+  if (questions.length === 0) return null;
 
   return (
     <section
       id="test-final"
-      className="mt-14 rounded-lg border border-amber-200/70 bg-amber-50/70 p-5 shadow-sm dark:border-amber-900/50 dark:bg-amber-950/20 sm:p-6"
+      className="mt-14 rounded-lg border border-amber-200/70 bg-amber-50/70 p-5 shadow-sm dark:border-amber-900/50 dark:bg-amber-950/20 sm:p-6 not-prose"
     >
       <div className="flex flex-wrap items-start justify-between gap-3 border-b border-amber-200/70 pb-4 dark:border-amber-900/50">
         <div>
@@ -82,17 +34,15 @@ export function ChapterQuiz() {
             Test final
           </p>
           <h2 className="mt-1 text-2xl font-bold tracking-tight text-stone-950 dark:text-stone-50">
-            Comprueba si ya dominas los campos finitos
+            Comprueba lo aprendido
           </h2>
           <p className="mt-2 max-w-2xl text-sm leading-6 text-stone-700 dark:text-stone-300">
-            Responde sin mirar las formulas. Si fallas una, usa la explicacion como pista y vuelve al subtema correspondiente.
+            Responde sin mirar las fórmulas. Si fallas, usa la explicación como pista y vuelve al subtema correspondiente.
           </p>
         </div>
 
         <div className="rounded-lg border border-amber-200 bg-white px-3 py-2 text-sm font-semibold text-stone-800 shadow-sm dark:border-amber-900/60 dark:bg-stone-950 dark:text-stone-100">
-          <span data-testid="chapter-quiz-score">
           {score}/{questions.length}
-          </span>
         </div>
       </div>
 
@@ -117,7 +67,6 @@ export function ChapterQuiz() {
                     <button
                       key={option}
                       type="button"
-                      data-testid={`quiz-option-${questionIndex}-${optionIndex}`}
                       onClick={() =>
                         setAnswers((current) => ({
                           ...current,
@@ -125,7 +74,7 @@ export function ChapterQuiz() {
                         }))
                       }
                       className={cn(
-                        "flex items-center justify-between gap-3 rounded-lg border px-3 py-2 text-left text-sm transition-all",
+                        "flex items-center justify-between gap-3 rounded-lg border px-3 py-2 text-left text-sm transition-all cursor-pointer",
                         selectedOption
                           ? isCorrect
                             ? "border-emerald-300 bg-emerald-50 text-emerald-900 dark:border-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-100"
@@ -169,14 +118,14 @@ export function ChapterQuiz() {
         <p className="text-sm font-medium text-stone-700 dark:text-stone-300">
           {complete
             ? score === questions.length
-              ? "Perfecto: ya puedes pasar al capitulo 2 con buena base."
-              : "Buen intento: repasa las preguntas fallidas y vuelve a intentarlo."
+              ? "Perfecto: dominas este capítulo."
+              : "Buen intento: repasa las preguntas fallidas e inténtalo de nuevo."
             : `Has respondido ${answeredCount} de ${questions.length}.`}
         </p>
         <button
           type="button"
           onClick={() => setAnswers({})}
-          className="inline-flex items-center gap-2 rounded-lg border border-stone-300 bg-white px-3 py-2 text-sm font-semibold text-stone-700 shadow-sm transition hover:bg-stone-50 dark:border-stone-800 dark:bg-stone-900 dark:text-stone-200 dark:hover:bg-stone-800"
+          className="inline-flex items-center gap-2 rounded-lg border border-stone-300 bg-white px-3 py-2 text-sm font-semibold text-stone-700 shadow-sm transition hover:bg-stone-50 dark:border-stone-800 dark:bg-stone-900 dark:text-stone-200 dark:hover:bg-stone-800 cursor-pointer"
         >
           <RotateCcw className="size-4" />
           Reiniciar

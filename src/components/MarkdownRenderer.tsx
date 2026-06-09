@@ -1,20 +1,50 @@
 import ReactMarkdown, { Components } from "react-markdown";
 import remarkMath from "remark-math";
+import remarkDirective from "remark-directive";
 import rehypeKatex from "rehype-katex";
 import { CodeBlock } from "./CodeBlock";
 import { CodeSandbox } from "./CodeSandbox";
+import { QuizBlock, type Question } from "./QuizBlock";
+import { Callout, parseCallout } from "./Callout";
+import { Collapsible } from "./Collapsible";
 import { slugify } from "../lib/toc";
+import { remarkDirectiveComponents } from "../lib/remark-directive-components";
 
 interface MarkdownRendererProps {
   content: string;
 }
 
-const getNodeText = (node: any): string => {
+const getNodeText = (node: unknown): string => {
   if (typeof node === "string") return node;
   if (Array.isArray(node)) return node.map(getNodeText).join("");
-  if (node && node.props && node.props.children) return getNodeText(node.props.children);
+  if (
+    node &&
+    typeof node === "object" &&
+    "props" in node &&
+    node.props &&
+    typeof node.props === "object" &&
+    "children" in node.props
+  ) {
+    return getNodeText((node.props as { children: unknown }).children);
+  }
   return "";
 };
+
+function parseQuizContent(raw: string): Question[] {
+  try {
+    const parsed = JSON.parse(raw) as Question[];
+    if (!Array.isArray(parsed)) return [];
+    return parsed.filter(
+      (q) =>
+        typeof q.prompt === "string" &&
+        Array.isArray(q.options) &&
+        typeof q.answer === "number" &&
+        typeof q.explanation === "string",
+    );
+  } catch {
+    return [];
+  }
+}
 
 const markdownComponents: Components = {
   pre({ children }) {
@@ -28,7 +58,23 @@ const markdownComponents: Components = {
     const id = slugify(getNodeText(children));
     return <h3 id={id}>{children}</h3>;
   },
-  code({ node, className, children, ...props }) {
+  blockquote({ children }) {
+    const text = getNodeText(children).trim();
+    const callout = parseCallout(text);
+    if (callout) {
+      return (
+        <Callout variant={callout.variant}>
+          <p>{callout.body}</p>
+        </Callout>
+      );
+    }
+    return <blockquote>{children}</blockquote>;
+  },
+  // @ts-expect-error custom element from remark directive plugin
+  collapsible({ title, children }: { title?: string; children?: React.ReactNode }) {
+    return <Collapsible title={title || "Detalles"}>{children}</Collapsible>;
+  },
+  code({ className, children, ...props }) {
     const match = /language-([\w-]+)/.exec(className || "");
     const isInline = !match;
 
@@ -53,22 +99,19 @@ const markdownComponents: Components = {
 
       if (separatorIndex !== -1) {
         codePart = fullContent.substring(0, separatorIndex);
-        outputPart = fullContent.substring(separatorIndex + 5); // Length of "\n---\n"
+        outputPart = fullContent.substring(separatorIndex + 5);
       }
 
-      return (
-        <CodeSandbox
-          code={codePart}
-          output={outputPart}
-        />
-      );
+      return <CodeSandbox code={codePart} expectedOutput={outputPart} />;
+    }
+
+    if (lang === "quiz") {
+      const questions = parseQuizContent(String(children).replace(/\n$/, ""));
+      return <QuizBlock questions={questions} />;
     }
 
     return (
-      <CodeBlock
-        code={String(children).replace(/\n$/, "")}
-        lang={lang}
-      />
+      <CodeBlock code={String(children).replace(/\n$/, "")} lang={lang} />
     );
   },
 };
@@ -77,7 +120,7 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
   return (
     <div className="prose prose-stone dark:prose-invert max-w-none prose-pre:bg-transparent prose-pre:p-0 prose-code:before:content-none prose-code:after:content-none prose-headings:scroll-mt-24">
       <ReactMarkdown
-        remarkPlugins={[remarkMath]}
+        remarkPlugins={[remarkMath, remarkDirective, remarkDirectiveComponents]}
         rehypePlugins={[rehypeKatex]}
         components={markdownComponents}
       >
@@ -86,4 +129,3 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
     </div>
   );
 }
-

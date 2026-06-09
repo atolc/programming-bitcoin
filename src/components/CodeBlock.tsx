@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Check, Copy } from "lucide-react";
 import { codeToHtml } from "shiki";
 import { Button } from "@/components/ui/button";
@@ -14,6 +15,7 @@ interface CodeBlockProps {
 }
 
 export function CodeBlock({ code, lang = "python" }: CodeBlockProps) {
+  const { t } = useTranslation();
   const [html, setHtml] = useState<string>("");
   const [copied, setCopied] = useState(false);
 
@@ -68,7 +70,7 @@ export function CodeBlock({ code, lang = "python" }: CodeBlockProps) {
           >
             {copied ? <Check className="size-4 text-emerald-400" /> : <Copy className="size-4" />}
           </TooltipTrigger>
-          <TooltipPopup>{copied ? "Copiado" : "Copiar código"}</TooltipPopup>
+          <TooltipPopup>{copied ? t("code.copied") : t("code.copy")}</TooltipPopup>
         </Tooltip>
       </div>
       <div className="flex items-center justify-between px-4 py-1.5 bg-stone-900 border-b border-stone-800 text-xs font-mono text-stone-400">

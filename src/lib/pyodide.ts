@@ -1,4 +1,5 @@
 import type { PyodideInterface } from "pyodide";
+import i18n from "../i18n";
 
 export type PyodideStatus = "idle" | "loading" | "ready" | "error";
 
@@ -14,12 +15,12 @@ export async function initPyodide(
   if (loadPromise) return loadPromise;
 
   loadPromise = (async () => {
-    onStatus?.("Descargando motor Python...");
+    onStatus?.(i18n.t("pyodide.downloading"));
     const { loadPyodide } = await import("pyodide");
     const pyodide = await loadPyodide({
       indexURL: "https://cdn.jsdelivr.net/pyodide/v0.29.4/full/",
     });
-    onStatus?.("Preparando entorno...");
+    onStatus?.(i18n.t("pyodide.preparing"));
     pyodideInstance = pyodide;
     return pyodide;
   })().catch((err: unknown) => {
@@ -55,7 +56,7 @@ export async function runPython(
   const runTask = pyodide.runPythonAsync(code);
 
   const timeout = new Promise<never>((_, reject) => {
-    setTimeout(() => reject(new Error("Tiempo de ejecución agotado (5s)")), timeoutMs);
+    setTimeout(() => reject(new Error(i18n.t("pyodide.timeout"))), timeoutMs);
   });
 
   try {

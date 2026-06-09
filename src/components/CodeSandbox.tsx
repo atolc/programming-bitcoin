@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Play, RotateCcw, Terminal, Check, Copy, Loader2 } from "lucide-react";
 import { codeToHtml } from "shiki";
 import { usePyodideOptional } from "./PyodideProvider";
@@ -30,6 +31,7 @@ export function CodeSandbox({
   expectedOutput = "",
   filename = "main.py",
 }: CodeSandboxProps) {
+  const { t } = useTranslation();
   const pyodide = usePyodideOptional();
   const [html, setHtml] = useState<string>("");
   const [copied, setCopied] = useState(false);
@@ -76,7 +78,7 @@ export function CodeSandbox({
 
   const handleRun = async () => {
     if (!pyodide) {
-      setError("Motor Python no disponible");
+      setError(t("code.pythonUnavailable"));
       setHasRun(true);
       return;
     }
@@ -142,16 +144,16 @@ export function CodeSandbox({
               {copied ? (
                 <>
                   <Check className="size-3.5 text-emerald-400" />
-                  <span>Copiado</span>
+                  <span>{t("code.copied")}</span>
                 </>
               ) : (
                 <>
                   <Copy className="size-3.5" />
-                  <span>Copiar</span>
+                  <span>{t("code.copyShort")}</span>
                 </>
               )}
             </TooltipTrigger>
-            <TooltipPopup>Copiar código</TooltipPopup>
+            <TooltipPopup>{t("code.copy")}</TooltipPopup>
           </Tooltip>
 
           {!hasRun ? (
@@ -169,10 +171,10 @@ export function CodeSandbox({
               )}
               <span>
                 {pyodideLoading
-                  ? "Cargando Python..."
+                  ? t("code.loadingPython")
                   : isRunning
-                    ? "Ejecutando..."
-                    : "Ejecutar"}
+                    ? t("code.running")
+                    : t("code.run")}
               </span>
             </Button>
           ) : (
@@ -184,7 +186,7 @@ export function CodeSandbox({
               variant="outline"
             >
               <RotateCcw className="size-3.5" />
-              <span>Reiniciar</span>
+              <span>{t("code.reset")}</span>
             </Button>
           )}
         </div>
@@ -197,7 +199,7 @@ export function CodeSandbox({
         >
           <Loader2 className="size-3.5 animate-spin" />
           <AlertDescription>
-            {pyodide?.statusMessage || "Preparando entorno Python..."}
+            {pyodide?.statusMessage || t("code.preparing")}
           </AlertDescription>
         </Alert>
       ) : null}
@@ -219,14 +221,14 @@ export function CodeSandbox({
         <div className="flex items-center justify-between px-4 py-2 bg-stone-900/90 text-xs font-mono text-stone-400 border-b border-stone-800">
           <div className="flex items-center gap-1.5">
             <Terminal className="size-3.5" />
-            <span>Consola</span>
+            <span>{t("code.console")}</span>
           </div>
           {matchExpected !== null ? (
             <Badge
               className="uppercase tracking-wider"
               variant={matchExpected ? "success" : "warning"}
             >
-              {matchExpected ? "Coincide" : "Difiere"}
+              {matchExpected ? t("code.match") : t("code.mismatch")}
             </Badge>
           ) : null}
         </div>
@@ -235,7 +237,7 @@ export function CodeSandbox({
           {isRunning ? (
             <div className="flex items-center gap-2 text-stone-400">
               <span className="size-2 rounded-full bg-primary animate-ping" />
-              <span>Ejecutando script de Python...</span>
+              <span>{t("code.runningScript")}</span>
             </div>
           ) : hasRun ? (
             <div className="space-y-1">
@@ -251,7 +253,7 @@ export function CodeSandbox({
                     <pre className="text-amber-400 whitespace-pre-wrap">{stderr.trim()}</pre>
                   ) : null}
                   {!stdout && !stderr && !error ? (
-                    <pre className="text-stone-500 italic">(sin salida)</pre>
+                    <pre className="text-stone-500 italic">{t("code.noOutput")}</pre>
                   ) : null}
                 </>
               )}
@@ -263,7 +265,7 @@ export function CodeSandbox({
             </div>
           ) : (
             <div className="text-stone-500 italic">
-              Haz clic en &quot;Ejecutar&quot; para correr el código con Pyodide.
+              {t("code.clickRun")}
             </div>
           )}
         </div>

@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { CheckCircle2, RotateCcw, XCircle } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -21,6 +22,7 @@ export type Question = {
 };
 
 export function QuizBlock({ questions }: { questions: Question[] }) {
+  const { t } = useTranslation();
   const [answers, setAnswers] = useState<Record<number, number>>({});
   const answeredCount = Object.keys(answers).length;
 
@@ -46,11 +48,11 @@ export function QuizBlock({ questions }: { questions: Question[] }) {
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
             <p className="text-xs font-bold uppercase tracking-wider text-warning-foreground">
-              Test final
+              {t("quiz.finalTest")}
             </p>
-            <CardTitle className="mt-1 text-2xl">Comprueba lo aprendido</CardTitle>
+            <CardTitle className="mt-1 text-2xl">{t("quiz.title")}</CardTitle>
             <CardDescription className="mt-2 max-w-2xl text-sm leading-6">
-              Responde sin mirar las fórmulas. Si fallas, usa la explicación como pista y vuelve al subtema correspondiente.
+              {t("quiz.description")}
             </CardDescription>
           </div>
           <Badge variant="secondary" className="text-sm font-semibold">
@@ -135,13 +137,16 @@ export function QuizBlock({ questions }: { questions: Question[] }) {
         <p className="text-sm font-medium text-muted-foreground">
           {complete
             ? score === questions.length
-              ? "Perfecto: dominas este capítulo."
-              : "Buen intento: repasa las preguntas fallidas e inténtalo de nuevo."
-            : `Has respondido ${answeredCount} de ${questions.length}.`}
+              ? t("quiz.perfect")
+              : t("quiz.good")
+            : t("quiz.progress", {
+                answered: answeredCount,
+                total: questions.length,
+              })}
         </p>
         <Button onClick={() => setAnswers({})} type="button" variant="outline">
           <RotateCcw className="size-4" />
-          Reiniciar
+          {t("quiz.restart")}
         </Button>
       </CardContent>
     </Card>

@@ -13,8 +13,9 @@ import {
   CheckCircle2,
   Home,
 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import {
-  chapters,
+  getChapters,
   findChapterById,
   findSectionById,
   type Chapter,
@@ -22,7 +23,7 @@ import {
 import { MarkdownRenderer } from "../components/MarkdownRenderer";
 import { TableOfContents } from "../components/TableOfContents";
 import { AppHeader } from "../components/AppHeader";
-import { chapterPath, homePath } from "../lib/routes";
+import { useLocale } from "../context/LocaleContext";
 import { markChapterRead, getReadChapters } from "../lib/readProgress";
 import { cn } from "../lib/utils";
 import { LatexText } from "../components/LatexText";
@@ -63,15 +64,18 @@ const LazyPyodideProvider = lazy(() =>
 );
 
 function ChapterLayoutInner() {
+  const { t } = useTranslation();
+  const { locale, homePath, chapterPath } = useLocale();
   const { chapterId, sectionId } = useParams();
   const navigate = useNavigate();
+  const chapters = getChapters(locale);
   const [query, setQuery] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrollPercent, setScrollPercent] = useState(0);
   const [readChapters, setReadChapters] = useState<Set<string>>(() => getReadChapters());
   const searchInputRef = useRef<HTMLInputElement>(null);
 
-  const validChapter = findChapterById(chapterId);
+  const validChapter = findChapterById(locale, chapterId);
 
   if (chapterId && !validChapter) {
     return <Navigate to={homePath()} replace />;
@@ -92,7 +96,7 @@ function ChapterLayoutInner() {
         aliases: [],
       } as Chapter)
     );
-  }, [validChapter]);
+  }, [validChapter, chapters]);
 
   const activeSection = useMemo(() => {
     return sectionId ? findSectionById(activeChapter, sectionId) : undefined;
@@ -134,10 +138,10 @@ function ChapterLayoutInner() {
   }, [chapterId, sectionId]);
 
   useEffect(() => {
-    if (!activeChapter.id) return;
-    markChapterRead(activeChapter.id);
+    if (!activeChapter.number) return;
+    markChapterRead(activeChapter.number);
     setReadChapters(getReadChapters());
-  }, [activeChapter.id]);
+  }, [activeChapter.number]);
 
   const filteredChapters = useMemo(() => {
     const normalized = query.trim().toLowerCase();
@@ -155,11 +159,11 @@ function ChapterLayoutInner() {
         })
       );
     });
-  }, [query]);
+  }, [query, chapters]);
 
   const activeIndex = useMemo(() => {
     return chapters.findIndex((c) => c.id === activeChapter.id);
-  }, [activeChapter.id]);
+  }, [activeChapter.id, chapters]);
 
   const prevChapter = activeIndex > 0 ? chapters[activeIndex - 1] : null;
   const nextChapter =
@@ -174,57 +178,57 @@ function ChapterLayoutInner() {
     if (activeChapter.sections.length === 0 || activeSectionIndex === -1 || activeSectionIndex === 0) {
       return prevChapter
         ? {
-            label: "Capítulo Anterior",
-            title: `Cap. ${prevChapter.number}: ${prevChapter.title}`,
-            path: chapterPath(prevChapter.id),
+            label: t("chapter.prevChapter"),
+            title: `${t("chapter.chapterShort")} ${prevChapter.number}: ${prevChapter.title}`,
+            path: chapterPath(prevChapter.folder),
           }
         : null;
     }
     const prevSec = activeChapter.sections[activeSectionIndex - 1];
     return {
-      label: "Sección Anterior",
+      label: t("chapter.prevSection"),
       title: prevSec.title,
-      path: chapterPath(activeChapter.id, prevSec.id),
+      path: chapterPath(activeChapter.folder, prevSec.id),
     };
-  }, [activeChapter, activeSectionIndex, prevChapter]);
+  }, [activeChapter, activeSectionIndex, prevChapter, t, chapterPath]);
 
   const nextNav = useMemo(() => {
     if (activeChapter.sections.length === 0) {
       return nextChapter
         ? {
-            label: "Siguiente Capítulo",
-            title: `Cap. ${nextChapter.number}: ${nextChapter.title}`,
-            path: chapterPath(nextChapter.id),
+            label: t("chapter.nextChapter"),
+            title: `${t("chapter.chapterShort")} ${nextChapter.number}: ${nextChapter.title}`,
+            path: chapterPath(nextChapter.folder),
           }
         : null;
     }
     if (activeSectionIndex === -1) {
       const firstSec = activeChapter.sections[0];
       return {
-        label: "Siguiente Sección",
+        label: t("chapter.nextSection"),
         title: firstSec.title,
-        path: chapterPath(activeChapter.id, firstSec.id),
+        path: chapterPath(activeChapter.folder, firstSec.id),
       };
     }
     if (activeSectionIndex === activeChapter.sections.length - 1) {
       return nextChapter
         ? {
-            label: "Siguiente Capítulo",
-            title: `Cap. ${nextChapter.number}: ${nextChapter.title}`,
-            path: chapterPath(nextChapter.id),
+            label: t("chapter.nextChapter"),
+            title: `${t("chapter.chapterShort")} ${nextChapter.number}: ${nextChapter.title}`,
+            path: chapterPath(nextChapter.folder),
           }
         : null;
     }
     const nextSec = activeChapter.sections[activeSectionIndex + 1];
     return {
-      label: "Siguiente Sección",
+      label: t("chapter.nextSection"),
       title: nextSec.title,
-      path: chapterPath(activeChapter.id, nextSec.id),
+      path: chapterPath(activeChapter.folder, nextSec.id),
     };
-  }, [activeChapter, activeSectionIndex, nextChapter]);
+  }, [activeChapter, activeSectionIndex, nextChapter, t, chapterPath]);
 
   if (invalidSection) {
-    return <Navigate to={chapterPath(activeChapter.id)} replace />;
+    return <Navigate to={chapterPath(activeChapter.folder)} replace />;
   }
 
   const breadcrumbs = (
@@ -235,20 +239,20 @@ function ChapterLayoutInner() {
           className="inline-flex items-center gap-1 hover:text-primary"
         >
           <Home className="size-3" />
-          Inicio
+          {t("chapter.home")}
         </BreadcrumbLink>
       </BreadcrumbItem>
       <BreadcrumbSeparator>/</BreadcrumbSeparator>
       <BreadcrumbItem>
         {activeSection ? (
           <BreadcrumbLink
-            render={<Link to={chapterPath(activeChapter.id)} />}
+            render={<Link to={chapterPath(activeChapter.folder)} />}
             className="hover:text-primary"
           >
-            Capítulo {activeChapter.number}
+            {t("chapter.chapter")} {activeChapter.number}
           </BreadcrumbLink>
         ) : (
-          <BreadcrumbPage>Capítulo {activeChapter.number}</BreadcrumbPage>
+          <BreadcrumbPage>{t("chapter.chapter")} {activeChapter.number}</BreadcrumbPage>
         )}
       </BreadcrumbItem>
       <BreadcrumbSeparator>/</BreadcrumbSeparator>
@@ -295,7 +299,7 @@ function ChapterLayoutInner() {
                   variant="outline"
                 >
                   <Home className="size-4" />
-                  Todos los capítulos
+                  {t("chapter.allChapters")}
                 </Button>
 
                 <InputGroup>
@@ -305,7 +309,7 @@ function ChapterLayoutInner() {
                   <InputGroupInput
                     ref={searchInputRef}
                     type="text"
-                    placeholder="Buscar en resúmenes..."
+                    placeholder={t("chapter.searchPlaceholder")}
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                   />
@@ -317,7 +321,7 @@ function ChapterLayoutInner() {
                         size="icon-xs"
                         type="button"
                         variant="ghost"
-                        aria-label="Limpiar búsqueda"
+                        aria-label={t("chapter.clearSearch")}
                       >
                         <X className="size-3.5" />
                       </Button>
@@ -330,16 +334,14 @@ function ChapterLayoutInner() {
                   </InputGroupAddon>
                 </InputGroup>
 
-                <nav className="space-y-1" aria-label="Capítulos">
+                <nav className="space-y-1" aria-label={t("chapter.chaptersNav")}>
                   <p className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground px-3 mb-2">
-                    Capítulos del Libro
+                    {t("chapter.chaptersNav")}
                   </p>
                   {filteredChapters.length > 0 ? (
                     filteredChapters.map((chapter) => {
                       const isActive = activeChapter.id === chapter.id;
-                      const isRead =
-                        readChapters.has(chapter.id) ||
-                        chapter.aliases.some((alias) => readChapters.has(alias));
+                      const isRead = readChapters.has(String(chapter.number));
                       return (
                         <Button
                           key={chapter.id}
@@ -348,7 +350,7 @@ function ChapterLayoutInner() {
                             isActive && "bg-accent text-accent-foreground font-medium",
                           )}
                           onClick={() => {
-                            navigate(chapterPath(chapter.id));
+                            navigate(chapterPath(chapter.folder));
                             setMenuOpen(false);
                           }}
                           type="button"
@@ -373,7 +375,7 @@ function ChapterLayoutInner() {
                     })
                   ) : (
                     <div className="px-3 py-4 text-center text-xs text-muted-foreground">
-                      No se encontraron capítulos
+                      {t("chapter.noResults")}
                     </div>
                   )}
                 </nav>
@@ -387,7 +389,7 @@ function ChapterLayoutInner() {
                 <div className="flex items-center justify-between gap-4 flex-wrap">
                   <div>
                     <Badge variant="secondary" className="rounded-full">
-                      Capítulo {activeChapter.number}
+                      {t("chapter.chapter")} {activeChapter.number}
                     </Badge>
                     <h2 className="mt-3 text-3xl sm:text-4xl font-extrabold tracking-tight text-foreground">
                       <LatexText text={activeTitle} />
@@ -409,14 +411,14 @@ function ChapterLayoutInner() {
                       <Card
                         key={section.id}
                         className="group transition-all duration-150 hover:border-primary/60"
-                        render={<Link to={chapterPath(activeChapter.id, section.id)} />}
+                        render={<Link to={chapterPath(activeChapter.folder, section.id)} />}
                       >
                         <CardHeader className="gap-2">
                           <CardTitle className="text-sm group-hover:text-primary transition-colors">
                             <LatexText text={section.title} />
                           </CardTitle>
                           <CardDescription className="inline-flex items-center gap-1 text-xs font-semibold text-primary">
-                            Abrir seccion <ChevronRight className="size-3.5" />
+                            {t("chapter.openSection")} <ChevronRight className="size-3.5" />
                           </CardDescription>
                         </CardHeader>
                       </Card>
@@ -475,7 +477,7 @@ function ChapterLayoutInner() {
             </article>
 
             <TableOfContents
-              chapterId={activeChapter.id}
+              chapterFolder={activeChapter.folder}
               sections={activeChapter.sections}
               activeSectionId={activeSection?.id}
             />
@@ -487,8 +489,9 @@ function ChapterLayoutInner() {
 }
 
 export function ChapterLayout() {
+  const { locale } = useLocale();
   const { chapterId } = useParams();
-  const chapter = findChapterById(chapterId);
+  const chapter = findChapterById(locale, chapterId);
   const needsPyodide = chapter ? SANDBOX_CHAPTERS.has(chapter.number) : false;
 
   if (needsPyodide) {

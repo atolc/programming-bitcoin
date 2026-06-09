@@ -1,0 +1,89 @@
+{
+  "header": {
+    "subtitle": "Guía de Estudio y Resúmenes",
+    "toggleNav": "Alternar navegación",
+    "github": "Ver en GitHub"
+  },
+  "language": {
+    "label": "Idioma",
+    "es": "Español",
+    "en": "English"
+  },
+  "landing": {
+    "hero": "Guía de estudio interactiva basada en el aclamado libro de Jimmy Song. Explora los 14 capítulos con código Python ejecutable en el navegador, quizzes de autoevaluación y notas clave.",
+    "cta": "Empezar Capítulo 1",
+    "chaptersTitle": "Capítulos del libro",
+    "chaptersCount": "{{count}} capítulos listos para explorar",
+    "read": "Leído",
+    "sandbox": "Incluye sandboxes Python interactivos",
+    "readChapter": "Leer capítulo",
+    "footer": "Basado en <em>Programming Bitcoin: Learn How to Program Bitcoin from Scratch</em> por Jimmy Song."
+  },
+  "chapter": {
+    "home": "Inicio",
+    "chapter": "Capítulo",
+    "allChapters": "Todos los capítulos",
+    "searchPlaceholder": "Buscar en resúmenes...",
+    "clearSearch": "Limpiar búsqueda",
+    "chaptersNav": "Capítulos del Libro",
+    "noResults": "No se encontraron capítulos",
+    "openSection": "Abrir sección",
+    "prevChapter": "Capítulo Anterior",
+    "nextChapter": "Siguiente Capítulo",
+    "prevSection": "Sección Anterior",
+    "nextSection": "Siguiente Sección",
+    "chapterShort": "Cap."
+  },
+  "toc": {
+    "sections": "Secciones"
+  },
+  "quiz": {
+    "finalTest": "Test final",
+    "title": "Comprueba lo aprendido",
+    "description": "Responde sin mirar las fórmulas. Si fallas, usa la explicación como pista y vuelve al subtema correspondiente.",
+    "progress": "Has respondido {{answered}} de {{total}}.",
+    "question": "Pregunta {{current}} de {{total}}",
+    "check": "Comprobar",
+    "next": "Siguiente",
+    "finish": "Finalizar",
+    "restart": "Reiniciar",
+    "perfect": "Perfecto: dominas este capítulo.",
+    "good": "Buen intento: repasa las preguntas fallidas e inténtalo de nuevo.",
+    "score": "{{correct}} de {{total}} correctas"
+  },
+  "callout": {
+    "important": "Importante",
+    "tip": "Consejo",
+    "warning": "Advertencia",
+    "note": "Nota"
+  },
+  "code": {
+    "copy": "Copiar código",
+    "copyShort": "Copiar",
+    "copied": "Copiado",
+    "runningScript": "Ejecutando script de Python...",
+    "clickRun": "Haz clic en \"Ejecutar\" para correr el código con Pyodide.",
+    "run": "Ejecutar",
+    "running": "Ejecutando...",
+    "loadingPython": "Cargando Python...",
+    "reset": "Reiniciar",
+    "console": "Consola",
+    "match": "Coincide",
+    "mismatch": "Difiere",
+    "noOutput": "(sin salida)",
+    "preparing": "Preparando entorno Python...",
+    "pythonUnavailable": "Motor Python no disponible"
+  },
+  "theme": {
+    "light": "Activar modo claro",
+    "dark": "Activar modo oscuro"
+  },
+  "markdown": {
+    "details": "Detalles"
+  },
+  "pyodide": {
+    "downloading": "Descargando motor Python...",
+    "preparing": "Preparando entorno...",
+    "timeout": "Tiempo de ejecución agotado (5s)"
+  }
+}

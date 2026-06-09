@@ -1,4 +1,5 @@
 import ReactMarkdown, { Components } from "react-markdown";
+import { useTranslation } from "react-i18next";
 import remarkMath from "remark-math";
 import remarkDirective from "remark-directive";
 import rehypeKatex from "rehype-katex";
@@ -83,6 +84,17 @@ function parseQuizContent(raw: string): Question[] {
   }
 }
 
+function CollapsibleSection({
+  title,
+  children,
+}: {
+  title?: string;
+  children?: React.ReactNode;
+}) {
+  const { t } = useTranslation();
+  return <Collapsible title={title || t("markdown.details")}>{children}</Collapsible>;
+}
+
 const markdownComponents: Components = {
   pre({ children }) {
     return <>{children}</>;
@@ -109,7 +121,7 @@ const markdownComponents: Components = {
   },
   // @ts-expect-error custom element from remark directive plugin
   collapsible({ title, children }: { title?: string; children?: React.ReactNode }) {
-    return <Collapsible title={title || "Detalles"}>{children}</Collapsible>;
+    return <CollapsibleSection title={title}>{children}</CollapsibleSection>;
   },
   code({ className, children, ...props }) {
     const match = /language-([\w-]+)/.exec(className || "");

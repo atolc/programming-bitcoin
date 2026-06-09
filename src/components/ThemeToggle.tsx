@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Sun, Moon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -16,6 +17,7 @@ function getPreferredTheme(): Theme {
 }
 
 export function ThemeToggle() {
+  const { t } = useTranslation();
   const [theme, setTheme] = useState<Theme>(getPreferredTheme);
 
   useEffect(() => {
@@ -33,8 +35,8 @@ export function ThemeToggle() {
       onClick={() => setTheme(theme === "light" ? "dark" : "light")}
       size="icon"
       variant="outline"
-      aria-label={theme === "dark" ? "Activar modo claro" : "Activar modo oscuro"}
-      title={theme === "dark" ? "Activar modo claro" : "Activar modo oscuro"}
+      aria-label={theme === "dark" ? t("theme.light") : t("theme.dark")}
+      title={theme === "dark" ? t("theme.light") : t("theme.dark")}
     >
       <div className="relative size-5 overflow-hidden">
         <span

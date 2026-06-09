@@ -1,0 +1,89 @@
+{
+  "header": {
+    "subtitle": "Study Guide & Summaries",
+    "toggleNav": "Toggle navigation",
+    "github": "View on GitHub"
+  },
+  "language": {
+    "label": "Language",
+    "es": "Español",
+    "en": "English"
+  },
+  "landing": {
+    "hero": "Interactive study guide based on Jimmy Song's acclaimed book. Explore all 14 chapters with in-browser runnable Python code, self-assessment quizzes, and key notes.",
+    "cta": "Start Chapter 1",
+    "chaptersTitle": "Book chapters",
+    "chaptersCount": "{{count}} chapters ready to explore",
+    "read": "Read",
+    "sandbox": "Includes interactive Python sandboxes",
+    "readChapter": "Read chapter",
+    "footer": "Based on <em>Programming Bitcoin: Learn How to Program Bitcoin from Scratch</em> by Jimmy Song."
+  },
+  "chapter": {
+    "home": "Home",
+    "chapter": "Chapter",
+    "allChapters": "All chapters",
+    "searchPlaceholder": "Search summaries...",
+    "clearSearch": "Clear search",
+    "chaptersNav": "Book Chapters",
+    "noResults": "No chapters found",
+    "openSection": "Open section",
+    "prevChapter": "Previous Chapter",
+    "nextChapter": "Next Chapter",
+    "prevSection": "Previous Section",
+    "nextSection": "Next Section",
+    "chapterShort": "Ch."
+  },
+  "toc": {
+    "sections": "Sections"
+  },
+  "quiz": {
+    "finalTest": "Final test",
+    "title": "Check your understanding",
+    "description": "Answer without looking at the formulas. If you miss one, use the explanation as a hint and revisit the related section.",
+    "progress": "You have answered {{answered}} of {{total}}.",
+    "question": "Question {{current}} of {{total}}",
+    "check": "Check",
+    "next": "Next",
+    "finish": "Finish",
+    "restart": "Restart",
+    "perfect": "Perfect: you've mastered this chapter.",
+    "good": "Good effort: review the missed questions and try again.",
+    "score": "{{correct}} of {{total}} correct"
+  },
+  "callout": {
+    "important": "Important",
+    "tip": "Tip",
+    "warning": "Warning",
+    "note": "Note"
+  },
+  "code": {
+    "copy": "Copy code",
+    "copyShort": "Copy",
+    "copied": "Copied",
+    "runningScript": "Running Python script...",
+    "clickRun": "Click \"Run\" to execute the code with Pyodide.",
+    "run": "Run",
+    "running": "Running...",
+    "loadingPython": "Loading Python...",
+    "reset": "Reset",
+    "console": "Console",
+    "match": "Match",
+    "mismatch": "Mismatch",
+    "noOutput": "(no output)",
+    "preparing": "Preparing Python environment...",
+    "pythonUnavailable": "Python engine unavailable"
+  },
+  "theme": {
+    "light": "Switch to light mode",
+    "dark": "Switch to dark mode"
+  },
+  "markdown": {
+    "details": "Details"
+  },
+  "pyodide": {
+    "downloading": "Downloading Python engine...",
+    "preparing": "Preparing environment...",
+    "timeout": "Execution timed out (5s)"
+  }
+}

@@ -1,14 +1,16 @@
 import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { BookOpen, Menu, X } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { ThemeToggle } from "./ThemeToggle";
+import { LanguageSwitcher } from "./LanguageSwitcher";
 import { Button } from "@/components/ui/button";
 import {
   Breadcrumb,
   BreadcrumbList,
 } from "@/components/ui/breadcrumb";
 import { githubUrl } from "../lib/constants";
-import { homePath } from "../lib/routes";
+import { useLocale } from "../context/LocaleContext";
 
 function GithubIcon({ className }: { className?: string }) {
   return (
@@ -40,6 +42,9 @@ export function AppHeader({
   onMenuToggle,
   showMenuButton = false,
 }: AppHeaderProps) {
+  const { t } = useTranslation();
+  const { homePath } = useLocale();
+
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-background/80 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-8xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
@@ -51,7 +56,7 @@ export function AppHeader({
               size="icon"
               type="button"
               variant="outline"
-              aria-label="Toggle Navigation"
+              aria-label={t("header.toggleNav")}
             >
               {menuOpen ? <X className="size-4.5" /> : <Menu className="size-4.5" />}
             </Button>
@@ -68,7 +73,7 @@ export function AppHeader({
                 Programming Bitcoin
               </h1>
               <p className="text-xs text-muted-foreground font-medium truncate">
-                Guía de Estudio y Resúmenes
+                {t("header.subtitle")}
               </p>
             </div>
           </Link>
@@ -85,13 +90,14 @@ export function AppHeader({
         )}
 
         <div className="flex items-center gap-2 shrink-0">
+          <LanguageSwitcher />
           <ThemeToggle />
 
           <Button
             render={<a href={githubUrl} target="_blank" rel="noreferrer" />}
             size="icon"
-            title="Ver en GitHub"
-            aria-label="Ver en GitHub"
+            title={t("header.github")}
+            aria-label={t("header.github")}
           >
             <GithubIcon className="size-4.5" aria-hidden="true" />
           </Button>

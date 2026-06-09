@@ -1,4 +1,5 @@
 import { AlertCircle, Info, Lightbulb, TriangleAlert } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import {
   Alert,
   AlertDescription,
@@ -11,28 +12,28 @@ type CalloutVariant = "important" | "tip" | "warning" | "note";
 const variantConfig: Record<
   CalloutVariant,
   {
-    label: string;
+    labelKey: `callout.${CalloutVariant}`;
     icon: typeof Info;
     alertVariant: "default" | "warning" | "success" | "error";
   }
 > = {
   important: {
-    label: "Importante",
+    labelKey: "callout.important",
     icon: AlertCircle,
     alertVariant: "warning",
   },
   tip: {
-    label: "Consejo",
+    labelKey: "callout.tip",
     icon: Lightbulb,
     alertVariant: "success",
   },
   warning: {
-    label: "Advertencia",
+    labelKey: "callout.warning",
     icon: TriangleAlert,
     alertVariant: "error",
   },
   note: {
-    label: "Nota",
+    labelKey: "callout.note",
     icon: Info,
     alertVariant: "default",
   },
@@ -53,6 +54,7 @@ export function Callout({
   variant: CalloutVariant;
   children: React.ReactNode;
 }) {
+  const { t } = useTranslation();
   const config = variantConfig[variant];
   const Icon = config.icon;
 
@@ -63,7 +65,7 @@ export function Callout({
     >
       <Icon className="size-4 shrink-0 opacity-80" />
       <AlertTitle className="text-xs font-bold uppercase tracking-wider opacity-80">
-        {config.label}
+        {t(config.labelKey)}
       </AlertTitle>
       <AlertDescription className="text-sm leading-relaxed text-foreground [&>p]:m-0">
         {children}

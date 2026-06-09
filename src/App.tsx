@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate, useParams } from "react-router-dom";
+import { Routes, Route, Navigate, Outlet, useParams } from "react-router-dom";
 import { LandingPage } from "./pages/LandingPage";
 import { ChapterLayout } from "./pages/ChapterLayout";
 import { LocaleProvider } from "./context/LocaleContext";
@@ -6,17 +6,13 @@ import {
   findChapterByIdLegacy,
   findSectionByIdLegacy,
 } from "./data/chapters";
-import { DEFAULT_LOCALE, isLocale } from "./lib/locale";
+import { DEFAULT_LOCALE, isLocale, LOCALES, type Locale } from "./lib/locale";
 import { chapterPath, homePath } from "./lib/routes";
 
-function LocaleRoutes() {
+function LocaleLayout({ locale }: { locale: Locale }) {
   return (
-    <LocaleProvider>
-      <Routes>
-        <Route index element={<LandingPage />} />
-        <Route path=":chapterId" element={<ChapterLayout />} />
-        <Route path=":chapterId/:sectionId" element={<ChapterLayout />} />
-      </Routes>
+    <LocaleProvider locale={locale}>
+      <Outlet />
     </LocaleProvider>
   );
 }
@@ -61,7 +57,14 @@ export function App() {
   return (
     <Routes>
       <Route path="/" element={<Navigate to={homePath(DEFAULT_LOCALE)} replace />} />
-      <Route path="/:locale/*" element={<LocaleRoutes />} />
+      {LOCALES.map((locale) => (
+        <Route key={locale} path={locale} element={<LocaleLayout locale={locale} />}>
+          <Route index element={<LandingPage />} />
+          <Route path=":chapterId" element={<ChapterLayout />} />
+          <Route path=":chapterId/:sectionId" element={<ChapterLayout />} />
+          <Route path="*" element={<Navigate to={homePath(locale)} replace />} />
+        </Route>
+      ))}
       <Route path="/docs/:chapterId" element={<LegacyDocsRedirect />} />
       <Route
         path="/docs/:chapterId/:sectionId"

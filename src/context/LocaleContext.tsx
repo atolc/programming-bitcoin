@@ -8,13 +8,7 @@ import {
 } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import {
-  DOCUMENT_TITLES,
-  DEFAULT_LOCALE,
-  type Locale,
-  isLocale,
-  parseLocale,
-} from "../lib/locale";
+import { DOCUMENT_TITLES, type Locale } from "../lib/locale";
 import { chapterPath, homePath } from "../lib/routes";
 import {
   findChapterByFolder,
@@ -30,17 +24,16 @@ type LocaleContextValue = {
 
 const LocaleContext = createContext<LocaleContextValue | null>(null);
 
-export function LocaleProvider({ children }: { children: ReactNode }) {
-  const { locale: localeParam, chapterId, sectionId } = useParams();
+export function LocaleProvider({
+  locale,
+  children,
+}: {
+  locale: Locale;
+  children: ReactNode;
+}) {
+  const { chapterId, sectionId } = useParams();
   const navigate = useNavigate();
   const { i18n } = useTranslation();
-  const locale = parseLocale(localeParam);
-
-  useEffect(() => {
-    if (localeParam && !isLocale(localeParam)) {
-      navigate(homePath(DEFAULT_LOCALE), { replace: true });
-    }
-  }, [localeParam, navigate]);
 
   useEffect(() => {
     void i18n.changeLanguage(locale);

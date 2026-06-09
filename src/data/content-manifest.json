@@ -1,0 +1,536 @@
+[
+  {
+    "number": 1,
+    "folders": {
+      "es": "campos-finitos",
+      "en": "finite-fields"
+    },
+    "sections": {
+      "aritmetica-modular-la-envoltura": {
+        "es": "aritmetica-modular-la-envoltura",
+        "en": "modulo-arithmetic"
+      },
+      "cierre": {
+        "es": "cierre",
+        "en": "conclusion"
+      },
+      "definicion-y-propiedades-de-un-campo-finito": {
+        "es": "definicion-y-propiedades-de-un-campo-finito",
+        "en": "finite-field-definition"
+      },
+      "division-y-el-pequeno-teorema-de-fermat": {
+        "es": "division-y-el-pequeno-teorema-de-fermat",
+        "en": "finite-field-division"
+      },
+      "exponentes-negativos-y-grandes": {
+        "es": "exponentes-negativos-y-grandes",
+        "en": "negative-and-large-exponents"
+      },
+      "implementacion-en-python-de-fieldelement": {
+        "es": "implementacion-en-python-de-fieldelement",
+        "en": "field-element-python-implementation"
+      },
+      "mapa-del-capitulo": {
+        "es": "mapa-del-capitulo",
+        "en": "chapter-map"
+      },
+      "multiplicacion-y-exponenciacion": {
+        "es": "multiplicacion-y-exponenciacion",
+        "en": "finite-field-multiplication-and-exponentiation"
+      },
+      "por-que-el-orden-debe-ser-un-numero-primo": {
+        "es": "por-que-el-orden-debe-ser-un-numero-primo",
+        "en": "why-fields-are-prime"
+      },
+      "por-que-empezar-por-campos-finitos": {
+        "es": "por-que-empezar-por-campos-finitos",
+        "en": "why-start-with-finite-fields"
+      },
+      "practica-guiada-interactiva": {
+        "es": "practica-guiada-interactiva",
+        "en": "guided-interactive-practice"
+      },
+      "suma-y-resta-en-fp": {
+        "es": "suma-y-resta-en-fp",
+        "en": "finite-field-addition-and-subtraction"
+      }
+    }
+  },
+  {
+    "number": 2,
+    "folders": {
+      "es": "curvas-elipticas",
+      "en": "elliptic-curves"
+    },
+    "sections": {
+      "cierre": {
+        "es": "cierre",
+        "en": "conclusion"
+      },
+      "definicion-de-la-curva-eliptica": {
+        "es": "definicion-de-la-curva-eliptica",
+        "en": "elliptic-curve-definition"
+      },
+      "duplicacion-de-un-punto": {
+        "es": "duplicacion-de-un-punto",
+        "en": "point-doubling"
+      },
+      "implementacion-en-python": {
+        "es": "implementacion-en-python",
+        "en": "python-implementation"
+      },
+      "mapa-del-capitulo": {
+        "es": "mapa-del-capitulo",
+        "en": "chapter-map"
+      },
+      "punto-al-infinito": {
+        "es": "punto-al-infinito",
+        "en": "point-at-infinity"
+      },
+      "suma-de-puntos-distintos": {
+        "es": "suma-de-puntos-distintos",
+        "en": "point-addition"
+      },
+      "validar-puntos-en-la-curva": {
+        "es": "validar-puntos-en-la-curva",
+        "en": "validating-points-on-the-curve"
+      }
+    }
+  },
+  {
+    "number": 3,
+    "folders": {
+      "es": "criptografia-de-curva-eliptica",
+      "en": "elliptic-curve-cryptography"
+    },
+    "sections": {
+      "cierre": {
+        "es": "cierre",
+        "en": "conclusion"
+      },
+      "curvas-sobre-campos-finitos": {
+        "es": "curvas-sobre-campos-finitos",
+        "en": "curves-over-finite-fields"
+      },
+      "firmar-y-verificar": {
+        "es": "firmar-y-verificar",
+        "en": "signing-and-verifying"
+      },
+      "grupos-y-llaves-publicas": {
+        "es": "grupos-y-llaves-publicas",
+        "en": "groups-and-public-keys"
+      },
+      "hashing-de-mensajes-concepto": {
+        "es": "hashing-de-mensajes-concepto",
+        "en": "message-hashing-concept"
+      },
+      "mapa-del-capitulo": {
+        "es": "mapa-del-capitulo",
+        "en": "chapter-map"
+      },
+      "multiplicacion-escalar-double-and-add": {
+        "es": "multiplicacion-escalar-double-and-add",
+        "en": "scalar-multiplication-double-and-add"
+      },
+      "secp256k1-en-numeros-pequenos": {
+        "es": "secp256k1-en-numeros-pequenos",
+        "en": "secp256k1-with-small-numbers"
+      },
+      "suma-modular-de-puntos": {
+        "es": "suma-modular-de-puntos",
+        "en": "modular-point-addition"
+      }
+    }
+  },
+  {
+    "number": 4,
+    "folders": {
+      "es": "serializacion",
+      "en": "serialization"
+    },
+    "sections": {
+      "base58-y-base58check": {
+        "es": "base58-y-base58check",
+        "en": "base58-and-base58check"
+      },
+      "cierre": {
+        "es": "cierre",
+        "en": "conclusion"
+      },
+      "firmas-der": {
+        "es": "firmas-der",
+        "en": "der-signatures"
+      },
+      "llaves-publicas-sec": {
+        "es": "llaves-publicas-sec",
+        "en": "sec-public-keys"
+      },
+      "mapa-del-capitulo": {
+        "es": "mapa-del-capitulo",
+        "en": "chapter-map"
+      },
+      "orden-de-bytes-endianness": {
+        "es": "orden-de-bytes-endianness",
+        "en": "byte-order-endianness"
+      }
+    }
+  },
+  {
+    "number": 5,
+    "folders": {
+      "es": "transacciones",
+      "en": "transactions"
+    },
+    "sections": {
+      "cierre": {
+        "es": "cierre",
+        "en": "conclusion"
+      },
+      "codificacion-de-transacciones": {
+        "es": "codificacion-de-transacciones",
+        "en": "transaction-encoding"
+      },
+      "comisiones": {
+        "es": "comisiones",
+        "en": "fees"
+      },
+      "componentes-de-una-transaccion": {
+        "es": "componentes-de-una-transaccion",
+        "en": "transaction-components"
+      },
+      "entradas": {
+        "es": "entradas",
+        "en": "inputs"
+      },
+      "locktime": {
+        "es": "locktime",
+        "en": "locktime"
+      },
+      "mapa-del-capitulo": {
+        "es": "mapa-del-capitulo",
+        "en": "chapter-map"
+      },
+      "salidas": {
+        "es": "salidas",
+        "en": "outputs"
+      },
+      "version": {
+        "es": "version",
+        "en": "version"
+      }
+    }
+  },
+  {
+    "number": 6,
+    "folders": {
+      "es": "script",
+      "en": "script"
+    },
+    "sections": {
+      "campos-al-parsear": {
+        "es": "campos-al-parsear",
+        "en": "fields-when-parsing"
+      },
+      "cierre": {
+        "es": "cierre",
+        "en": "conclusion"
+      },
+      "combinar-campos": {
+        "es": "combinar-campos",
+        "en": "combining-fields"
+      },
+      "como-funciona-el-script": {
+        "es": "como-funciona-el-script",
+        "en": "how-script-works"
+      },
+      "mapa-del-capitulo": {
+        "es": "mapa-del-capitulo",
+        "en": "chapter-map"
+      },
+      "mecanica-del-script": {
+        "es": "mecanica-del-script",
+        "en": "script-mechanics"
+      },
+      "opcodes": {
+        "es": "opcodes",
+        "en": "opcodes"
+      },
+      "p2pk": {
+        "es": "p2pk",
+        "en": "p2pk"
+      },
+      "p2pkh-problemas-y-soluciones": {
+        "es": "p2pkh-problemas-y-soluciones",
+        "en": "p2pkh-problems-and-solutions"
+      },
+      "scripts-arbitrarios": {
+        "es": "scripts-arbitrarios",
+        "en": "arbitrary-scripts"
+      }
+    }
+  },
+  {
+    "number": 7,
+    "folders": {
+      "es": "creacion-y-validacion-de-transacciones",
+      "en": "transaction-creation-and-validation"
+    },
+    "sections": {
+      "cierre": {
+        "es": "cierre",
+        "en": "conclusion"
+      },
+      "creacion-de-transacciones": {
+        "es": "creacion-de-transacciones",
+        "en": "transaction-creation"
+      },
+      "mapa-del-capitulo": {
+        "es": "mapa-del-capitulo",
+        "en": "chapter-map"
+      },
+      "testnet": {
+        "es": "testnet",
+        "en": "testnet"
+      },
+      "validacion-de-transacciones": {
+        "es": "validacion-de-transacciones",
+        "en": "transaction-validation"
+      }
+    }
+  },
+  {
+    "number": 8,
+    "folders": {
+      "es": "pay-to-script-hash",
+      "en": "pay-to-script-hash"
+    },
+    "sections": {
+      "cierre": {
+        "es": "cierre",
+        "en": "conclusion"
+      },
+      "codificacion-p2sh": {
+        "es": "codificacion-p2sh",
+        "en": "p2sh-encoding"
+      },
+      "mapa-del-capitulo": {
+        "es": "mapa-del-capitulo",
+        "en": "chapter-map"
+      },
+      "multisig-sin-envolver": {
+        "es": "multisig-sin-envolver",
+        "en": "unwrapped-multisig"
+      },
+      "op-checkmultisig": {
+        "es": "op-checkmultisig",
+        "en": "op-checkmultisig"
+      },
+      "p2sh": {
+        "es": "p2sh",
+        "en": "p2sh"
+      }
+    }
+  },
+  {
+    "number": 9,
+    "folders": {
+      "es": "bloques",
+      "en": "blocks"
+    },
+    "sections": {
+      "cierre": {
+        "es": "cierre",
+        "en": "conclusion"
+      },
+      "coinbase": {
+        "es": "coinbase",
+        "en": "coinbase"
+      },
+      "headers": {
+        "es": "headers",
+        "en": "headers"
+      },
+      "mapa-del-capitulo": {
+        "es": "mapa-del-capitulo",
+        "en": "chapter-map"
+      },
+      "proof-of-work": {
+        "es": "proof-of-work",
+        "en": "proof-of-work"
+      }
+    }
+  },
+  {
+    "number": 10,
+    "folders": {
+      "es": "networking",
+      "en": "networking"
+    },
+    "sections": {
+      "block-headers": {
+        "es": "block-headers",
+        "en": "block-headers"
+      },
+      "cierre": {
+        "es": "cierre",
+        "en": "conclusion"
+      },
+      "connecting": {
+        "es": "connecting",
+        "en": "connecting"
+      },
+      "handshake": {
+        "es": "handshake",
+        "en": "handshake"
+      },
+      "mapa-del-capitulo": {
+        "es": "mapa-del-capitulo",
+        "en": "chapter-map"
+      },
+      "network-messages": {
+        "es": "network-messages",
+        "en": "network-messages"
+      },
+      "payload-parsing": {
+        "es": "payload-parsing",
+        "en": "payload-parsing"
+      }
+    }
+  },
+  {
+    "number": 11,
+    "folders": {
+      "es": "verificacion-simplificada-de-pagos",
+      "en": "simplified-payment-verification"
+    },
+    "sections": {
+      "cierre": {
+        "es": "cierre",
+        "en": "conclusion"
+      },
+      "mapa-del-capitulo": {
+        "es": "mapa-del-capitulo",
+        "en": "chapter-map"
+      },
+      "merkle-blocks": {
+        "es": "merkle-blocks",
+        "en": "merkle-blocks"
+      },
+      "merkle-tree-parent-level-root": {
+        "es": "merkle-tree-parent-level-root",
+        "en": "merkle-tree-parent-level-root"
+      },
+      "motivacion": {
+        "es": "motivacion",
+        "en": "motivation"
+      }
+    }
+  },
+  {
+    "number": 12,
+    "folders": {
+      "es": "filtros-bloom",
+      "en": "bloom-filters"
+    },
+    "sections": {
+      "bip37": {
+        "es": "bip37",
+        "en": "bip37"
+      },
+      "bloques-merkle": {
+        "es": "bloques-merkle",
+        "en": "merkle-blocks"
+      },
+      "cargar-el-filtro": {
+        "es": "cargar-el-filtro",
+        "en": "loading-the-filter"
+      },
+      "cierre": {
+        "es": "cierre",
+        "en": "conclusion"
+      },
+      "concepto-de-filtro-bloom": {
+        "es": "concepto-de-filtro-bloom",
+        "en": "bloom-filter-concept"
+      },
+      "mapa-del-capitulo": {
+        "es": "mapa-del-capitulo",
+        "en": "chapter-map"
+      },
+      "transacciones-de-interes": {
+        "es": "transacciones-de-interes",
+        "en": "transactions-of-interest"
+      }
+    }
+  },
+  {
+    "number": 13,
+    "folders": {
+      "es": "segwit",
+      "en": "segwit"
+    },
+    "sections": {
+      "cierre": {
+        "es": "cierre",
+        "en": "conclusion"
+      },
+      "codificacion": {
+        "es": "codificacion",
+        "en": "encoding"
+      },
+      "mapa-del-capitulo": {
+        "es": "mapa-del-capitulo",
+        "en": "chapter-map"
+      },
+      "otras-mejoras": {
+        "es": "otras-mejoras",
+        "en": "other-improvements"
+      },
+      "p2sh-p2wpkh": {
+        "es": "p2sh-p2wpkh",
+        "en": "p2sh-p2wpkh"
+      },
+      "p2sh-p2wsh": {
+        "es": "p2sh-p2wsh",
+        "en": "p2sh-p2wsh"
+      },
+      "p2wpkh": {
+        "es": "p2wpkh",
+        "en": "p2wpkh"
+      },
+      "p2wsh": {
+        "es": "p2wsh",
+        "en": "p2wsh"
+      }
+    }
+  },
+  {
+    "number": 14,
+    "folders": {
+      "es": "temas-avanzados-y-siguientes-pasos",
+      "en": "advanced-topics-and-next-steps"
+    },
+    "sections": {
+      "cierre": {
+        "es": "cierre",
+        "en": "conclusion"
+      },
+      "contribuir": {
+        "es": "contribuir",
+        "en": "contributing"
+      },
+      "mapa-del-capitulo": {
+        "es": "mapa-del-capitulo",
+        "en": "chapter-map"
+      },
+      "proyectos-siguientes": {
+        "es": "proyectos-siguientes",
+        "en": "next-projects"
+      },
+      "temas-sugeridos": {
+        "es": "temas-sugeridos",
+        "en": "suggested-topics"
+      }
+    }
+  }
+]

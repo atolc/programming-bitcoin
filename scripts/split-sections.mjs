@@ -1,7 +1,10 @@
 import { mkdir, readdir, readFile, rm, writeFile } from "node:fs/promises";
 import { join, relative } from "node:path";
 
-const docsDir = "docs";
+const localeArgIndex = process.argv.indexOf("--locale");
+const locale =
+  localeArgIndex >= 0 ? process.argv[localeArgIndex + 1] ?? "es" : "es";
+const docsDir = join("docs", locale);
 
 function slugify(text) {
   return text

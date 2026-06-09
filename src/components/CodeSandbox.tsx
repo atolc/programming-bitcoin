@@ -63,7 +63,7 @@ export function CodeSandbox({ code, output, filename = "main.py" }: CodeSandboxP
   return (
     <div className="relative my-8 rounded-xl overflow-hidden border border-stone-200 dark:border-stone-800 shadow-xl bg-stone-950 text-stone-100 font-sans">
       {/* Window Header */}
-      <div className="flex items-center justify-between px-4 py-3 bg-stone-900 border-b border-stone-850">
+      <div className="flex items-center justify-between px-4 py-3 bg-stone-900 border-b border-stone-800">
         {/* macOS style buttons */}
         <div className="flex items-center gap-2">
           <div className="size-3 rounded-full bg-rose-500/80" />
@@ -106,7 +106,7 @@ export function CodeSandbox({ code, output, filename = "main.py" }: CodeSandboxP
           ) : (
             <button
               onClick={handleReset}
-              className="flex items-center gap-1.5 px-3 py-1 rounded bg-stone-850 hover:bg-stone-800 text-stone-300 text-xs font-medium transition-all active:scale-95 cursor-pointer"
+              className="flex items-center gap-1.5 px-3 py-1 rounded bg-stone-800 hover:bg-stone-700 text-stone-300 text-xs font-medium transition-all active:scale-95 cursor-pointer"
             >
               <RotateCcw className="size-3.5" />
               <span>Reiniciar</span>
@@ -130,8 +130,8 @@ export function CodeSandbox({ code, output, filename = "main.py" }: CodeSandboxP
       </div>
 
       {/* Terminal Output */}
-      <div className="border-t border-stone-850 bg-stone-900/60 backdrop-blur-sm">
-        <div className="flex items-center gap-1.5 px-4 py-2 bg-stone-900/90 text-xs font-mono text-stone-400 border-b border-stone-850">
+      <div className="border-t border-stone-800 bg-stone-900/60 backdrop-blur-sm">
+        <div className="flex items-center gap-1.5 px-4 py-2 bg-stone-900/90 text-xs font-mono text-stone-400 border-b border-stone-800">
           <Terminal className="size-3.5" />
           <span>Consola</span>
         </div>

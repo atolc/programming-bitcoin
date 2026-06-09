@@ -15,7 +15,6 @@ import {
   X,
   ChevronLeft,
   ChevronRight,
-  ExternalLink,
 } from "lucide-react";
 import { chapters, type Chapter } from "./data/chapters";
 import { MarkdownRenderer } from "./components/MarkdownRenderer";
@@ -170,7 +169,7 @@ function DocsLayout() {
     activeIndex < chapters.length - 1 ? chapters[activeIndex + 1] : null;
 
   return (
-    <div className="min-h-screen bg-stone-50 dark:bg-stone-950 text-stone-950 dark:text-stone-50 transition-colors duration-200">
+    <div className="app-shell min-h-screen">
       {/* Scroll Progress Bar */}
       <div className="fixed top-0 left-0 w-full h-[3px] bg-stone-200 dark:bg-stone-800 z-50">
         <div
@@ -180,11 +179,11 @@ function DocsLayout() {
       </div>
 
       {/* Header (Top Nav) */}
-      <header className="sticky top-0 z-40 border-b border-stone-200 dark:border-stone-850 bg-white/80 dark:bg-stone-900/80 backdrop-blur-md">
+      <header className="sticky top-0 z-40 border-b border-stone-200 dark:border-stone-800 bg-white/80 dark:bg-stone-900/80 backdrop-blur-md">
         <div className="mx-auto flex h-16 max-w-8xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-3">
             <button
-              className="inline-flex size-9 items-center justify-center rounded-lg border border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-900 lg:hidden text-stone-700 dark:text-stone-300 hover:bg-stone-50 dark:hover:bg-stone-850 transition-all active:scale-95 cursor-pointer"
+              className="inline-flex size-9 items-center justify-center rounded-lg border border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-900 lg:hidden text-stone-700 dark:text-stone-300 hover:bg-stone-50 dark:hover:bg-stone-800 transition-all active:scale-95 cursor-pointer"
               type="button"
               onClick={() => setMenuOpen((value) => !value)}
               aria-label="Toggle Navigation"
@@ -198,7 +197,7 @@ function DocsLayout() {
               <h1 className="text-base font-semibold tracking-tight">
                 Programming Bitcoin
               </h1>
-              <p className="text-xs text-stone-550 dark:text-stone-400 font-medium">
+              <p className="text-xs text-stone-500 dark:text-stone-400 font-medium">
                 Guía de Estudio y Resúmenes
               </p>
             </div>
@@ -218,7 +217,7 @@ function DocsLayout() {
           <div className="flex items-center gap-2">
             <ThemeToggle />
             <a
-              className="inline-flex size-9 items-center justify-center rounded-lg border border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-900 text-stone-700 dark:text-stone-300 shadow-sm hover:bg-stone-50 dark:hover:bg-stone-850 transition-all duration-200 active:scale-95"
+              className="inline-flex size-9 items-center justify-center rounded-lg border border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-900 text-stone-700 dark:text-stone-300 shadow-sm hover:bg-stone-50 dark:hover:bg-stone-800 transition-all duration-200 active:scale-95"
               href={pdfHref}
               target="_blank"
               rel="noreferrer"
@@ -227,8 +226,8 @@ function DocsLayout() {
               <FileDown className="size-4.5" aria-hidden="true" />
             </a>
             <a
-              className="inline-flex size-9 items-center justify-center rounded-lg bg-stone-950 dark:bg-stone-900 text-white dark:text-stone-100 shadow-sm hover:bg-stone-850 dark:hover:bg-stone-800 transition-all duration-200 active:scale-95"
-              href="https://github.com/echoe/programming-bitcoin"
+              className="inline-flex size-9 items-center justify-center rounded-lg bg-stone-950 dark:bg-stone-900 text-white dark:text-stone-100 shadow-sm hover:bg-stone-800 dark:hover:bg-stone-800/80 transition-all duration-200 active:scale-95"
+              href="https://github.com/caeher/programming-bitcoin"
               target="_blank"
               rel="noreferrer"
               title="Ver en GitHub"
@@ -245,14 +244,14 @@ function DocsLayout() {
           {/* Sidebar Drawer for mobile / Sticky Sidebar for desktop */}
           <aside
             className={cn(
-              "fixed inset-0 top-16 z-30 w-full bg-white dark:bg-stone-900 lg:sticky lg:top-16 lg:block lg:h-[calc(100vh-64px)] lg:w-auto lg:border-r lg:border-stone-200 lg:dark:border-stone-850 lg:bg-transparent lg:dark:bg-transparent overflow-y-auto px-4 lg:px-0 py-6 pr-0 lg:pr-6 transition-all duration-200",
+              "fixed inset-0 top-16 z-30 w-full bg-white dark:bg-stone-900 lg:sticky lg:top-16 lg:block lg:h-[calc(100vh-64px)] lg:w-auto lg:border-r lg:border-stone-200 lg:dark:border-stone-800 lg:bg-transparent lg:dark:bg-transparent overflow-y-auto px-4 lg:px-0 py-6 pr-0 lg:pr-6 transition-all duration-200",
               menuOpen ? "block" : "hidden"
             )}
           >
             <div className="space-y-5 pb-8">
               {/* Premium Search Bar in Origin UI style */}
               <div className="relative">
-                <span className="absolute inset-y-0 left-3 flex items-center text-stone-450 dark:text-stone-400">
+                <span className="absolute inset-y-0 left-3 flex items-center text-stone-400 dark:text-stone-400">
                   <Search className="size-4" />
                 </span>
                 <input
@@ -261,7 +260,7 @@ function DocsLayout() {
                   placeholder="Buscar en resúmenes..."
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
-                  className="h-9.5 w-full rounded-lg border border-stone-250 dark:border-stone-800 bg-white dark:bg-stone-900/60 pl-9.5 pr-12 text-sm text-stone-900 dark:text-stone-100 outline-none ring-amber-500/20 dark:ring-amber-500/10 focus:border-amber-500 dark:focus:border-amber-500 focus:ring-4 transition-all duration-150 placeholder:text-stone-400 dark:placeholder:text-stone-500"
+                  className="h-9.5 w-full rounded-lg border border-stone-300 dark:border-stone-800 bg-white dark:bg-stone-900/60 pl-9.5 pr-12 text-sm text-stone-900 dark:text-stone-100 outline-none ring-amber-500/20 dark:ring-amber-500/10 focus:border-amber-500 dark:focus:border-amber-500 focus:ring-4 transition-all duration-150 placeholder:text-stone-400 dark:placeholder:text-stone-500"
                 />
                 <div className="absolute inset-y-0 right-3 flex items-center gap-1.5 pointer-events-none">
                   {query ? (
@@ -273,7 +272,7 @@ function DocsLayout() {
                       <X className="size-3.5" />
                     </button>
                   ) : (
-                    <kbd className="hidden sm:inline-flex h-5 select-none items-center gap-0.5 rounded border border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-stone-850 px-1.5 font-mono text-[9px] font-medium text-stone-400 dark:text-stone-500">
+                    <kbd className="hidden sm:inline-flex h-5 select-none items-center gap-0.5 rounded border border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-stone-800 px-1.5 font-mono text-[9px] font-medium text-stone-400 dark:text-stone-500">
                       <span>Ctrl</span><span>K</span>
                     </kbd>
                   )}
@@ -308,7 +307,7 @@ function DocsLayout() {
                             "flex size-5.5 shrink-0 items-center justify-center rounded text-[11px] font-bold transition-all duration-150",
                             isActive
                               ? "bg-amber-500 text-white shadow-sm shadow-amber-500/10"
-                              : "bg-stone-200/80 dark:bg-stone-800 text-stone-600 dark:text-stone-400 group-hover:bg-stone-300/60 dark:group-hover:bg-stone-750 group-hover:text-stone-800 dark:group-hover:text-stone-200"
+                              : "bg-stone-200/80 dark:bg-stone-800 text-stone-600 dark:text-stone-400 group-hover:bg-stone-300/60 dark:group-hover:bg-stone-700 group-hover:text-stone-800 dark:group-hover:text-stone-200"
                           )}
                         >
                           {chapter.number}
@@ -331,7 +330,7 @@ function DocsLayout() {
             {/* Content Article */}
             <article className="min-w-0 pr-0 xl:pr-10">
               {/* Header block inside article */}
-              <div className="mb-8 border-b border-stone-200 dark:border-stone-850 pb-6">
+              <div className="mb-8 border-b border-stone-200 dark:border-stone-800 pb-6">
                 <div className="flex items-center justify-between gap-4 flex-wrap">
                   <div>
                     <span className="inline-flex items-center rounded-full bg-amber-50 dark:bg-amber-950/20 px-2.5 py-0.5 text-xs font-semibold text-amber-700 dark:text-amber-400 border border-amber-200/30">
@@ -341,15 +340,6 @@ function DocsLayout() {
                       {activeChapter.title}
                     </h2>
                   </div>
-                  <a
-                    className="inline-flex items-center gap-1.5 rounded-lg border border-stone-250 dark:border-stone-800 bg-white dark:bg-stone-900 px-3.5 py-2 text-xs font-semibold text-stone-700 dark:text-stone-300 hover:bg-stone-50 dark:hover:bg-stone-850 hover:border-stone-300 dark:hover:border-stone-700 shadow-sm transition-all active:scale-95"
-                    href={`./docs/${activeChapter.folder}/${activeChapter.filename}`}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    Ver original MD
-                    <ExternalLink className="size-3" />
-                  </a>
                 </div>
               </div>
 
@@ -360,11 +350,11 @@ function DocsLayout() {
               </div>
 
               {/* Navigation Pagination (Prev / Next) */}
-              <div className="mt-16 flex flex-wrap gap-4 items-center justify-between border-t border-stone-200 dark:border-stone-850 pt-8 pb-12">
+              <div className="mt-16 flex flex-wrap gap-4 items-center justify-between border-t border-stone-200 dark:border-stone-800 pt-8 pb-12">
                 {prevChapter ? (
                   <button
                     onClick={() => navigate(`/docs/${prevChapter.id}`)}
-                    className="group flex flex-col items-start gap-1 rounded-xl border border-stone-200 dark:border-stone-850 bg-white dark:bg-stone-900 p-4.5 hover:border-amber-450 hover:bg-stone-50/50 dark:hover:bg-stone-900/60 text-left transition-all duration-200 max-w-[280px] w-full shadow-sm cursor-pointer"
+                    className="group flex flex-col items-start gap-1 rounded-xl border border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-900 p-4.5 hover:border-amber-500 hover:bg-stone-50/50 dark:hover:bg-stone-800/60 text-left transition-all duration-200 max-w-[280px] w-full shadow-sm cursor-pointer"
                   >
                     <span className="inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider text-stone-400 group-hover:text-amber-500 transition-colors">
                       <ChevronLeft className="size-3.5" /> Anterior
@@ -380,7 +370,7 @@ function DocsLayout() {
                 {nextChapter ? (
                   <button
                     onClick={() => navigate(`/docs/${nextChapter.id}`)}
-                    className="group flex flex-col items-end gap-1 rounded-xl border border-stone-200 dark:border-stone-850 bg-white dark:bg-stone-900 p-4.5 hover:border-amber-450 hover:bg-stone-50/50 dark:hover:bg-stone-900/60 text-right transition-all duration-200 max-w-[280px] w-full shadow-sm cursor-pointer"
+                    className="group flex flex-col items-end gap-1 rounded-xl border border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-900 p-4.5 hover:border-amber-500 hover:bg-stone-50/50 dark:hover:bg-stone-800/60 text-right transition-all duration-200 max-w-[280px] w-full shadow-sm cursor-pointer"
                   >
                     <span className="inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider text-stone-400 group-hover:text-amber-500 transition-colors">
                       Siguiente <ChevronRight className="size-3.5" />

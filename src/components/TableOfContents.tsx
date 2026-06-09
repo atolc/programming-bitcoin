@@ -71,7 +71,7 @@ export function TableOfContents({
               }}
               className={`block py-0.5 transition-colors duration-150 leading-relaxed ${
                 activeId === item.id
-                  ? "text-amber-500 dark:text-amber-450 font-medium"
+                  ? "text-amber-500 dark:text-amber-400 font-medium"
                   : "text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200"
               }`}
             >

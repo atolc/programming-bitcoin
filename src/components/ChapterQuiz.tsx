@@ -176,7 +176,7 @@ export function ChapterQuiz() {
         <button
           type="button"
           onClick={() => setAnswers({})}
-          className="inline-flex items-center gap-2 rounded-lg border border-stone-250 bg-white px-3 py-2 text-sm font-semibold text-stone-700 shadow-sm transition hover:bg-stone-50 dark:border-stone-800 dark:bg-stone-900 dark:text-stone-200 dark:hover:bg-stone-850"
+          className="inline-flex items-center gap-2 rounded-lg border border-stone-300 bg-white px-3 py-2 text-sm font-semibold text-stone-700 shadow-sm transition hover:bg-stone-50 dark:border-stone-800 dark:bg-stone-900 dark:text-stone-200 dark:hover:bg-stone-800"
         >
           <RotateCcw className="size-4" />
           Reiniciar

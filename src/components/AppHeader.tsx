@@ -2,9 +2,13 @@ import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { BookOpen, Menu, X } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle";
+import { Button } from "@/components/ui/button";
+import {
+  Breadcrumb,
+  BreadcrumbList,
+} from "@/components/ui/breadcrumb";
 import { githubUrl } from "../lib/constants";
 import { homePath } from "../lib/routes";
-import { cn } from "../lib/utils";
 
 function GithubIcon({ className }: { className?: string }) {
   return (
@@ -37,31 +41,33 @@ export function AppHeader({
   showMenuButton = false,
 }: AppHeaderProps) {
   return (
-    <header className="sticky top-0 z-40 border-b border-stone-200 dark:border-stone-800 bg-white/80 dark:bg-stone-900/80 backdrop-blur-md">
+    <header className="sticky top-0 z-40 border-b border-border bg-background/80 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-8xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
         <div className="flex items-center gap-3 min-w-0">
           {showMenuButton && onMenuToggle ? (
-            <button
-              className="inline-flex size-9 items-center justify-center rounded-lg border border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-900 lg:hidden text-stone-700 dark:text-stone-300 hover:bg-stone-50 dark:hover:bg-stone-800 transition-all active:scale-95 cursor-pointer"
-              type="button"
+            <Button
+              className="lg:hidden"
               onClick={onMenuToggle}
+              size="icon"
+              type="button"
+              variant="outline"
               aria-label="Toggle Navigation"
             >
               {menuOpen ? <X className="size-4.5" /> : <Menu className="size-4.5" />}
-            </button>
+            </Button>
           ) : null}
           <Link
             to={homePath()}
             className="flex items-center gap-3 min-w-0 group"
           >
-            <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-amber-500 text-white shadow-md shadow-amber-500/20 group-hover:bg-amber-600 transition-colors">
+            <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-md shadow-primary/20 group-hover:bg-primary/90 transition-colors">
               <BookOpen className="size-4.5" aria-hidden="true" />
             </div>
             <div className="min-w-0">
               <h1 className="text-base font-semibold tracking-tight truncate">
                 Programming Bitcoin
               </h1>
-              <p className="text-xs text-stone-500 dark:text-stone-400 font-medium truncate">
+              <p className="text-xs text-muted-foreground font-medium truncate">
                 Guía de Estudio y Resúmenes
               </p>
             </div>
@@ -69,9 +75,11 @@ export function AppHeader({
         </div>
 
         {breadcrumbs ? (
-          <div className="hidden md:flex items-center gap-2 text-xs font-medium text-stone-500 dark:text-stone-400 min-w-0">
-            {breadcrumbs}
-          </div>
+          <Breadcrumb className="hidden md:flex min-w-0">
+            <BreadcrumbList className="text-xs font-medium">
+              {breadcrumbs}
+            </BreadcrumbList>
+          </Breadcrumb>
         ) : (
           <div className="hidden md:block" />
         )}
@@ -79,17 +87,14 @@ export function AppHeader({
         <div className="flex items-center gap-2 shrink-0">
           <ThemeToggle />
 
-          <a
-            className={cn(
-              "inline-flex size-9 items-center justify-center rounded-lg bg-stone-950 dark:bg-stone-900 text-white dark:text-stone-100 shadow-sm hover:bg-stone-800 dark:hover:bg-stone-800/80 transition-all duration-200 active:scale-95",
-            )}
-            href={githubUrl}
-            target="_blank"
-            rel="noreferrer"
+          <Button
+            render={<a href={githubUrl} target="_blank" rel="noreferrer" />}
+            size="icon"
             title="Ver en GitHub"
+            aria-label="Ver en GitHub"
           >
             <GithubIcon className="size-4.5" aria-hidden="true" />
-          </a>
+          </Button>
         </div>
       </div>
     </header>

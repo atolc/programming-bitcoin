@@ -13,15 +13,46 @@ import {
   CheckCircle2,
   Home,
 } from "lucide-react";
-import { chapters, findChapterById, type Chapter } from "../data/chapters";
+import {
+  chapters,
+  findChapterById,
+  findSectionById,
+  type Chapter,
+} from "../data/chapters";
 import { MarkdownRenderer } from "../components/MarkdownRenderer";
 import { TableOfContents } from "../components/TableOfContents";
 import { AppHeader } from "../components/AppHeader";
-import { parseToc } from "../lib/toc";
 import { chapterPath, homePath } from "../lib/routes";
 import { markChapterRead, getReadChapters } from "../lib/readProgress";
 import { cn } from "../lib/utils";
 import { LatexText } from "../components/LatexText";
+import { Badge } from "@/components/ui/badge";
+import {
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from "@/components/ui/input-group";
+import { Kbd } from "@/components/ui/kbd";
+import {
+  Progress,
+  ProgressIndicator,
+  ProgressTrack,
+} from "@/components/ui/progress";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const SANDBOX_CHAPTERS = new Set([1, 2, 3]);
 
@@ -57,17 +88,19 @@ function ChapterLayoutInner() {
         filename: "",
         content: "",
         folder: "",
+        sections: [],
+        aliases: [],
       } as Chapter)
     );
   }, [validChapter]);
 
-  const activeSectionTitle = useMemo(() => {
-    if (!sectionId) return "";
-    return (
-      parseToc(activeChapter.content).find((item) => item.id === sectionId)?.text ??
-      ""
-    );
-  }, [activeChapter.content, sectionId]);
+  const activeSection = useMemo(() => {
+    return sectionId ? findSectionById(activeChapter, sectionId) : undefined;
+  }, [activeChapter, sectionId]);
+
+  const invalidSection = Boolean(sectionId && !activeSection);
+  const activeContent = activeSection?.content ?? activeChapter.content;
+  const activeTitle = activeSection?.title ?? activeChapter.title;
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -97,41 +130,8 @@ function ChapterLayoutInner() {
   }, [chapterId]);
 
   useEffect(() => {
-    if (!sectionId) {
-      window.scrollTo(0, 0);
-    }
+    window.scrollTo(0, 0);
   }, [chapterId, sectionId]);
-
-  useEffect(() => {
-    if (!sectionId) return;
-
-    let attempts = 0;
-    let timeout = 0;
-
-    const scrollToSection = () => {
-      const targetEl = document.getElementById(sectionId);
-      attempts += 1;
-      if (!targetEl) {
-        if (attempts < 10) {
-          timeout = window.setTimeout(scrollToSection, 50);
-        }
-        return;
-      }
-
-      const offset = 90;
-      const bodyRect = document.body.getBoundingClientRect().top;
-      const elementRect = targetEl.getBoundingClientRect().top;
-      const elementPosition = elementRect - bodyRect;
-
-      window.scrollTo({
-        top: elementPosition - offset,
-        behavior: attempts > 1 ? "smooth" : "auto",
-      });
-    };
-
-    timeout = window.setTimeout(scrollToSection, 50);
-    return () => window.clearTimeout(timeout);
-  }, [sectionId, activeChapter.content]);
 
   useEffect(() => {
     if (!activeChapter.id) return;
@@ -146,7 +146,13 @@ function ChapterLayoutInner() {
     return chapters.filter((chapter) => {
       return (
         chapter.title.toLowerCase().includes(normalized) ||
-        chapter.content.toLowerCase().includes(normalized)
+        chapter.content.toLowerCase().includes(normalized) ||
+        chapter.sections.some((section) => {
+          return (
+            section.title.toLowerCase().includes(normalized) ||
+            section.content.toLowerCase().includes(normalized)
+          );
+        })
       );
     });
   }, [query]);
@@ -159,32 +165,44 @@ function ChapterLayoutInner() {
   const nextChapter =
     activeIndex < chapters.length - 1 ? chapters[activeIndex + 1] : null;
 
+  if (invalidSection) {
+    return <Navigate to={chapterPath(activeChapter.id)} replace />;
+  }
+
   const breadcrumbs = (
     <>
-      <Link
-        to={homePath()}
-        className="hover:text-amber-600 dark:hover:text-amber-400 transition-colors inline-flex items-center gap-1"
-      >
-        <Home className="size-3" />
-        Inicio
-      </Link>
-      <span className="text-stone-300 dark:text-stone-700">/</span>
-      <span>Capítulo {activeChapter.number}</span>
-      <span className="text-stone-300 dark:text-stone-700">/</span>
-      <span className="text-stone-800 dark:text-stone-200 max-w-[200px] truncate">
-        <LatexText text={activeSectionTitle || activeChapter.title} />
-      </span>
+      <BreadcrumbItem>
+        <BreadcrumbLink
+          render={<Link to={homePath()} />}
+          className="inline-flex items-center gap-1 hover:text-primary"
+        >
+          <Home className="size-3" />
+          Inicio
+        </BreadcrumbLink>
+      </BreadcrumbItem>
+      <BreadcrumbSeparator>/</BreadcrumbSeparator>
+      <BreadcrumbItem>
+        <BreadcrumbPage>Capítulo {activeChapter.number}</BreadcrumbPage>
+      </BreadcrumbItem>
+      <BreadcrumbSeparator>/</BreadcrumbSeparator>
+      <BreadcrumbItem>
+        <BreadcrumbPage className="max-w-[200px] truncate">
+          <LatexText text={activeTitle} />
+        </BreadcrumbPage>
+      </BreadcrumbItem>
     </>
   );
 
   return (
     <div className="app-shell min-h-screen">
-      <div className="fixed top-0 left-0 w-full h-[3px] bg-stone-200 dark:bg-stone-800 z-50">
-        <div
-          className="h-full bg-amber-500 transition-all duration-75 ease-out"
-          style={{ width: `${scrollPercent}%` }}
-        />
-      </div>
+      <Progress
+        className="fixed top-0 left-0 z-50 h-[3px] w-full gap-0"
+        value={scrollPercent}
+      >
+        <ProgressTrack className="h-[3px] rounded-none bg-muted">
+          <ProgressIndicator className="rounded-none bg-primary" />
+        </ProgressTrack>
+      </Progress>
 
       <AppHeader
         breadcrumbs={breadcrumbs}
@@ -197,157 +215,203 @@ function ChapterLayoutInner() {
         <div className="grid grid-cols-1 gap-0 lg:grid-cols-[280px_1fr]">
           <aside
             className={cn(
-              "fixed inset-0 top-16 z-30 w-full bg-white dark:bg-stone-900 lg:sticky lg:top-16 lg:block lg:h-[calc(100vh-64px)] lg:w-auto lg:border-r lg:border-stone-200 lg:dark:border-stone-800 lg:bg-transparent lg:dark:bg-transparent overflow-y-auto px-4 lg:px-0 py-6 pr-0 lg:pr-6 transition-all duration-200",
+              "fixed inset-0 top-16 z-30 w-full bg-background lg:sticky lg:top-16 lg:block lg:h-[calc(100vh-64px)] lg:w-auto lg:border-r lg:border-border lg:bg-transparent overflow-hidden px-4 lg:px-0 py-6 pr-0 lg:pr-6 transition-all duration-200",
               menuOpen ? "block" : "hidden",
             )}
           >
-            <div className="space-y-5 pb-8">
-              <Link
-                to={homePath()}
-                onClick={() => setMenuOpen(false)}
-                className="flex items-center gap-2 rounded-lg border border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-stone-900/60 px-3 py-2 text-sm font-medium text-stone-600 dark:text-stone-400 hover:border-amber-400 hover:text-amber-600 dark:hover:text-amber-400 transition-all lg:hidden"
-              >
-                <Home className="size-4" />
-                Todos los capítulos
-              </Link>
+            <ScrollArea className="h-full">
+              <div className="space-y-5 pb-8">
+                <Button
+                  className="w-full justify-start lg:hidden"
+                  onClick={() => setMenuOpen(false)}
+                  render={<Link to={homePath()} />}
+                  variant="outline"
+                >
+                  <Home className="size-4" />
+                  Todos los capítulos
+                </Button>
 
-              <div className="relative">
-                <span className="absolute inset-y-0 left-3 flex items-center text-stone-400">
-                  <Search className="size-4" />
-                </span>
-                <input
-                  ref={searchInputRef}
-                  type="text"
-                  placeholder="Buscar en resúmenes..."
-                  value={query}
-                  onChange={(e) => setQuery(e.target.value)}
-                  className="h-9.5 w-full rounded-lg border border-stone-300 dark:border-stone-800 bg-white dark:bg-stone-900/60 pl-9.5 pr-12 text-sm text-stone-900 dark:text-stone-100 outline-none ring-amber-500/20 dark:ring-amber-500/10 focus:border-amber-500 dark:focus:border-amber-500 focus:ring-4 transition-all duration-150 placeholder:text-stone-400 dark:placeholder:text-stone-500"
-                />
-                <div className="absolute inset-y-0 right-3 flex items-center gap-1.5 pointer-events-none">
-                  {query ? (
-                    <button
-                      type="button"
-                      onClick={() => setQuery("")}
-                      className="pointer-events-auto text-stone-400 hover:text-stone-600 dark:hover:text-stone-200 cursor-pointer"
-                    >
-                      <X className="size-3.5" />
-                    </button>
-                  ) : (
-                    <kbd className="hidden sm:inline-flex h-5 select-none items-center gap-0.5 rounded border border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-stone-800 px-1.5 font-mono text-[9px] font-medium text-stone-400 dark:text-stone-500">
-                      <span>Ctrl</span><span>K</span>
-                    </kbd>
-                  )}
-                </div>
-              </div>
-
-              <nav className="space-y-1" aria-label="Capítulos">
-                <p className="text-[11px] font-bold uppercase tracking-wider text-stone-400 dark:text-stone-500 px-3 mb-2">
-                  Capítulos del Libro
-                </p>
-                {filteredChapters.length > 0 ? (
-                  filteredChapters.map((chapter) => {
-                    const isActive = activeChapter.id === chapter.id;
-                    const isRead =
-                      readChapters.has(chapter.id) ||
-                      chapter.aliases.some((alias) => readChapters.has(alias));
-                    return (
-                      <button
-                        key={chapter.id}
-                        className={cn(
-                          "group flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-sm transition-all duration-150 cursor-pointer",
-                          isActive
-                            ? "bg-amber-50 dark:bg-amber-950/30 text-amber-600 dark:text-amber-400 font-medium"
-                            : "text-stone-600 dark:text-stone-400 hover:bg-stone-100/60 dark:hover:bg-stone-900/40 hover:text-stone-900 dark:hover:text-stone-200",
-                        )}
+                <InputGroup>
+                  <InputGroupAddon>
+                    <Search className="size-4 text-muted-foreground" />
+                  </InputGroupAddon>
+                  <InputGroupInput
+                    ref={searchInputRef}
+                    type="text"
+                    placeholder="Buscar en resúmenes..."
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                  />
+                  <InputGroupAddon align="inline-end">
+                    {query ? (
+                      <Button
+                        className="size-7"
+                        onClick={() => setQuery("")}
+                        size="icon-xs"
                         type="button"
-                        onClick={() => {
-                          navigate(chapterPath(chapter.id));
-                          setMenuOpen(false);
-                        }}
+                        variant="ghost"
+                        aria-label="Limpiar búsqueda"
                       >
-                        <span
+                        <X className="size-3.5" />
+                      </Button>
+                    ) : (
+                      <span className="hidden sm:inline-flex items-center gap-0.5">
+                        <Kbd>Ctrl</Kbd>
+                        <Kbd>K</Kbd>
+                      </span>
+                    )}
+                  </InputGroupAddon>
+                </InputGroup>
+
+                <nav className="space-y-1" aria-label="Capítulos">
+                  <p className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground px-3 mb-2">
+                    Capítulos del Libro
+                  </p>
+                  {filteredChapters.length > 0 ? (
+                    filteredChapters.map((chapter) => {
+                      const isActive = activeChapter.id === chapter.id;
+                      const isRead =
+                        readChapters.has(chapter.id) ||
+                        chapter.aliases.some((alias) => readChapters.has(alias));
+                      return (
+                        <Button
+                          key={chapter.id}
                           className={cn(
-                            "flex size-5.5 shrink-0 items-center justify-center rounded text-[11px] font-bold transition-all duration-150",
-                            isActive
-                              ? "bg-amber-500 text-white shadow-sm shadow-amber-500/10"
-                              : "bg-stone-200/80 dark:bg-stone-800 text-stone-600 dark:text-stone-400 group-hover:bg-stone-300/60 dark:group-hover:bg-stone-700 group-hover:text-stone-800 dark:group-hover:text-stone-200",
+                            "group h-auto w-full justify-start gap-3 px-3 py-2 text-left",
+                            isActive && "bg-accent text-accent-foreground font-medium",
                           )}
+                          onClick={() => {
+                            navigate(chapterPath(chapter.id));
+                            setMenuOpen(false);
+                          }}
+                          type="button"
+                          variant="ghost"
                         >
-                          {chapter.number}
-                        </span>
-                        <span className="leading-snug truncate flex-1">{chapter.title}</span>
-                        {isRead && !isActive ? (
-                          <CheckCircle2 className="size-3.5 shrink-0 text-emerald-500/70" />
-                        ) : null}
-                      </button>
-                    );
-                  })
-                ) : (
-                  <div className="px-3 py-4 text-center text-xs text-stone-400 dark:text-stone-500">
-                    No se encontraron capítulos
-                  </div>
-                )}
-              </nav>
-            </div>
+                          <span
+                            className={cn(
+                              "flex size-5.5 shrink-0 items-center justify-center rounded text-[11px] font-bold transition-all duration-150",
+                              isActive
+                                ? "bg-primary text-primary-foreground shadow-sm shadow-primary/10"
+                                : "bg-muted text-muted-foreground group-hover:bg-muted/80 group-hover:text-foreground",
+                            )}
+                          >
+                            {chapter.number}
+                          </span>
+                          <span className="leading-snug truncate flex-1">{chapter.title}</span>
+                          {isRead && !isActive ? (
+                            <CheckCircle2 className="size-3.5 shrink-0 text-success" />
+                          ) : null}
+                        </Button>
+                      );
+                    })
+                  ) : (
+                    <div className="px-3 py-4 text-center text-xs text-muted-foreground">
+                      No se encontraron capítulos
+                    </div>
+                  )}
+                </nav>
+              </div>
+            </ScrollArea>
           </aside>
 
           <div className="grid grid-cols-1 xl:grid-cols-[1fr_256px] gap-0 py-8 lg:pl-10">
             <article className="min-w-0 pr-0 xl:pr-10">
-              <div className="mb-8 border-b border-stone-200 dark:border-stone-800 pb-6">
+              <div className="mb-8 border-b border-border pb-6">
                 <div className="flex items-center justify-between gap-4 flex-wrap">
                   <div>
-                    <span className="inline-flex items-center rounded-full bg-amber-50 dark:bg-amber-950/20 px-2.5 py-0.5 text-xs font-semibold text-amber-700 dark:text-amber-400 border border-amber-200/30">
+                    <Badge variant="secondary" className="rounded-full">
                       Capítulo {activeChapter.number}
-                    </span>
-                    <h2 className="mt-3 text-3xl sm:text-4xl font-extrabold tracking-tight text-stone-900 dark:text-white">
-                      {activeChapter.title}
+                    </Badge>
+                    <h2 className="mt-3 text-3xl sm:text-4xl font-extrabold tracking-tight text-foreground">
+                      <LatexText text={activeTitle} />
                     </h2>
+                    {activeSection ? (
+                      <p className="mt-2 text-sm text-muted-foreground">
+                        <LatexText text={activeChapter.title} />
+                      </p>
+                    ) : null}
                   </div>
                 </div>
               </div>
 
               <div className="min-h-[400px]">
-                <MarkdownRenderer content={activeChapter.content} />
+                <MarkdownRenderer content={activeContent} />
+                {!activeSection && activeChapter.sections.length > 0 ? (
+                  <section className="not-prose mt-10 grid gap-3 sm:grid-cols-2">
+                    {activeChapter.sections.map((section) => (
+                      <Card
+                        key={section.id}
+                        className="group transition-all duration-150 hover:border-primary/60"
+                        render={<Link to={chapterPath(activeChapter.id, section.id)} />}
+                      >
+                        <CardHeader className="gap-2">
+                          <CardTitle className="text-sm group-hover:text-primary transition-colors">
+                            <LatexText text={section.title} />
+                          </CardTitle>
+                          <CardDescription className="inline-flex items-center gap-1 text-xs font-semibold text-primary">
+                            Abrir seccion <ChevronRight className="size-3.5" />
+                          </CardDescription>
+                        </CardHeader>
+                      </Card>
+                    ))}
+                  </section>
+                ) : null}
               </div>
 
-              <div className="mt-16 flex flex-wrap gap-4 items-center justify-between border-t border-stone-200 dark:border-stone-800 pt-8 pb-12">
+              <div className="mt-16 flex flex-wrap gap-4 items-center justify-between border-t border-border pt-8 pb-12">
                 {prevChapter ? (
-                  <button
-                    onClick={() => navigate(chapterPath(prevChapter.id))}
-                    className="group flex flex-col items-start gap-1 rounded-xl border border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-900 p-4.5 hover:border-amber-500 hover:bg-stone-50/50 dark:hover:bg-stone-800/60 text-left transition-all duration-200 max-w-[280px] w-full shadow-sm cursor-pointer"
-                    type="button"
+                  <Card
+                    className="group max-w-[280px] w-full hover:border-primary transition-all duration-200"
+                    render={
+                      <button
+                        type="button"
+                        onClick={() => navigate(chapterPath(prevChapter.id))}
+                      />
+                    }
                   >
-                    <span className="inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider text-stone-400 group-hover:text-amber-500 transition-colors">
-                      <ChevronLeft className="size-3.5" /> Anterior
-                    </span>
-                    <span className="text-sm font-semibold text-stone-800 dark:text-stone-200 truncate w-full group-hover:text-stone-900 dark:group-hover:text-white">
-                      Cap. {prevChapter.number}: {prevChapter.title}
-                    </span>
-                  </button>
+                    <CardContent className="flex flex-col items-start gap-1 p-4.5 text-left">
+                      <span className="inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider text-muted-foreground group-hover:text-primary transition-colors">
+                        <ChevronLeft className="size-3.5" /> Anterior
+                      </span>
+                      <span className="text-sm font-semibold text-foreground truncate w-full">
+                        Cap. {prevChapter.number}: {prevChapter.title}
+                      </span>
+                    </CardContent>
+                  </Card>
                 ) : (
                   <div className="w-full max-w-[280px]" />
                 )}
 
                 {nextChapter ? (
-                  <button
-                    onClick={() => navigate(chapterPath(nextChapter.id))}
-                    className="group flex flex-col items-end gap-1 rounded-xl border border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-900 p-4.5 hover:border-amber-500 hover:bg-stone-50/50 dark:hover:bg-stone-800/60 text-right transition-all duration-200 max-w-[280px] w-full shadow-sm cursor-pointer"
-                    type="button"
+                  <Card
+                    className="group max-w-[280px] w-full hover:border-primary transition-all duration-200"
+                    render={
+                      <button
+                        type="button"
+                        onClick={() => navigate(chapterPath(nextChapter.id))}
+                      />
+                    }
                   >
-                    <span className="inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider text-stone-400 group-hover:text-amber-500 transition-colors">
-                      Siguiente <ChevronRight className="size-3.5" />
-                    </span>
-                    <span className="text-sm font-semibold text-stone-800 dark:text-stone-200 truncate w-full group-hover:text-stone-900 dark:group-hover:text-white">
-                      Cap. {nextChapter.number}: {nextChapter.title}
-                    </span>
-                  </button>
+                    <CardContent className="flex flex-col items-end gap-1 p-4.5 text-right">
+                      <span className="inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider text-muted-foreground group-hover:text-primary transition-colors">
+                        Siguiente <ChevronRight className="size-3.5" />
+                      </span>
+                      <span className="text-sm font-semibold text-foreground truncate w-full">
+                        Cap. {nextChapter.number}: {nextChapter.title}
+                      </span>
+                    </CardContent>
+                  </Card>
                 ) : (
                   <div className="w-full max-w-[280px]" />
                 )}
               </div>
             </article>
 
-            <TableOfContents content={activeChapter.content} chapterId={activeChapter.id} />
+            <TableOfContents
+              chapterId={activeChapter.id}
+              sections={activeChapter.sections}
+              activeSectionId={activeSection?.id}
+            />
           </div>
         </div>
       </div>

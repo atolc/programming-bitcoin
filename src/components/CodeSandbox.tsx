@@ -2,7 +2,14 @@ import { useEffect, useState } from "react";
 import { Play, RotateCcw, Terminal, Check, Copy, Loader2 } from "lucide-react";
 import { codeToHtml } from "shiki";
 import { usePyodideOptional } from "./PyodideProvider";
-import { cn } from "../lib/utils";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  Tooltip,
+  TooltipPopup,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface CodeSandboxProps {
   code: string;
@@ -108,7 +115,7 @@ export function CodeSandbox({
       : null;
 
   return (
-    <div className="relative my-8 rounded-xl overflow-hidden border border-stone-200 dark:border-stone-800 shadow-xl bg-stone-950 text-stone-100 font-sans not-prose">
+    <div className="relative my-8 rounded-xl overflow-hidden border border-stone-800 shadow-xl bg-stone-950 text-stone-100 font-sans not-prose">
       <div className="flex items-center justify-between px-4 py-3 bg-stone-900 border-b border-stone-800">
         <div className="flex items-center gap-2">
           <div className="size-3 rounded-full bg-rose-500/80" />
@@ -120,30 +127,39 @@ export function CodeSandbox({
         </div>
 
         <div className="flex items-center gap-2">
-          <button
-            onClick={handleCopy}
-            className="flex items-center gap-1.5 px-2.5 py-1 rounded bg-stone-800 hover:bg-stone-700 text-stone-300 hover:text-white text-xs font-medium transition-all active:scale-95 cursor-pointer"
-            title="Copiar código"
-            type="button"
-          >
-            {copied ? (
-              <>
-                <Check className="size-3.5 text-emerald-400" />
-                <span>Copiado</span>
-              </>
-            ) : (
-              <>
-                <Copy className="size-3.5" />
-                <span>Copiar</span>
-              </>
-            )}
-          </button>
+          <Tooltip>
+            <TooltipTrigger
+              render={
+                <Button
+                  className="border-stone-700 bg-stone-800 text-stone-300 hover:bg-stone-700 hover:text-white"
+                  onClick={handleCopy}
+                  size="sm"
+                  type="button"
+                  variant="outline"
+                />
+              }
+            >
+              {copied ? (
+                <>
+                  <Check className="size-3.5 text-emerald-400" />
+                  <span>Copiado</span>
+                </>
+              ) : (
+                <>
+                  <Copy className="size-3.5" />
+                  <span>Copiar</span>
+                </>
+              )}
+            </TooltipTrigger>
+            <TooltipPopup>Copiar código</TooltipPopup>
+          </Tooltip>
 
           {!hasRun ? (
-            <button
-              onClick={handleRun}
+            <Button
+              className="border-transparent bg-primary text-primary-foreground hover:bg-primary/90"
               disabled={isRunning || pyodideLoading}
-              className="flex items-center gap-1.5 px-3 py-1 rounded bg-amber-500 hover:bg-amber-600 disabled:bg-amber-500/50 text-stone-950 text-xs font-bold transition-all active:scale-95 cursor-pointer disabled:cursor-not-allowed"
+              onClick={handleRun}
+              size="sm"
               type="button"
             >
               {isRunning || pyodideLoading ? (
@@ -158,25 +174,32 @@ export function CodeSandbox({
                     ? "Ejecutando..."
                     : "Ejecutar"}
               </span>
-            </button>
+            </Button>
           ) : (
-            <button
+            <Button
+              className="border-stone-700 bg-stone-800 text-stone-300 hover:bg-stone-700"
               onClick={handleReset}
-              className="flex items-center gap-1.5 px-3 py-1 rounded bg-stone-800 hover:bg-stone-700 text-stone-300 text-xs font-medium transition-all active:scale-95 cursor-pointer"
+              size="sm"
               type="button"
+              variant="outline"
             >
               <RotateCcw className="size-3.5" />
               <span>Reiniciar</span>
-            </button>
+            </Button>
           )}
         </div>
       </div>
 
       {pyodideLoading && !pyodideReady ? (
-        <div className="px-4 py-2 bg-amber-950/40 border-b border-stone-800 text-xs text-amber-300 flex items-center gap-2">
+        <Alert
+          className="rounded-none border-x-0 border-t-0 border-b-stone-800 bg-amber-950/40 text-amber-300"
+          variant="warning"
+        >
           <Loader2 className="size-3.5 animate-spin" />
-          {pyodide?.statusMessage || "Preparando entorno Python..."}
-        </div>
+          <AlertDescription>
+            {pyodide?.statusMessage || "Preparando entorno Python..."}
+          </AlertDescription>
+        </Alert>
       ) : null}
 
       <div className="relative">
@@ -199,23 +222,19 @@ export function CodeSandbox({
             <span>Consola</span>
           </div>
           {matchExpected !== null ? (
-            <span
-              className={cn(
-                "px-1.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider",
-                matchExpected
-                  ? "bg-emerald-950/60 text-emerald-400 border border-emerald-800/50"
-                  : "bg-amber-950/60 text-amber-400 border border-amber-800/50",
-              )}
+            <Badge
+              className="uppercase tracking-wider"
+              variant={matchExpected ? "success" : "warning"}
             >
               {matchExpected ? "Coincide" : "Difiere"}
-            </span>
+            </Badge>
           ) : null}
         </div>
 
         <div className="p-4 min-h-[72px] font-mono text-xs text-stone-300 leading-relaxed">
           {isRunning ? (
             <div className="flex items-center gap-2 text-stone-400">
-              <span className="size-2 rounded-full bg-amber-500 animate-ping" />
+              <span className="size-2 rounded-full bg-primary animate-ping" />
               <span>Ejecutando script de Python...</span>
             </div>
           ) : hasRun ? (

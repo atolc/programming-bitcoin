@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Sun, Moon } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 type Theme = "light" | "dark";
 
@@ -28,9 +29,10 @@ export function ThemeToggle() {
   }, [theme]);
 
   return (
-    <button
+    <Button
       onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-      className="relative flex size-9 items-center justify-center rounded-lg border border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-900 text-stone-700 dark:text-stone-300 shadow-sm hover:bg-stone-50 dark:hover:bg-stone-800 transition-all duration-200 active:scale-95 cursor-pointer"
+      size="icon"
+      variant="outline"
       aria-label={theme === "dark" ? "Activar modo claro" : "Activar modo oscuro"}
       title={theme === "dark" ? "Activar modo claro" : "Activar modo oscuro"}
     >
@@ -50,6 +52,6 @@ export function ThemeToggle() {
           <Moon className="size-4" />
         </span>
       </div>
-    </button>
+    </Button>
   );
 }

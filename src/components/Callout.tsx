@@ -1,35 +1,40 @@
 import { AlertCircle, Info, Lightbulb, TriangleAlert } from "lucide-react";
+import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+} from "@/components/ui/alert";
 import { cn } from "../lib/utils";
 
 type CalloutVariant = "important" | "tip" | "warning" | "note";
 
 const variantConfig: Record<
   CalloutVariant,
-  { label: string; icon: typeof Info; className: string }
+  {
+    label: string;
+    icon: typeof Info;
+    alertVariant: "default" | "warning" | "success" | "error";
+  }
 > = {
   important: {
     label: "Importante",
     icon: AlertCircle,
-    className:
-      "border-amber-300/70 bg-amber-50/80 text-amber-950 dark:border-amber-800/60 dark:bg-amber-950/30 dark:text-amber-100",
+    alertVariant: "warning",
   },
   tip: {
     label: "Consejo",
     icon: Lightbulb,
-    className:
-      "border-emerald-300/70 bg-emerald-50/80 text-emerald-950 dark:border-emerald-800/60 dark:bg-emerald-950/30 dark:text-emerald-100",
+    alertVariant: "success",
   },
   warning: {
     label: "Advertencia",
     icon: TriangleAlert,
-    className:
-      "border-rose-300/70 bg-rose-50/80 text-rose-950 dark:border-rose-800/60 dark:bg-rose-950/30 dark:text-rose-100",
+    alertVariant: "error",
   },
   note: {
     label: "Nota",
     icon: Info,
-    className:
-      "border-stone-300/70 bg-stone-50/80 text-stone-950 dark:border-stone-700/60 dark:bg-stone-900/60 dark:text-stone-100",
+    alertVariant: "default",
   },
 };
 
@@ -52,19 +57,17 @@ export function Callout({
   const Icon = config.icon;
 
   return (
-    <div
-      className={cn(
-        "my-6 rounded-lg border px-4 py-3.5 not-prose shadow-sm",
-        config.className,
-      )}
+    <Alert
+      className={cn("my-6 not-prose shadow-sm", variant === "note" && "bg-muted/40")}
+      variant={config.alertVariant}
     >
-      <div className="flex items-center gap-2 mb-2">
-        <Icon className="size-4 shrink-0 opacity-80" />
-        <span className="text-xs font-bold uppercase tracking-wider opacity-80">
-          {config.label}
-        </span>
-      </div>
-      <div className="text-sm leading-relaxed [&>p]:m-0">{children}</div>
-    </div>
+      <Icon className="size-4 shrink-0 opacity-80" />
+      <AlertTitle className="text-xs font-bold uppercase tracking-wider opacity-80">
+        {config.label}
+      </AlertTitle>
+      <AlertDescription className="text-sm leading-relaxed text-foreground [&>p]:m-0">
+        {children}
+      </AlertDescription>
+    </Alert>
   );
 }

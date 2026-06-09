@@ -1,14 +1,20 @@
 import { Routes, Route, Navigate, useParams } from "react-router-dom";
 import { LandingPage } from "./pages/LandingPage";
 import { ChapterLayout } from "./pages/ChapterLayout";
-import { findChapterById } from "./data/chapters";
+import { findChapterById, findSectionById } from "./data/chapters";
 import { chapterPath, homePath } from "./lib/routes";
 
 function LegacyDocsRedirect() {
   const { chapterId, sectionId } = useParams();
   if (!chapterId) return <Navigate to={homePath()} replace />;
   const chapter = findChapterById(chapterId);
-  return <Navigate to={chapterPath(chapter?.id ?? chapterId, sectionId)} replace />;
+  const section = chapter ? findSectionById(chapter, sectionId) : undefined;
+  return (
+    <Navigate
+      to={chapterPath(chapter?.id ?? chapterId, section?.id ?? sectionId)}
+      replace
+    />
+  );
 }
 
 export function App() {

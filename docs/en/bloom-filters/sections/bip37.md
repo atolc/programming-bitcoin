@@ -31,3 +31,10 @@ print(f"Filter: {filter_params['size']} bytes, {filter_params['nHashFuncs']} fun
 
 > [!TIP]
 > BIP37 has lost popularity to BIP157/158 (compact block filters) because a malicious node can infer addresses by correlating filters. Still, understanding BIP37 is key to reading legacy code and this book.
+
+## Section Completion
+
+BIP37 defines how lightweight clients communicate Bloom filters to peers. The key fields are the filter bytes, number of hash functions, tweak, and update flags. Peers use those parameters to test transactions and decide which filtered data to return.
+
+The hash functions are derived from Murmur3 with deterministic seeds based on function index and tweak. Implementations must match that derivation exactly, or the client and peer will test different bit positions and the filter will behave incorrectly.
+

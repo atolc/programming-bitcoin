@@ -24,3 +24,10 @@ print(f"Elements in script_pubkey: {len(bare_script)}")
 
 > [!TIP]
 > Bare multisig is only practical for very simple cases. For everyday payments, P2SH (or SegWit) is the standard.
+
+## Section Completion
+
+Bare multisig demonstrates that Script can express authorization by several keys, but it also shows why raw complex scripts are awkward. The sender must place the whole multisig program in the UTXO set, including every public key. That increases output size and exposes the spending policy immediately.
+
+The stack layout is also easy to get wrong. CHECKMULTISIG expects signatures and public keys in a specific order, plus the historical dummy element. Testing with small m-of-n examples helps reveal whether your evaluator consumes stack elements correctly.
+

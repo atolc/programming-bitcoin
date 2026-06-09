@@ -27,3 +27,10 @@ $$\text{new\_difficulty} = \text{previous\_difficulty} \times \frac{\text{actual
 
 > [!TIP]
 > PoW does not "solve a useful math puzzle": it turns block creation into a probabilistic process costly in energy, which makes rewriting chain history prohibitive without controlling the majority of hashrate.
+
+## Section Completion
+
+Proof of work turns block creation into a costly search and block verification into a cheap check. The target is decoded from bits; a block hash interpreted as a little-endian integer must be less than that target. This comparison is consensus-critical and must use integer arithmetic, not string ordering.
+
+Difficulty is a human-friendly ratio against the easiest target. Retargeting every 2016 blocks adjusts the target based on elapsed time so the average interval trends toward ten minutes. The allowed adjustment is bounded, preventing abrupt difficulty changes from a single period.
+

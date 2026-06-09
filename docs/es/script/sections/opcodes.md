@@ -33,3 +33,10 @@ for b in bytes.fromhex(script_hex):
 
 > [!TIP]
 > Los opcodes deshabilitados (`OP_CAT`, `OP_SUBSTR`, etc.) existen en la tabla pero provocan fallo inmediato si se usan. Esto limita deliberadamente la expresividad del lenguaje.
+
+## Complemento de sección
+
+Los opcodes son instrucciones a nivel de byte, así que el parser debe tratarlos primero como enteros y luego como nombres. Algunos empujan constantes, otros datos crudos, otros transforman elementos de la pila y otros hacen verificaciones que pueden fallar todo el script. Los opcodes deshabilitados no deben implementarse accidentalmente como activos.
+
+Para aprender, agrupa opcodes por efecto: empujar, duplicar, hashear, comparar, aritmética, verificación de firmas y control. Los scripts de estos capítulos usan un subconjunto pequeño, pero el evaluador debe diseñarse para añadir opcodes mediante una tabla, no reescribiendo todo.
+

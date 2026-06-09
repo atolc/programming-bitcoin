@@ -28,3 +28,10 @@ The `services` field indicates node capabilities (for example, whether it advert
 
 > [!TIP]
 > If protocol versions are incompatible, the peer may close the connection after receiving `version`. That is why modern clients negotiate minimum supported versions.
+
+## Section Completion
+
+The handshake establishes that both peers speak compatible protocol versions and are ready to exchange further messages. A peer sends version, receives version, sends verack, and waits for verack. Only after this exchange should higher-level requests such as getheaders or getdata be considered active.
+
+The nonce in version helps detect accidental self-connections. Services announce capabilities, but they are not a guarantee that every request will be honored. Robust clients should handle disconnects, missing responses, and peers with different service flags.
+

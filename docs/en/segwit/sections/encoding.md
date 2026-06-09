@@ -32,3 +32,10 @@ The effective fee is expressed in **sat/vbyte** using weight divided by 4.
 
 > [!TIP]
 > When serializing for signing, each SegWit input uses `SIGHASH_ALL` over the new BIP143 format, which avoids copying scripts from other inputs and reduces malleability.
+
+## Section Completion
+
+SegWit serialization adds marker and flag after version, then serializes legacy inputs and outputs, then witness stacks, then locktime. The txid excludes witness data; the wtxid includes it. This distinction is central to fixing malleability while preserving compatibility.
+
+Witness fields are vectors per input. Even inputs without witness need an empty witness stack in SegWit serialization. Parsers must decide from marker and flag whether witness data is present, then keep txid and wtxid serialization paths separate.
+

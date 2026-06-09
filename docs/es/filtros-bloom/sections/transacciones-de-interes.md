@@ -23,3 +23,10 @@ Para pagos recibidos, muchas wallets esperan varias confirmaciones (más bloques
 
 > [!TIP]
 > Guarda el `merkleblock` y las `tx` asociadas si quieres auditar pagos offline: con la prueba Merkle y el encabezado puedes demostrar inclusión sin confiar en el nodo en el futuro.
+
+## Complemento de sección
+
+Las transacciones de interés dependen de la wallet: pagos a tus scripts, gastos desde tus UTXO o transacciones que revelan descendientes que debes rastrear. El matching Bloom puede ocurrir en scripts de salida, outpoints de entrada, empujes de datos y a veces reglas de actualización que agregan nuevos outpoints relevantes automáticamente.
+
+Los falsos positivos son esperados y deben ser inofensivos si la verificación es local. La wallet descarga y parsea transacciones extra, revisa si afectan realmente su estado e ignora el resto. El costo es ancho de banda y privacidad, no pérdida directa de fondos.
+

@@ -12,3 +12,10 @@ The essentials:
 - `3...` addresses are P2SH on mainnet; the version prefix is `0x05`.
 
 In **Blocks** you will see how validated transactions are packaged, mined, and chained on the blockchain.
+
+## Section Completion
+
+P2SH is a packaging technique, not a new signing algorithm. It changes when the complex script is revealed and who needs to understand it. The sender only handles a hash-based address; the spender later reveals and satisfies the script.
+
+This chapter prepares you for SegWit because nested witness programs reuse the same idea: put a compact commitment in one place, then reveal detailed spending data elsewhere. The exact validation rules differ, but the design pressure is similar.
+

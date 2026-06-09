@@ -32,3 +32,10 @@ print(f"Inputs: {len(tx['inputs'])}, Outputs: {len(tx['outputs'])}")
 
 > [!TIP]
 > A transaction does not contain addresses: it contains **scripts**. Addresses are a human convention derived from the `script_pubkey`.
+
+## Section Completion
+
+A transaction should be read as a transfer of control over UTXOs, not as an account-to-account payment. The important invariant is conservation of value: every spend consumes existing outputs and creates new outputs whose total value is lower by the fee. This is why validation needs previous transactions, not only the bytes of the transaction being parsed.
+
+When implementing this section, keep the four top-level fields mentally separate from the referenced data they imply. Version, inputs, outputs, and locktime are serialized in the transaction; previous output amounts and locking scripts are fetched from the UTXO set. Confusing those two layers is the usual source of incorrect fee calculation and signature validation.
+

@@ -28,3 +28,10 @@ El campo `services` indica capacidades del nodo (por ejemplo, si anuncia ser nod
 
 > [!TIP]
 > Si las versiones de protocolo son incompatibles, el peer puede cerrar la conexión tras recibir `version`. Por eso los clientes modernos negocian versiones mínimas soportadas.
+
+## Complemento de sección
+
+El handshake establece que ambos peers hablan versiones compatibles del protocolo y están listos para intercambiar más mensajes. Un peer envía version, recibe version, envía verack y espera verack. Solo después de ese intercambio deben considerarse activas peticiones como getheaders o getdata.
+
+El nonce en version ayuda a detectar conexiones accidentales a uno mismo. Services anuncia capacidades, pero no garantiza que cada petición será atendida. Clientes robustos deben manejar desconexiones, respuestas ausentes y peers con flags de servicio distintos.
+

@@ -39,3 +39,10 @@ If the `headers` response reaches the message limit (~2000 headers), the client 
 
 > [!TIP]
 > Validating headers is much lighter than validating full blocks, but an SPV client still needs Merkle proofs to trust specific transactions. That is the topic of the next chapter.
+
+## Section Completion
+
+Headers synchronization uses a block locator: a list of hashes from the client's known chain, usually starting near the tip and stepping backward. The peer finds the most recent common hash and returns headers after it. This lets clients recover from forks and continue from their best known point.
+
+Each header returned by a headers message should link to the previous one and satisfy proof of work. A headers response can contain up to 2000 headers. If the response is full, the client usually asks again starting from the last received header.
+

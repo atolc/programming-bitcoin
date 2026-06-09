@@ -24,3 +24,10 @@ Start with **regtest** or **testnet**: you can mine blocks instantly and do not 
 
 > [!TIP]
 > Publish the code on GitHub with a README and tests. Explaining out loud how you validate a transaction is one of the best checks that you truly understand the flow.
+
+## Section Completion
+
+The best next projects force byte-level comparison against known-good software. A block parser can compare header hashes and merkle roots. A wallet can compare addresses, signature hashes, and serialized transactions. A script debugger can compare stack traces for standard templates.
+
+Keep projects narrow enough to finish. A reliable varint parser plus transaction round-trip tests teaches more than a half-built wallet. Once each component is trustworthy, compose them into larger tools such as an SPV client or regtest wallet.
+

@@ -28,3 +28,10 @@ for k, v in checks.items():
 
 > [!TIP]
 > Validation is **stateless** per transaction: it does not need full history beyond the UTXO set. That makes it possible to validate millions of transactions quickly.
+
+## Section Completion
+
+Transaction validation combines economic checks and authorization checks. Economic checks ensure referenced outputs exist, are unspent, and provide enough value. Authorization checks run each input's script against the previous output's script_pubkey using the proper signature hash. Both categories are required.
+
+The book's validation flow intentionally minimizes trust in outside data. Fetching previous transactions from a service is acceptable for exercises, but production validation derives spentness and previous output data from a locally maintained UTXO set. This is the difference between checking a transaction and trusting someone else's check.
+

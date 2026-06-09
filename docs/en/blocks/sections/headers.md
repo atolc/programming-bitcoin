@@ -33,3 +33,10 @@ The `merkle_root` field connects the header to all transactions: changing a sing
 
 > [!TIP]
 > Nodes can exchange headers only to synchronize the block chain without downloading every transaction. That is the foundation of lightweight clients (SPV), which we will cover later.
+
+## Section Completion
+
+A block header is only 80 bytes, but it commits to the entire chain history behind it. The previous block hash links to the parent, and the merkle root commits to the ordered transaction list. Changing any transaction changes the merkle root; changing the root changes the block hash.
+
+The header is also the proof-of-work object. Miners vary nonce and other upstream data until the double-SHA256 hash of the header is below target. Parsers should keep header serialization exact because even one byte of difference changes the block hash.
+

@@ -28,3 +28,10 @@ print(f"Sequence: {sequence:#010x}")
 
 > [!TIP]
 > The previous tx hash is stored in **reverse** order compared to how explorers display it. If you copy a txid from an explorer, you must reverse the bytes before serializing.
+
+## Section Completion
+
+An input is a pointer plus proof. The pointer is the previous transaction hash and output index; the proof is the script data that satisfies the previous output's locking script. The previous transaction hash is serialized little-endian, so display-oriented txids must be reversed when moving between human text and raw bytes.
+
+Sequence deserves special attention. The all-ones value means final in the original locktime model. Lower values can opt into replacement or relative locktime rules depending on context. A good parser exposes sequence as a full 4-byte integer instead of reducing it to a boolean.
+

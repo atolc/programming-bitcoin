@@ -24,3 +24,10 @@ In practice you will implement `serialize` / `parse` functions per message: `Ver
 
 > [!TIP]
 > Always validate the checksum before parsing the payload. A transmission error or a malicious peer could send you corrupt bytes that break your parser.
+
+## Section Completion
+
+Payload parsing is command-specific. The envelope tells you that the message is, for example, version, verack, ping, getheaders, or headers; only then can the bytes be interpreted correctly. This separation keeps framing logic independent from protocol-object logic.
+
+Version payloads are especially dense: protocol version, services, timestamps, network addresses, nonce, user agent, start height, and relay flag. Treat each as a typed field with a known byte order. Guessing from string output or splitting on text will fail because Bitcoin P2P is binary.
+

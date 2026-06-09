@@ -36,3 +36,10 @@ The address you share is Base58Check of `0x00 || hash160`, not the raw script.
 
 > [!TIP]
 > P2PKH was the dominant standard until SegWit. It remains compatible and widely used in addresses starting with `1` on mainnet.
+
+## Section Completion
+
+P2PKH solves two practical problems with P2PK: address size/usability and public-key exposure before spending. The receiver gives out a Base58Check address representing a HASH160, and the spender later reveals both public key and signature. The script verifies that the public key hashes to the expected value before checking the signature.
+
+The validation order matters: duplicate the public key, hash it, compare it to the committed hash, then verify the signature. OP_EQUALVERIFY combines comparison and failure; OP_CHECKSIG only runs if the key identity check passes.
+

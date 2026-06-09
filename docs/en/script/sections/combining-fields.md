@@ -35,3 +35,10 @@ print("Length:", len(script), "bytes")
 
 > [!TIP]
 > A typical P2PKH `script_sig` is `push(der_signature) push(sec_public_key)`. Both scripts are serialized separately and go in different fields of the transaction.
+
+## Section Completion
+
+Combining fields means taking two serialized script fields from different parts of the transaction model and evaluating them as one authorization program. The spender controls script_sig; the previous output controls script_pubkey. Validation succeeds only if their combination leaves a truthy result.
+
+The crucial boundary is signing. For legacy signatures, the script used in the digest is not the script_sig from the transaction being signed; it is the previous output's script_pubkey for the input under consideration. This prevents the signature from signing itself.
+

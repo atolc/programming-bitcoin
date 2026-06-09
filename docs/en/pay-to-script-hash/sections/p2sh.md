@@ -28,3 +28,10 @@ print("Mainnet address starts with: 3")
 
 > [!TIP]
 > The Base58Check prefix for P2SH on mainnet is `0x05` (addresses starting with `3`). On testnet it is `0xc4`.
+
+## Section Completion
+
+P2SH moves script complexity from the funding transaction to the spending transaction. The funding output commits only to HASH160(redeem_script). The spend reveals the redeem script and proves that it hashes to the committed value before executing it. This makes the sender's job simple and keeps the UTXO set smaller.
+
+The tradeoff is responsibility for the receiver. Private keys are not enough; the wallet must retain the redeem script. Without it, the spender cannot prove which script was committed to by the P2SH hash.
+

@@ -36,3 +36,10 @@ La dirección que compartes es Base58Check de `0x00 || hash160`, no el script en
 
 > [!TIP]
 > P2PKH fue el estándar dominante hasta SegWit. Sigue siendo compatible y ampliamente usado en direcciones que empiezan por `1` en mainnet.
+
+## Complemento de sección
+
+P2PKH resuelve dos problemas prácticos de P2PK: usabilidad/tamaño de dirección y exposición de la llave pública antes de gastar. El receptor comparte una dirección Base58Check que representa un HASH160, y el gastador revela después la llave pública y la firma. El script verifica que la llave pública hashee al valor esperado antes de revisar la firma.
+
+El orden de validación importa: duplicar la llave pública, hashearla, compararla con el hash comprometido y luego verificar la firma. OP_EQUALVERIFY combina comparación y fallo; OP_CHECKSIG solo corre si la identidad de la llave pasa.
+

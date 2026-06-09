@@ -23,3 +23,10 @@ print(" -> ".join(workflow))
 
 > [!TIP]
 > La lista de correo bitcoin-dev y el IRC #bitcoin-core-dev son canales técnicos; para dudas de aprendizaje, Stack Exchange y meetups locales suelen ser más accesibles.
+
+## Complemento de sección
+
+Contribuir a proyectos Bitcoin tiene tanto de revisión y cautela como de escribir código. Los sistemas de consenso castigan ambigüedad, así que las buenas contribuciones suelen ser pequeñas, bien probadas y fáciles de razonar. Documentación, casos reproducibles y comentarios de revisión también son contribuciones valiosas.
+
+Distintas implementaciones tienen metas distintas. Bitcoin Core prioriza seguridad de consenso y comportamiento de red. Las librerías pueden priorizar ergonomía de wallet, parseo o integración con un lenguaje. Elige objetivos cuyo nivel de riesgo coincida con tu comprensión actual.
+

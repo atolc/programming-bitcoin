@@ -26,3 +26,10 @@ print("Top of stack:", stack[-1])
 
 > [!TIP]
 > If at any point an opcode needs more elements than are available, execution fails immediately.
+
+## Section Completion
+
+Script evaluation is deterministic stack execution. Each command consumes zero or more stack elements and may push results back. A command that needs more elements than the stack contains fails immediately. This makes stack discipline more important than syntax: a script can parse correctly and still be invalid because the stack shape is wrong.
+
+The alternate stack exists but is rarely needed in standard scripts. For the book's implementation, focus on the main stack, truthiness rules, and early failure. Once those are reliable, cryptographic opcodes can be added as specialized stack operations.
+

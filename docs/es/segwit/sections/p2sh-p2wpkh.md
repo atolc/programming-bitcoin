@@ -24,3 +24,10 @@ El nodo primero resuelve p2sh (comprueba que `hash160(redeem_script)` coincide) 
 
 > [!TIP]
 > Anidar en p2sh ocupa más bytes on-chain que p2wpkh nativo. Usa `bc1q` cuando el destinatario lo soporte.
+
+## Complemento de sección
+
+P2SH-P2WPKH envuelve un programa witness nativo dentro de un redeem script P2SH. La salida de fondeo parece P2SH para wallets antiguas, mientras nodos actualizados reconocen que el redeem script es OP_0 <hash-de-20-bytes> y luego validan datos witness.
+
+El gasto tiene dos lugares para datos: script_sig revela solo el redeem script, y witness aporta firma más llave pública. Si script_sig contiene algo más, la validación falla para esta plantilla.
+

@@ -25,3 +25,10 @@ print("Result: 1 if >= 2 valid signatures")
 
 > [!TIP]
 > This behavior is **intentionally preserved** for backward compatibility. Any modern implementation must include the dummy `OP_0` when signing multisig.
+
+## Section Completion
+
+OP_CHECKMULTISIG verifies that enough signatures match enough public keys in order. It does not simply pair every signature with the same-index key; it walks through signatures and keys, allowing unmatched keys to be skipped while preserving order. This behavior lets an m-of-n policy succeed with any valid subset of keys.
+
+The extra dummy stack element is a consensus fossil. It exists because the original implementation popped one more item than intended. Modern code must reproduce the behavior exactly. In script_sig this appears as OP_0 before the signatures.
+

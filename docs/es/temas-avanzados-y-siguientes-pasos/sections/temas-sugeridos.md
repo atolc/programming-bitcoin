@@ -21,3 +21,10 @@ for i, topic in enumerate(topics, 1):
 
 > [!TIP]
 > Lee las BIPs en [github.com/bitcoin/bips](https://github.com/bitcoin/bips) después de implementar la idea en código. La especificación y la práctica se refuerzan mutuamente.
+
+## Complemento de sección
+
+Los temas sugeridos extienden las mismas primitivas en vez de reemplazarlas. Wallets se apoyan en llaves, direcciones, creación de transacciones y selección de comisiones. Lightning se apoya en multisig, timelocks, lógica de revocación y cadenas de transacciones. Taproot se apoya en firmas Schnorr, compromisos de script y versionado witness.
+
+Una ruta útil es elegir un tema y rastrearlo hacia los capítulos ya implementados. Si no puedes explicarlo en términos de hashes, firmas, scripts, transacciones, bloques y mensajes de red, probablemente conviene repasar el prerrequisito faltante.
+

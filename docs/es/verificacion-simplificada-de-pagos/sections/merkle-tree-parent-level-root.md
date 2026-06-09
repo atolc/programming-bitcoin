@@ -33,3 +33,10 @@ Una **prueba Merkle** para la transacción $T$ consiste en los hashes hermanos d
 
 > [!TIP]
 > El orden de las transacciones en el bloque importa: la posición de tu transacción determina qué hashes hermanos necesitas en la prueba.
+
+## Complemento de sección
+
+Los árboles Merkle comprimen muchos hashes de transacción en una raíz. Los padres se calculan concatenando dos hijos y aplicando HASH256. Cuando un nivel tiene cantidad impar de hashes, se duplica el último para que cada padre tenga dos hijos.
+
+La raíz es sensible tanto al contenido como al orden de las transacciones. Reordenarlas cambia los emparejamientos y por tanto la raíz. Por eso un encabezado de bloque puede comprometer una lista ordenada completa de transacciones con solo 32 bytes.
+

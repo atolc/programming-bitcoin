@@ -39,3 +39,10 @@ print("txid (example):", txid.hex())
 
 > [!TIP]
 > When signing a transaction, a modified variant is serialized (without `script_sig` in the inputs, with `SIGHASH` flags). We will see that when creating and validating transactions.
+
+## Section Completion
+
+Transaction encoding is mostly about respecting boundaries. Version and locktime are fixed-size fields; input and output counts are varints; scripts are byte blobs with their own lengths. A serializer must reproduce the exact bytes, because txid calculation is a hash of the serialized transaction.
+
+The safest implementation pattern is parse, serialize, and compare against the original bytes before adding higher-level helpers. If round-tripping changes byte order, varint width, or script push encoding, later signing and txid tests will fail in ways that are hard to diagnose.
+

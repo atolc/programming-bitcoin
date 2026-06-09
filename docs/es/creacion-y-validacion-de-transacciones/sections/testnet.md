@@ -30,3 +30,10 @@ for name, cfg in NETWORKS.items():
 
 > [!TIP]
 > Nunca reutilices llaves entre mainnet y testnet. Usa bibliotecas que acepten un parámetro de red explícito para evitar firmar en la cadena equivocada.
+
+## Complemento de sección
+
+Testnet es donde el flujo de transacción se vuelve observable. Puedes derivar una dirección testnet, fondearla, obtener la transacción de fondeo, construir un gasto, firmarlo, transmitirlo y comparar tus bytes serializados con lo que reporta un nodo o explorador. Es la forma más rápida de encontrar errores de orden de bytes y scripts.
+
+Trata testnet también como práctica de higiene operativa. Mantén llaves privadas separadas de mainnet, verifica prefijos de red y espera que faucets o peers fallen. Una transacción que funciona en testnet necesita la misma corrección de consenso que una en mainnet.
+

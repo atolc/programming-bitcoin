@@ -27,3 +27,10 @@ for lt in [0, 250000, 600_000_000]:
 
 > [!TIP]
 > El locktime absoluto se complementa con **sequence** y `nSequence` para bloqueos relativos (BIP 68/112). Una entrada con `sequence < 0xffffffff` puede activar reglas adicionales.
+
+## Complemento de sección
+
+Locktime es absoluto y condicional. Valores menores que 500,000,000 se interpretan como alturas de bloque; valores iguales o mayores se interpretan como timestamps Unix. Pero locktime solo tiene efecto si al menos una entrada tiene sequence no final. Si todos los sequence son 0xffffffff, el locktime heredado se ignora.
+
+Este campo muestra bien el contexto de consenso: los mismos 4 bytes pueden no significar nada o ser vinculantes según los sequence y el estado de la cadena. El código debe parsearlo mecánicamente y dejar la interpretación a la validación con acceso a la transacción y la cadena.
+

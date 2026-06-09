@@ -24,3 +24,10 @@ Los flujos multisig complejos suelen usar p2sh-p2wsh para que las firmas queden 
 
 > [!TIP]
 > El witness script puede ser grande (multisig 2-de-3, etc.). SegWit lo cobra a tarifa reducida porque el witness tiene peso ×0.25 en el cálculo de `weight`.
+
+## Complemento de sección
+
+P2SH-P2WSH anida un programa witness versión 0 de 32 bytes dentro de P2SH. El script_pubkey compromete HASH160(redeem_script), y el redeem script compromete SHA256(witness_script). Al gastar se prueban ambas capas antes de ejecutar el witness script.
+
+Esta plantilla existe por compatibilidad con sistemas que entendían direcciones P2SH pero no direcciones witness nativas. Es más grande que P2WSH nativo, pero permitió adopción de SegWit antes de que Bech32 fuera universal.
+

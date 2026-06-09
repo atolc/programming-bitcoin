@@ -26,3 +26,10 @@ print("Serialized amount:", amount_bytes.hex())
 
 > [!TIP]
 > The sum of all outputs can never exceed the sum of inputs. The difference is the miner's fee.
+
+## Section Completion
+
+An output is where Bitcoin value becomes spendable under a new condition. The amount is an unsigned 8-byte little-endian integer measured in satoshis, not BTC. The script_pubkey is length-prefixed script data; it may correspond to a familiar address type, but the raw transaction stores the script, not the address.
+
+Validation checks output amounts carefully. Negative amounts are impossible at the byte level but can appear if code uses signed integers incorrectly. Values above the total money supply or totals that overflow must be rejected. This is why exact integer arithmetic matters throughout transaction parsing.
+

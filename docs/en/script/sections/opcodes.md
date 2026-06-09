@@ -33,3 +33,10 @@ for b in bytes.fromhex(script_hex):
 
 > [!TIP]
 > Disabled opcodes (`OP_CAT`, `OP_SUBSTR`, etc.) exist in the table but cause immediate failure if used. This deliberately limits the expressiveness of the language.
+
+## Section Completion
+
+Opcodes are byte-level instructions, so the parser should treat them as integers first and names second. Some opcodes push constants, some push raw data, some transform stack elements, and some perform checks that can fail the whole script. Disabled opcodes must not be accidentally implemented as active behavior.
+
+For learning, group opcodes by effect: push, duplicate, hash, compare, arithmetic, signature verification, and flow/control. The Bitcoin scripts in these chapters mostly use a small subset, but the evaluator should be designed so adding more opcodes is a table-driven extension rather than a rewrite.
+

@@ -33,3 +33,10 @@ print("Preimagen válida:", hash160(b"hola") == h)
 
 > [!TIP]
 > Los scripts arbitrarios "en bruto" (*bare*) exponen la lógica completa en el `script_pubkey`, lo que aumenta el tamaño de la UTXO set y complica la validación. Por eso nació P2SH, tema del capítulo 8.
+
+## Complemento de sección
+
+Bitcoin permite más que las plantillas estándar comunes, pero policy y consenso son capas distintas. Un script puede ser válido por consenso y aun así no estándar para relay o minería. Esta distinción mantiene estable el lenguaje de consenso mientras desalienta salidas costosas, riesgosas o difíciles de propagar.
+
+Los scripts arbitrarios también motivan P2SH. Si la lógica compleja vive directamente en script_pubkey, todos los nodos completos deben guardarla en el conjunto UTXO antes de que se gasten las monedas. P2SH mantiene pequeño el UTXO y revela la complejidad solo al gastar.
+

@@ -27,3 +27,10 @@ On testnet the default port is **18333**; on regtest, **18444**. After the hands
 
 > [!TIP]
 > Limit the number of outbound connections (Bitcoin Core uses 8 by default) so you do not saturate your bandwidth or the network. Inbound connections require your firewall to allow the P2P port.
+
+## Section Completion
+
+Connecting to the network means managing a TCP stream and a Bitcoin message stream at the same time. TCP only provides ordered bytes; your node code must read complete envelopes, parse payloads, and send responses in protocol order. Partial reads are normal and should not be treated as malformed messages.
+
+Network constants matter. Mainnet, testnet, and regtest have different magic bytes and default ports. Accidentally mixing them can produce messages that parse structurally but are invalid for the intended network. Keep network configuration explicit.
+

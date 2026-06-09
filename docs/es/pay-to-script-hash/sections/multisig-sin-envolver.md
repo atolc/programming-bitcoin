@@ -24,3 +24,10 @@ print(f"Elementos en script_pubkey: {len(bare_script)}")
 
 > [!TIP]
 > Bare multisig solo es práctico para casos muy simples. Para pagos cotidianos, P2SH (o SegWit) es el estándar.
+
+## Complemento de sección
+
+Bare multisig demuestra que Script puede expresar autorización mediante varias llaves, pero también muestra por qué los scripts complejos crudos son incómodos. El pagador debe poner todo el programa multisig en el conjunto UTXO, incluyendo cada llave pública. Eso aumenta el tamaño de la salida y expone la política de gasto de inmediato.
+
+La forma de la pila también es fácil de equivocarse. CHECKMULTISIG espera firmas y llaves públicas en un orden específico, más el elemento dummy histórico. Probar ejemplos m-de-n pequeños ayuda a ver si tu evaluador consume la pila correctamente.
+

@@ -27,3 +27,10 @@ En testnet el puerto por defecto es **18333**; en regtest, **18444**. Tras el ha
 
 > [!TIP]
 > Limita el número de conexiones salientes (Bitcoin Core usa 8 por defecto) para no saturar tu ancho de banda ni la red. Las conexiones entrantes requieren que tu firewall permita el puerto P2P.
+
+## Complemento de sección
+
+Conectarse a la red significa manejar un stream TCP y un stream de mensajes Bitcoin al mismo tiempo. TCP solo da bytes ordenados; tu código debe leer envelopes completos, parsear payloads y enviar respuestas en orden de protocolo. Lecturas parciales son normales y no deben tratarse como mensajes malformados.
+
+Las constantes de red importan. Mainnet, testnet y regtest tienen magic bytes y puertos por defecto distintos. Mezclarlos puede producir mensajes que parsean estructuralmente pero son inválidos para la red esperada. Mantén la configuración de red explícita.
+

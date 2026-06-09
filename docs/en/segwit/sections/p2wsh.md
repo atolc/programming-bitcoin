@@ -21,3 +21,10 @@ When validating, the interpreter checks that `SHA256(witness_script)` matches th
 
 > [!TIP]
 > p2wsh is the SegWit analogue of p2sh multisig and custom contracts. The witness script is only revealed when spending, just like the redeem script in classic p2sh.
+
+## Section Completion
+
+P2WSH generalizes native witness outputs from public-key hashes to arbitrary witness scripts. The output commits to SHA256(witness_script), not HASH160. The witness stack supplies the script arguments followed by the full witness script.
+
+This design is especially useful for multisig and other larger scripts because witness data is discounted in block weight. The script is still fully validated by upgraded nodes; the discount changes resource accounting, not correctness requirements.
+

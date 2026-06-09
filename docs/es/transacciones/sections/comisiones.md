@@ -22,3 +22,10 @@ Los mineros priorizan transacciones con mayor **tasa de comisión por vbyte** (s
 
 > [!TIP]
 > Si $\sum \text{salidas} > \sum \text{entradas}$, la transacción es inválida. Si la comisión es excesivamente alta, los nodos la aceptan igual; si es demasiado baja, puede quedarse en la mempool indefinidamente.
+
+## Complemento de sección
+
+Las comisiones no se guardan en la transacción. Se infieren restando el valor total de salidas al valor total de entradas. Como los valores de entrada vienen de salidas previas, no puedes calcular la comisión solo con la transacción actual salvo que ya tengas los UTXO referenciados.
+
+Una transacción con salidas mayores que entradas es inválida; una transacción con comisión excesiva puede ser válida pero económicamente equivocada. El software de wallet tiene dos tareas: validación de consenso y protección del usuario. La primera rechaza creación imposible de valor; la segunda evita quemar demasiado en comisiones.
+

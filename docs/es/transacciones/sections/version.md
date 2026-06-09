@@ -17,10 +17,14 @@ serialized = version.to_bytes(4, "little")
 print("Versión 2 en bytes:", serialized.hex())
 recovered = int.from_bytes(serialized, "little")
 print("Recuperada:", recovered)
----
-Versión 2 en bytes: 02000000
-Recuperada: 2
 ```
 
 > [!TIP]
 > La mayoría de transacciones modernas usan versión 2. Al parsear, siempre lee exactamente 4 bytes y convierte con little-endian.
+
+## Complemento de sección
+
+El campo version es pequeño, pero importa para consenso. Version 1 representa el formato original de transacción, mientras que version 2 se asocia con bloqueos relativos de BIP68 y CHECKSEQUENCEVERIFY de BIP112. Un parser debe conservar el entero little-endian de 4 bytes aunque la lección actual solo lo imprima.
+
+En la práctica, version no indica cuántas entradas o salidas existen; eso lo hacen los varints. Trátalo como selector de reglas, no como selector de esquema. La lógica de validación futura puede consultarlo para decidir si los valores sequence tienen semántica de bloqueo relativo.
+

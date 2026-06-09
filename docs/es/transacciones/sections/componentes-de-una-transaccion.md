@@ -32,3 +32,10 @@ print(f"Entradas: {len(tx['inputs'])}, Salidas: {len(tx['outputs'])}")
 
 > [!TIP]
 > Una transacción no contiene direcciones: contiene **scripts**. Las direcciones son una convención humana derivada del `script_pubkey`.
+
+## Complemento de sección
+
+Una transacción debe leerse como una transferencia de control sobre UTXO, no como un pago entre cuentas. La invariante importante es conservar valor: cada gasto consume salidas existentes y crea salidas nuevas cuyo valor total es menor por la comisión. Por eso la validación necesita transacciones previas, no solo los bytes de la transacción actual.
+
+Al implementar esta sección, separa los cuatro campos principales de los datos referenciados que implican. Version, entradas, salidas y locktime viven serializados en la transacción; los montos y scripts de salidas previas vienen del conjunto UTXO. Mezclar esas capas suele romper el cálculo de comisiones y la validación de firmas.
+

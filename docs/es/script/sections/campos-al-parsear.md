@@ -46,3 +46,10 @@ print(ops)
 
 > [!TIP]
 > Al serializar, elige siempre la forma más compacta: si tus datos tienen 3 bytes, usa el opcode `0x03` en lugar de `OP_PUSHDATA1`.
+
+## Complemento de sección
+
+Parsear Script es distinto de parsear campos fijos de transacción porque el significado depende del byte opcode. Valores de 0x01 a 0x4b no son operaciones con nombre; son longitudes para empujes de datos inmediatos. OP_PUSHDATA1, OP_PUSHDATA2 y OP_PUSHDATA4 extienden esa idea para cadenas de bytes más largas.
+
+Un parser correcto consume exactamente la cantidad anunciada y rechaza scripts truncados. Debe guardar datos empujados como bytes, no como strings hex, porque hashes y firmas posteriores operan sobre bytes crudos.
+

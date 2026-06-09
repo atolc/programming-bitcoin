@@ -34,3 +34,10 @@ El campo `merkle_root` conecta el encabezado con todas las transacciones: cambia
 
 > [!TIP]
 > Los nodos pueden intercambiar solo encabezados para sincronizar la cadena de bloques sin descargar cada transacción. Eso es la base de clientes ligeros (SPV), que veremos más adelante.
+
+## Complemento de sección
+
+Un encabezado de bloque tiene solo 80 bytes, pero compromete toda la historia de cadena detrás de él. El hash previo enlaza al padre y la raíz Merkle compromete la lista ordenada de transacciones. Cambiar cualquier transacción cambia la raíz Merkle; cambiar la raíz cambia el hash del bloque.
+
+El encabezado también es el objeto de proof of work. Los mineros varían nonce y otros datos aguas arriba hasta que el doble-SHA256 del encabezado queda por debajo del target. Los parsers deben conservar serialización exacta porque un byte distinto cambia el hash del bloque.
+

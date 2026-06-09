@@ -28,3 +28,10 @@ print("Orden:", " -> ".join(full[:3]) + " -> ...")
 
 > [!TIP]
 > Los nodos ejecutan el script en un entorno aislado con límite de operaciones (costo por opcode). Un script demasiado largo o costoso se rechaza antes de confirmarse en un bloque.
+
+## Complemento de sección
+
+La validación heredada une conceptualmente script_sig y script_pubkey, y luego evalúa el flujo combinado de comandos. La separación es económica: quien crea la salida elige la condición, y quien gasta aporta los datos que la satisfacen. P2PKH es el ejemplo canónico: firma y llave pública desbloquean una condición de hash y firma.
+
+Esta sección también debe dejar claro por qué Script no es un lenguaje de propósito general. Está limitado deliberadamente para que la validación sea rápida y predecible. La meta es autorización, no cómputo por sí mismo.
+

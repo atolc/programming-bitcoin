@@ -32,3 +32,10 @@ If the root matches, the transaction of interest is **committed** in that block.
 
 > [!TIP]
 > A malicious `merkleblock` could omit transactions in the flags. That is why the client must reconstruct the full tree according to BIP37 and reject inconsistent proofs.
+
+## Section Completion
+
+A merkleblock is a compact proof object. It contains a block header, the total transaction count, selected hashes, and flag bits that describe which branches to explore. The verifier reconstructs enough of the tree to compute the root without receiving every transaction hash.
+
+Correct parsing is stateful: consume flag bits and hashes in the exact traversal order. If extra hashes remain, flags run out, or the computed root differs from the header's merkle_root, the proof must be rejected.
+

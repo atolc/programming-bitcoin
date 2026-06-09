@@ -35,3 +35,10 @@ print("Longitud:", len(script), "bytes")
 
 > [!TIP]
 > El `script_sig` de un P2PKH típico es `push(firma_der) push(llave_publica_sec)`. Ambos scripts se serializan por separado y van en campos distintos de la transacción.
+
+## Complemento de sección
+
+Combinar campos significa tomar dos campos script serializados desde partes distintas del modelo de transacción y evaluarlos como un programa de autorización. El gastador controla script_sig; la salida previa controla script_pubkey. La validación solo tiene éxito si la combinación deja un resultado verdadero.
+
+La frontera crucial es la firma. Para firmas heredadas, el script usado en el digest no es el script_sig de la transacción que se firma; es el script_pubkey de la salida previa para la entrada considerada. Así se evita que la firma se firme a sí misma.
+

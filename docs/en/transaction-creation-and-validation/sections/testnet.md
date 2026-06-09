@@ -30,3 +30,10 @@ for name, cfg in NETWORKS.items():
 
 > [!TIP]
 > Never reuse keys between mainnet and testnet. Use libraries that accept an explicit network parameter to avoid signing on the wrong chain.
+
+## Section Completion
+
+Testnet is where the transaction pipeline becomes observable. You can derive a testnet address, fund it, fetch the funding transaction, build a spend, sign it, broadcast it, and then compare your serialized bytes against what a block explorer or node reports. This is the fastest way to find byte-order and script mistakes.
+
+Treat testnet as practice for operational hygiene too. Keep private keys separate from mainnet keys, verify network prefixes, and expect faucets or peers to be unreliable. A transaction that works on testnet still needs the same consensus correctness as one on mainnet.
+

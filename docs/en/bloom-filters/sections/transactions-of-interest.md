@@ -23,3 +23,10 @@ For received payments, many wallets wait for several confirmations (more blocks 
 
 > [!TIP]
 > Save the `merkleblock` and associated `tx` messages if you want to audit payments offline: with the Merkle proof and the header you can prove inclusion without trusting the node in the future.
+
+## Section Completion
+
+Transactions of interest are wallet-specific: payments to your scripts, spends from your UTXOs, or transactions that reveal descendants you need to track. Bloom matching can happen on output scripts, input outpoints, data pushes, and sometimes update rules that add new relevant outpoints automatically.
+
+False positives are expected and should be harmless if verification is local. The wallet downloads and parses extra transactions, checks whether they actually affect its wallet state, and ignores the rest. The cost is bandwidth and privacy, not direct loss of funds.
+

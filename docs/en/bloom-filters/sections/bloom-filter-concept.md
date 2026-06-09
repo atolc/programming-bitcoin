@@ -35,3 +35,10 @@ For SPV wallets, the filter represents the addresses or scripts you care about. 
 
 > [!TIP]
 > The more elements you insert or the fewer bits you use, the higher the false positive rate: you will receive unrelated transactions and spend more bandwidth.
+
+## Section Completion
+
+A Bloom filter trades certainty for compactness. Inserted items set several bits; lookup checks those bits. A zero bit proves absence, while all bits set only suggests presence. This one-sided error is why Bloom filters are useful for wallets: they can ask for possible matches and discard false positives locally.
+
+The privacy story is subtle. False positives hide real interests among unrelated matches, but repeated filters, poor parameters, or unique address patterns can still leak information. Bloom filtering reduces exposure; it does not provide strong anonymity.
+

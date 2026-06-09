@@ -42,3 +42,10 @@ print("Longitud script_pubkey:", len(script_pubkey))
 
 > [!TIP]
 > Al firmar un gasto P2SH, el digest de `SIGHASH` usa el redeem script (no el `script_pubkey` P2SH) en el campo `script_sig` de la entrada que firmas. Este detalle es la fuente más común de errores al implementar P2SH desde cero.
+
+## Complemento de sección
+
+La codificación P2SH tiene tres objetos de bytes que no deben confundirse: redeem script, script_pubkey P2SH y script_sig de gasto. El redeem script es la condición real. El script_pubkey es OP_HASH160 <hash160(redeem_script)> OP_EQUAL. El script_sig empuja los datos que necesita el redeem script y al final el redeem script completo.
+
+Para firmas, el redeem script también es el script usado en el digest de firma de la entrada que se firma. Usar el script_pubkey P2SH corto en esa posición produce firmas inválidas. Este detalle es el centro de implementar P2SH correctamente.
+

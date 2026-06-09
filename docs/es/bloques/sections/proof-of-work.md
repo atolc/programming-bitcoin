@@ -28,3 +28,10 @@ $$\text{nueva\_dificultad} = \text{dificultad\_anterior} \times \frac{\text{tiem
 
 > [!TIP]
 > PoW no «resuelve un puzzle matemático útil»: convierte la creación de bloques en un proceso probabilístico costoso en energía, lo que hace prohibitivo reescribir la historia de la cadena sin controlar la mayoría del hashrate.
+
+## Complemento de sección
+
+Proof of work convierte la creación de bloques en una búsqueda costosa y la verificación en una revisión barata. El target se decodifica desde bits; el hash del bloque interpretado como entero little-endian debe ser menor que ese target. Esta comparación es crítica para consenso y debe usar aritmética entera, no ordenamiento de strings.
+
+La dificultad es una razón amigable contra el target más fácil. El reajuste cada 2016 bloques modifica el target según el tiempo transcurrido para que el intervalo promedio tienda a diez minutos. El ajuste permitido está limitado, evitando cambios bruscos por un solo período.
+

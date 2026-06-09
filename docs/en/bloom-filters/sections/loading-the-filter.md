@@ -32,3 +32,10 @@ The node only applies the filter to connections that have explicitly loaded it. 
 
 > [!TIP]
 > Regenerate the filter periodically or use `filterclear` + `filterload` to limit how much an observer can learn about your set of addresses.
+
+## Section Completion
+
+Loading a filter changes how a peer treats your connection. After filterload, the peer can evaluate transactions and blocks against your filter and send filtered responses. Filteradd updates the filter incrementally; filterclear removes it from the connection.
+
+The serialized filter is a bit field packed into bytes. Be careful about bit order inside each byte. A visually correct binary string can still serialize incorrectly if bit positions are packed in the wrong direction.
+

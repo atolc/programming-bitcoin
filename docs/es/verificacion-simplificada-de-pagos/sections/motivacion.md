@@ -21,3 +21,10 @@ SPV asume que la cadena con más trabajo acumulado es la correcta. No detecta po
 
 > [!TIP]
 > SPV confía en que los mineros no coluden para ocultarte transacciones incluidas en bloques que sí te muestran. Para montos grandes, muchas wallets consultan varios nodos o usan tu propio nodo completo.
+
+## Complemento de sección
+
+SPV existe porque almacenar y validar todos los bloques completos es costoso para dispositivos pequeños. Un cliente ligero descarga headers, verifica proof of work y pide evidencia de que sus transacciones relevantes están incluidas. Esto es mucho mejor que confiar en una respuesta de servidor, pero más débil que validación completa.
+
+La suposición de seguridad es precisa: SPV confía en que la cadena con suficiente proof of work es económicamente difícil de falsificar, pero no valida cada regla de transacción dentro de cada bloque. Verifica inclusión, no corrección completa del bloque.
+

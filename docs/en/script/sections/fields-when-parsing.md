@@ -46,3 +46,10 @@ print(ops)
 
 > [!TIP]
 > When serializing, always choose the most compact form: if your data is 3 bytes, use opcode `0x03` instead of `OP_PUSHDATA1`.
+
+## Section Completion
+
+Parsing Script is different from parsing fixed transaction fields because command meaning depends on the opcode byte. Values from 0x01 through 0x4b are not named operations; they are lengths for immediate data pushes. OP_PUSHDATA1, OP_PUSHDATA2, and OP_PUSHDATA4 extend that idea for larger byte strings.
+
+A correct parser must consume exactly the announced number of bytes and reject truncated scripts. It should store pushed data as bytes, not hex strings, because later hashing and signature checks operate on raw bytes.
+

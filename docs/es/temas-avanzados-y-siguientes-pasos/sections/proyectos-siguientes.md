@@ -24,3 +24,10 @@ Empieza por **regtest** o **testnet**: puedes minar bloques al instante y no arr
 
 > [!TIP]
 > Publica el código en GitHub con README y tests. Explicar en voz alta cómo validas una transacción es una de las mejores comprobaciones de que realmente entiendes el flujo.
+
+## Complemento de sección
+
+Los mejores proyectos siguientes obligan a comparar bytes contra software confiable. Un parser de bloques puede comparar hashes de header y raíces Merkle. Una wallet puede comparar direcciones, hashes de firma y transacciones serializadas. Un depurador de Script puede comparar trazas de pila para plantillas estándar.
+
+Mantén proyectos lo bastante acotados para terminarlos. Un parser varint confiable con pruebas de round-trip enseña más que una wallet a medias. Cuando cada componente sea confiable, compónlos en herramientas mayores como un cliente SPV o una wallet regtest.
+

@@ -28,3 +28,10 @@ for k, v in checks.items():
 
 > [!TIP]
 > La validación es **stateless** por transacción: no necesita historial completo más allá del set de UTXOs. Eso hace posible validar millones de transacciones rápidamente.
+
+## Complemento de sección
+
+La validación de transacciones combina revisiones económicas y de autorización. Las económicas aseguran que las salidas referenciadas existan, no estén gastadas y aporten suficiente valor. Las de autorización ejecutan el script de cada entrada contra el script_pubkey previo usando el hash de firma correcto. Ambas son necesarias.
+
+El flujo del libro minimiza deliberadamente la confianza en datos externos. Obtener transacciones previas desde un servicio sirve para ejercicios, pero la validación de producción deriva spentness y datos de salidas previas desde un conjunto UTXO local. Esa es la diferencia entre verificar una transacción y confiar en la verificación de alguien más.
+

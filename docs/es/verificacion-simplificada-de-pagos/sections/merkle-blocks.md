@@ -32,3 +32,10 @@ Si la raíz coincide, la transacción de interés está **comprometida** en ese 
 
 > [!TIP]
 > Un `merkleblock` malicioso podría omitir transacciones en los flags. Por eso el cliente debe reconstruir el árbol completo según BIP37 y rechazar pruebas inconsistentes.
+
+## Complemento de sección
+
+Un merkleblock es un objeto compacto de prueba. Contiene un header de bloque, cantidad total de transacciones, hashes seleccionados y bits de flags que describen qué ramas explorar. El verificador reconstruye suficiente árbol para calcular la raíz sin recibir todos los hashes de transacción.
+
+El parseo correcto tiene estado: consume bits de flag y hashes en el orden exacto de recorrido. Si sobran hashes, se acaban flags o la raíz calculada difiere del merkle_root del header, la prueba debe rechazarse.
+

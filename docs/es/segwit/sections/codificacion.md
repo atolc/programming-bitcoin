@@ -32,3 +32,10 @@ La comisión efectiva se expresa en **sat/vbyte** usando el weight dividido por 
 
 > [!TIP]
 > Al serializar para firmar, cada input SegWit usa `SIGHASH_ALL` sobre el nuevo formato BIP143, que evita copiar scripts de otras entradas y reduce la maleabilidad.
+
+## Complemento de sección
+
+La serialización SegWit añade marker y flag después de version, luego serializa entradas y salidas heredadas, después pilas witness y finalmente locktime. El txid excluye witness; el wtxid lo incluye. Esta distinción es central para corregir maleabilidad manteniendo compatibilidad.
+
+Los campos witness son vectores por entrada. Incluso entradas sin witness necesitan una pila witness vacía en serialización SegWit. Los parsers deben decidir desde marker y flag si hay witness, y mantener separadas las rutas de serialización de txid y wtxid.
+

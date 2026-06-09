@@ -22,3 +22,10 @@ The wallet reconstructs the Merkle root from the `merkleblock` and compares it w
 
 > [!TIP]
 > If the `merkleblock` does not include a transaction you expected, it may be a false negative from the filter (should not happen) or the transaction is not in that block. Verify the block hash and height.
+
+## Section Completion
+
+With a Bloom filter loaded, the wallet asks for filtered blocks rather than full blocks. The peer returns merkleblock messages that prove inclusion for matched transactions, plus separate tx messages for the transactions themselves. The wallet then verifies the Merkle proof against headers it already trusts.
+
+This division matters: the merkleblock proves placement in a block, while the tx message gives the transaction contents to inspect. A wallet should not accept a transaction merely because a peer sent it; it should connect it to a valid Merkle proof and header chain.
+

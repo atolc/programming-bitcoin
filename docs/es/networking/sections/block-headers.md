@@ -39,3 +39,10 @@ Si la respuesta `headers` alcanza el límite del mensaje (~2000 encabezados), el
 
 > [!TIP]
 > Validar encabezados es mucho más ligero que validar bloques completos, pero un cliente SPV aún necesita pruebas Merkle para confiar en transacciones concretas. Eso es el tema del siguiente capítulo.
+
+## Complemento de sección
+
+La sincronización de headers usa un block locator: una lista de hashes de la cadena conocida por el cliente, normalmente empezando cerca de la punta y retrocediendo. El peer encuentra el hash común más reciente y devuelve headers posteriores. Esto permite recuperarse de forks y continuar desde el mejor punto conocido.
+
+Cada header devuelto por un mensaje headers debe enlazar al anterior y cumplir proof of work. Una respuesta headers puede contener hasta 2000 headers. Si la respuesta viene llena, el cliente normalmente pide de nuevo empezando desde el último header recibido.
+

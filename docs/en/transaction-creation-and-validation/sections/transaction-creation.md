@@ -44,3 +44,10 @@ print(f"Approx script_sig: {script_sig_len} bytes")
 
 > [!TIP]
 > `SIGHASH_ALL` (value 1) signs all inputs and outputs. Other variants (`SIGHASH_NONE`, `SIGHASH_SINGLE`, combined with `ANYONECANPAY`) allow more flexible contracts but are rare in standard wallets.
+
+## Section Completion
+
+Creating a transaction is a staged process: select spendable UTXOs, decide recipient and change outputs, estimate the fee, build an unsigned transaction, sign each input, and serialize the final bytes. Each input receives its own signature because each signing digest commits to a different input context.
+
+Change handling is part of correctness, not a cosmetic wallet feature. If selected inputs exceed recipient amount plus fee, the remainder must either become a change output or be paid as fee. Reusing the recipient or source address for change leaks wallet structure, so fresh change addresses are preferred.
+

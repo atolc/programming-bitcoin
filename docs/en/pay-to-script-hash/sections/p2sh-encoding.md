@@ -42,3 +42,10 @@ print("script_pubkey length:", len(script_pubkey))
 
 > [!TIP]
 > When signing a P2SH spend, the `SIGHASH` digest uses the redeem script (not the P2SH `script_pubkey`) in the `script_sig` field of the input you are signing. This detail is the most common source of errors when implementing P2SH from scratch.
+
+## Section Completion
+
+P2SH encoding has three byte-level objects that must not be confused: the redeem script, the P2SH script_pubkey, and the spending script_sig. The redeem script is the real spending condition. The script_pubkey is OP_HASH160 <hash160(redeem_script)> OP_EQUAL. The script_sig pushes the data needed by the redeem script and finally the redeem script itself.
+
+For signatures, the redeem script is also the script used in the signing digest for the input being signed. Using the short P2SH script_pubkey in that position creates invalid signatures. This detail is the heart of implementing P2SH correctly.
+

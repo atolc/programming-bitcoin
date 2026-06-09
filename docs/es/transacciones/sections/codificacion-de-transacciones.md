@@ -39,3 +39,10 @@ print("txid (ejemplo):", txid.hex())
 
 > [!TIP]
 > Al firmar una transacción, se serializa una variante modificada (sin `script_sig` en las entradas, con `SIGHASH` flags). Eso lo veremos al crear y validar transacciones.
+
+## Complemento de sección
+
+La codificación de transacciones consiste sobre todo en respetar límites. Version y locktime tienen tamaño fijo; los conteos de entradas y salidas son varints; los scripts son blobs de bytes con su propia longitud. Un serializador debe reproducir los bytes exactos, porque el txid es un hash de la transacción serializada.
+
+El patrón más seguro es parsear, serializar y comparar contra los bytes originales antes de añadir helpers de alto nivel. Si el round-trip cambia orden de bytes, tamaño de varint o codificación de pushes, las pruebas de firma y txid fallarán de formas difíciles de diagnosticar.
+

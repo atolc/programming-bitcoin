@@ -28,3 +28,10 @@ print(f"Sequence: {sequence:#010x}")
 
 > [!TIP]
 > El hash de la tx previa se almacena en orden **inverso** respecto a como lo muestran los exploradores. Si copias un txid de un explorador, debes invertir los bytes antes de serializar.
+
+## Complemento de sección
+
+Una entrada es un puntero más una prueba. El puntero es el hash de la transacción previa y el índice de salida; la prueba son los datos de script que satisfacen el script de bloqueo anterior. El hash de transacción previa se serializa en little-endian, así que los txids mostrados a humanos deben invertirse al pasar entre texto y bytes crudos.
+
+Sequence merece atención especial. El valor con todos los bits en uno significa final en el modelo original de locktime. Valores menores pueden activar reemplazo o bloqueos relativos según el contexto. Un buen parser expone sequence como entero completo de 4 bytes, no como booleano.
+

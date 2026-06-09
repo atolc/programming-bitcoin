@@ -26,3 +26,10 @@ print("Cima de la pila:", stack[-1])
 
 > [!TIP]
 > Si en cualquier momento un opcode necesita más elementos de los disponibles, la ejecución falla inmediatamente.
+
+## Complemento de sección
+
+La evaluación de Script es ejecución determinista sobre una pila. Cada comando consume cero o más elementos y puede empujar resultados. Un comando que necesita más elementos de los disponibles falla de inmediato. Por eso la disciplina de pila importa más que la sintaxis: un script puede parsear bien y aun así ser inválido por la forma de la pila.
+
+La pila alterna existe, pero casi no se necesita en scripts estándar. Para la implementación del libro, concéntrate en pila principal, reglas de verdad y fallo temprano. Cuando eso sea confiable, los opcodes criptográficos se agregan como operaciones especializadas de pila.
+

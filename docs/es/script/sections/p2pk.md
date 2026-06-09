@@ -25,3 +25,10 @@ Satoshi usó P2PK en las recompensas de bloque de los primeros años. Hoy está 
 
 > [!TIP]
 > P2PK sigue siendo relevante conceptualmente: `OP_CHECKSIG` es el corazón de casi todos los tipos de salida posteriores.
+
+## Complemento de sección
+
+P2PK bloquea monedas directamente a una llave pública y pide al gastador una firma válida. Es simple e históricamente importante, pero expone la llave pública desde que se crea la salida. Por eso los scripts estándar posteriores prefieren hashes de llaves públicas hasta el momento del gasto.
+
+En implementación, P2PK es útil porque aísla OP_CHECKSIG. Si puedes alimentar OP_CHECKSIG con una firma, una llave pública SEC y el z correcto, ya tienes el núcleo criptográfico necesario para P2PKH y scripts posteriores.
+

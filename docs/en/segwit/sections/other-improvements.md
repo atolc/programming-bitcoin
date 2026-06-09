@@ -23,3 +23,10 @@ print(f"Similar txs per block (max): ~{MAX_BLOCK_WEIGHT // weight}")
 
 > [!TIP]
 > Nodes that do not understand SegWit still see valid transactions: witness fields appear empty and the legacy txid matches what they expect for the classic Merkle tree.
+
+## Section Completion
+
+SegWit also changes block accounting through weight units. Non-witness data counts more heavily than witness data, allowing more effective throughput while keeping old-node compatibility. The witness commitment in the coinbase binds the block to witness data so miners cannot omit or alter it.
+
+Script versioning is another long-term improvement. Versioned witness programs create a cleaner upgrade path for future script systems, which is how later upgrades such as Taproot fit into Bitcoin without replacing the whole transaction format.
+

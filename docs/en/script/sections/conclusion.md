@@ -12,3 +12,10 @@ The essentials:
 - Arbitrary scripts are possible but have size and cost limits.
 
 In **Transaction Creation and Validation** you will sign real UTXOs, compute the digest with `SIGHASH`, and test everything on testnet.
+
+## Section Completion
+
+The core achievement of this chapter is connecting transaction fields to authorization. Transactions identify previous outputs; Script proves the spender is allowed to consume them. Once that separation is clear, P2PKH, P2SH, and SegWit become variations on where the commitment and proof data live.
+
+Before continuing, make sure your Script implementation can parse data pushes, serialize commands, evaluate stack operations, and call signature verification with an external z. The next chapter depends on all four.
+

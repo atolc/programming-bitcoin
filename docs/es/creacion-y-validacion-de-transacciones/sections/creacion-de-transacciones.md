@@ -44,3 +44,10 @@ print(f"script_sig aprox: {script_sig_len} bytes")
 
 > [!TIP]
 > `SIGHASH_ALL` (valor 1) firma todas las entradas y salidas. Otras variantes (`SIGHASH_NONE`, `SIGHASH_SINGLE`, combinadas con `ANYONECANPAY`) permiten contratos más flexibles pero son raras en wallets estándar.
+
+## Complemento de sección
+
+Crear una transacción es un proceso por etapas: elegir UTXO gastables, decidir salida del destinatario y cambio, estimar comisión, construir una transacción sin firmar, firmar cada entrada y serializar los bytes finales. Cada entrada recibe su propia firma porque cada digest de firma compromete un contexto de entrada distinto.
+
+El manejo del cambio es parte de la corrección, no un detalle cosmético de wallet. Si las entradas elegidas superan monto de destino más comisión, el resto debe ser salida de cambio o comisión. Reutilizar dirección de origen o destino para cambio filtra estructura de wallet; se prefieren direcciones nuevas.
+

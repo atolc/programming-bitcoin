@@ -25,3 +25,10 @@ Satoshi used P2PK in block rewards during the first years. Today it is obsolete 
 
 > [!TIP]
 > P2PK remains conceptually relevant: `OP_CHECKSIG` is the heart of almost all later output types.
+
+## Section Completion
+
+P2PK locks coins directly to a public key and asks the spender for a valid signature. It is simple and historically important, but it exposes the public key as soon as the output is created. That is why later standard scripts prefer hashes of public keys until spend time.
+
+Implementation-wise, P2PK is useful because it isolates OP_CHECKSIG. If you can feed OP_CHECKSIG a signature, a SEC public key, and the correct z value, you have the cryptographic core needed for P2PKH and later scripts.
+

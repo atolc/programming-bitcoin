@@ -26,3 +26,10 @@ The **witness program** is the version (0) followed by the program (the hash20).
 
 > [!TIP]
 > p2wpkh only accepts compressed public keys (33 bytes). An uncompressed key produces a different hash and will not match the expected address.
+
+## Section Completion
+
+P2WPKH keeps the familiar public-key-hash spending condition but moves the unlocking data into the witness. The script_pubkey is a witness program: version 0 plus a 20-byte hash. The spending transaction has an empty script_sig and a witness stack containing signature and public key.
+
+For signing, SegWit uses a different digest algorithm that includes the previous output amount. This prevents certain offline-signing ambiguities and avoids the quadratic hashing problem of legacy signature hashing.
+

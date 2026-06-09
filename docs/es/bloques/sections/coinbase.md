@@ -30,3 +30,10 @@ Desde **BIP34**, los mineros incluyen la altura del bloque al inicio del `script
 
 > [!TIP]
 > El `script_sig` coinbase es el único lugar donde un minero puede escribir un mensaje arbitrario (como el titular del Times en el bloque génesis). No afecta la validación económica, pero debe respetar las reglas de tamaño del bloque.
+
+## Complemento de sección
+
+La transacción coinbase es la única transacción de un bloque que no gasta una salida anterior. Crea monedas nuevas hasta el subsidio actual más las comisiones de las transacciones incluidas. Su hash previo son ceros y su índice previo es 0xffffffff, lo que permite reconocerla al parsear.
+
+BIP34 añade la altura del bloque al inicio del script_sig coinbase. Esto evita txids coinbase duplicados entre bloques y da a los parsers un campo relevante de consenso para extraer. Los datos coinbase pueden incluir mensajes del minero, pero siguen teniendo restricciones de tamaño y validez.
+

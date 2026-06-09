@@ -21,3 +21,10 @@ print("Recovered:", recovered)
 
 > [!TIP]
 > Most modern transactions use version 2. When parsing, always read exactly 4 bytes and convert with little-endian.
+
+## Section Completion
+
+The version field is small, but it is consensus-significant. Version 1 represents the original transaction format, while version 2 is associated with relative locktime behavior from BIP68 and CHECKSEQUENCEVERIFY from BIP112. A parser should preserve the raw 4-byte little-endian integer even if the current lesson only prints it.
+
+In practice, version does not tell you how many inputs or outputs exist; varints do that. Treat version as a rule selector, not as a schema selector. Future validation logic can inspect it when deciding whether sequence values have relative-lock semantics.
+

@@ -32,3 +32,10 @@ El nodo solo aplica el filtro a conexiones que lo hayan cargado explícitamente.
 
 > [!TIP]
 > Regenera el filtro periódicamente o usa `filterclear` + `filterload` para limitar cuánto puede aprender un observador sobre tu conjunto de direcciones.
+
+## Complemento de sección
+
+Cargar un filtro cambia cómo el peer trata tu conexión. Después de filterload, el peer puede evaluar transacciones y bloques contra tu filtro y enviar respuestas filtradas. Filteradd actualiza el filtro incrementalmente; filterclear lo elimina de la conexión.
+
+El filtro serializado es un campo de bits empaquetado en bytes. Cuida el orden de bits dentro de cada byte. Una cadena binaria visualmente correcta puede serializar mal si las posiciones se empaquetan en la dirección equivocada.
+

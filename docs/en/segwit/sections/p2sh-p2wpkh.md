@@ -24,3 +24,10 @@ The node first resolves p2sh (checks that `hash160(redeem_script)` matches) and 
 
 > [!TIP]
 > Nesting in p2sh uses more on-chain bytes than native p2wpkh. Use `bc1q` when the recipient supports it.
+
+## Section Completion
+
+P2SH-P2WPKH wraps a native witness program inside a P2SH redeem script. The funding output looks like P2SH to old wallets, while upgraded nodes recognize that the redeem script is OP_0 <20-byte-hash> and then validate witness data.
+
+The spend has two places for data: script_sig reveals only the redeem script, and witness provides signature plus public key. If script_sig contains anything else, validation fails for this template.
+

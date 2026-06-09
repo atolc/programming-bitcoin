@@ -35,3 +35,10 @@ Para wallets SPV, el filtro representa las direcciones o scripts que te interesa
 
 > [!TIP]
 > A más elementos insertados o menos bits, sube la tasa de falsos positivos: recibirás transacciones ajenas y gastarás más ancho de banda.
+
+## Complemento de sección
+
+Un filtro Bloom intercambia certeza por compacidad. Los elementos insertados activan varios bits; la consulta revisa esos bits. Un bit en cero prueba ausencia, mientras que todos los bits activos solo sugieren presencia. Este error de un solo lado sirve a wallets: pueden pedir posibles coincidencias y descartar falsos positivos localmente.
+
+La privacidad es sutil. Los falsos positivos esconden intereses reales entre coincidencias ajenas, pero filtros repetidos, malos parámetros o patrones únicos de direcciones aún filtran información. Bloom reduce exposición; no da anonimato fuerte.
+

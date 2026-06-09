@@ -23,3 +23,10 @@ print(f"Tx similares por bloque (max): ~{MAX_BLOCK_WEIGHT // weight}")
 
 > [!TIP]
 > Los nodos que no entienden SegWit siguen viendo transacciones válidas: los campos witness parecen vacíos y el txid legacy coincide con lo que esperan para el árbol Merkle clásico.
+
+## Complemento de sección
+
+SegWit también cambia la contabilidad de bloques mediante unidades de peso. Los datos no witness pesan más que los witness, permitiendo más rendimiento efectivo mientras conserva compatibilidad con nodos antiguos. El compromiso witness en coinbase ata el bloque a los datos witness para que mineros no puedan omitirlos o alterarlos.
+
+El versionado de scripts es otra mejora a largo plazo. Los programas witness versionados crean una ruta más limpia para futuros sistemas de script, que es como mejoras posteriores como Taproot encajan en Bitcoin sin reemplazar todo el formato de transacción.
+

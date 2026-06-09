@@ -31,3 +31,10 @@ print(f"Filtro: {filter_params['size']} bytes, {filter_params['nHashFuncs']} fun
 
 > [!TIP]
 > BIP37 ha perdido popularidad frente a BIP157/158 (filtros compactos por bloque) porque un nodo malicioso puede inferir direcciones correlacionando filtros. Aun así, entender BIP37 es clave para leer código legacy y el libro.
+
+## Complemento de sección
+
+BIP37 define cómo clientes ligeros comunican filtros Bloom a peers. Los campos clave son bytes del filtro, número de funciones hash, tweak y flags de actualización. Los peers usan esos parámetros para probar transacciones y decidir qué datos filtrados devolver.
+
+Las funciones hash se derivan de Murmur3 con semillas deterministas basadas en índice de función y tweak. Las implementaciones deben igualar esa derivación exactamente, o cliente y peer probarán posiciones distintas y el filtro se comportará mal.
+

@@ -26,3 +26,10 @@ El **witness program** es la versión (0) seguida del programa (el hash20). Al g
 
 > [!TIP]
 > p2wpkh solo acepta claves públicas comprimidas (33 bytes). Una clave sin comprimir produce un hash distinto y no coincide con la dirección esperada.
+
+## Complemento de sección
+
+P2WPKH conserva la condición familiar de hash de llave pública, pero mueve los datos de desbloqueo al witness. El script_pubkey es un programa witness: versión 0 más hash de 20 bytes. La transacción de gasto tiene script_sig vacío y una pila witness con firma y llave pública.
+
+Para firmar, SegWit usa un algoritmo de digest distinto que incluye el monto de la salida previa. Esto evita ambigüedades de firma offline y el problema de hashing cuadrático del método heredado.
+

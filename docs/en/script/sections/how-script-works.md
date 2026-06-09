@@ -28,3 +28,10 @@ print("Order:", " -> ".join(full[:3]) + " -> ...")
 
 > [!TIP]
 > Nodes execute the script in an isolated environment with an operation limit (cost per opcode). A script that is too long or too expensive is rejected before being confirmed in a block.
+
+## Section Completion
+
+Legacy validation conceptually joins script_sig and script_pubkey, then evaluates the combined command stream. The split is economic: the output creator chooses the condition, and the spender supplies the data that satisfies it. P2PKH is the canonical example: signature and public key unlock a hash-and-signature condition.
+
+This section should also make clear why Script is not a general-purpose programming language. It is deliberately constrained so validation is fast and predictable. The goal is authorization, not computation for its own sake.
+

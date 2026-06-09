@@ -28,3 +28,10 @@ print("Dirección mainnet empieza por: 3")
 
 > [!TIP]
 > El prefijo Base58Check para P2SH en mainnet es `0x05` (direcciones que empiezan por `3`). En testnet es `0xc4`.
+
+## Complemento de sección
+
+P2SH mueve la complejidad del script desde la transacción de fondeo hacia la transacción de gasto. La salida de fondeo compromete solo HASH160(redeem_script). El gasto revela el redeem script y demuestra que hashea al valor comprometido antes de ejecutarlo. Esto simplifica el trabajo del pagador y mantiene menor el conjunto UTXO.
+
+El intercambio es responsabilidad para el receptor. Las llaves privadas no bastan; la wallet debe conservar el redeem script. Sin él, el gastador no puede demostrar qué script fue comprometido por el hash P2SH.
+

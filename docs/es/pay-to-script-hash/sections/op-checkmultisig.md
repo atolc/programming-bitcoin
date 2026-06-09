@@ -25,3 +25,10 @@ print("Resultado: 1 si >= 2 firmas válidas")
 
 > [!TIP]
 > Este comportamiento es **intencionalmente preservado** por compatibilidad hacia atrás. Cualquier implementación moderna debe incluir el `OP_0` dummy al firmar multisig.
+
+## Complemento de sección
+
+OP_CHECKMULTISIG verifica que suficientes firmas correspondan a suficientes llaves públicas en orden. No empareja simplemente cada firma con la llave del mismo índice; recorre firmas y llaves, permitiendo saltar llaves no usadas pero preservando el orden. Así una política m-de-n puede tener éxito con cualquier subconjunto válido.
+
+El elemento dummy extra es un fósil de consenso. Existe porque la implementación original sacaba un elemento más de lo previsto. El código moderno debe reproducir exactamente ese comportamiento. En script_sig aparece como OP_0 antes de las firmas.
+

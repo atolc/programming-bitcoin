@@ -21,3 +21,10 @@ SPV assumes the chain with the most accumulated work is the correct one. It does
 
 > [!TIP]
 > SPV trusts that miners do not collude to hide transactions included in blocks they do show you. For large amounts, many wallets query several nodes or use your own full node.
+
+## Section Completion
+
+SPV exists because storing and validating every full block is expensive for small devices. A lightweight client downloads headers, verifies proof of work, and asks for evidence that relevant transactions are included. This is much stronger than trusting a server response, but weaker than full validation.
+
+The security assumption is precise: SPV trusts that the chain with sufficient proof of work is economically difficult to fake, but it does not validate every transaction rule inside each block. It verifies inclusion, not complete block correctness.
+

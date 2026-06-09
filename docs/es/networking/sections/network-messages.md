@@ -33,3 +33,10 @@ print(f"Sobre minimo: {len(envelope)} bytes")
 
 > [!TIP]
 > El `magic` evita conectar accidentalmente a otra red o a un servicio TCP que no sea Bitcoin. Testnet usa `0x0b110907`; regtest usa `0xdab5bffa`.
+
+## Complemento de sección
+
+Un mensaje de red no es solo un payload; es un payload envuelto con metadatos suficientes para que los peers lo delimiten y verifiquen. Los magic bytes identifican la red, los comandos el parser a usar, la longitud indica cuántos bytes leer y el checksum detecta datos corruptos o enviados a la red equivocada.
+
+El campo command mide 12 bytes y se rellena con nulos, así que los serializadores deben rellenar y los parsers deben quitar padding con cuidado. Un parser correcto rechaza magic inesperado, checksums incorrectos y longitudes que no coinciden con el stream disponible.
+

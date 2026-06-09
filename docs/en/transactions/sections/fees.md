@@ -22,3 +22,10 @@ Miners prioritize transactions with a higher **fee rate per vbyte** (sat/vB). Si
 
 > [!TIP]
 > If $\sum \text{outputs} > \sum \text{inputs}$, the transaction is invalid. If the fee is excessively high, nodes still accept it; if it is too low, it may remain in the mempool indefinitely.
+
+## Section Completion
+
+Fees are not stored in a transaction. They are inferred by subtracting total output value from total input value. Since input values come from previous outputs, fee calculation is impossible from the current transaction alone unless you already have the referenced UTXOs.
+
+A transaction with outputs greater than inputs is invalid; a transaction with an excessive fee may be valid but economically mistaken. Wallet software therefore has two jobs: consensus validation and user-safety checks. The first rejects impossible value creation; the second protects the user from accidentally burning too much value as fees.
+

@@ -33,3 +33,10 @@ A **Merkle proof** for transaction $T$ consists of the sibling hashes along the 
 
 > [!TIP]
 > The order of transactions in the block matters: your transaction's position determines which sibling hashes you need in the proof.
+
+## Section Completion
+
+Merkle trees compress many transaction hashes into one root. Parent hashes are computed by concatenating two child hashes and applying HASH256. When a level has an odd number of hashes, the last hash is duplicated so every parent has two children.
+
+The root is sensitive to both transaction content and order. Reordering transactions changes pairings and therefore changes the root. This is why a block header can commit to an entire ordered transaction list with only 32 bytes.
+

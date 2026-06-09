@@ -14,6 +14,37 @@ interface MarkdownRendererProps {
   content: string;
 }
 
+const getKatexAnnotation = (node: unknown): string => {
+  if (!node || typeof node !== "object") return "";
+  if (
+    "type" in node &&
+    node.type === "annotation" &&
+    "props" in node &&
+    node.props &&
+    typeof node.props === "object" &&
+    "encoding" in node.props &&
+    (node.props as { encoding?: string }).encoding === "application/x-tex" &&
+    "children" in node.props
+  ) {
+    return getNodeText((node.props as { children: unknown }).children);
+  }
+  if (Array.isArray(node)) {
+    for (const child of node) {
+      const ann = getKatexAnnotation(child);
+      if (ann) return ann;
+    }
+  }
+  if (
+    "props" in node &&
+    node.props &&
+    typeof node.props === "object" &&
+    "children" in node.props
+  ) {
+    return getKatexAnnotation((node.props as { children: unknown }).children);
+  }
+  return "";
+};
+
 const getNodeText = (node: unknown): string => {
   if (typeof node === "string") return node;
   if (Array.isArray(node)) return node.map(getNodeText).join("");
@@ -22,10 +53,16 @@ const getNodeText = (node: unknown): string => {
     typeof node === "object" &&
     "props" in node &&
     node.props &&
-    typeof node.props === "object" &&
-    "children" in node.props
+    typeof node.props === "object"
   ) {
-    return getNodeText((node.props as { children: unknown }).children);
+    const props = node.props as { className?: string; children?: unknown };
+    const className = props.className;
+    if (typeof className === "string" && className.split(" ").includes("katex")) {
+      return getKatexAnnotation(node);
+    }
+    if ("children" in props) {
+      return getNodeText(props.children);
+    }
   }
   return "";
 };

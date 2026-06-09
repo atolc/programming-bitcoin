@@ -21,6 +21,7 @@ import { parseToc } from "../lib/toc";
 import { chapterPath, homePath } from "../lib/routes";
 import { markChapterRead, getReadChapters } from "../lib/readProgress";
 import { cn } from "../lib/utils";
+import { LatexText } from "../components/LatexText";
 
 const SANDBOX_CHAPTERS = new Set([1, 2, 3]);
 
@@ -171,7 +172,7 @@ function ChapterLayoutInner() {
       <span>Capítulo {activeChapter.number}</span>
       <span className="text-stone-300 dark:text-stone-700">/</span>
       <span className="text-stone-800 dark:text-stone-200 max-w-[200px] truncate">
-        {activeSectionTitle || activeChapter.title}
+        <LatexText text={activeSectionTitle || activeChapter.title} />
       </span>
     </>
   );

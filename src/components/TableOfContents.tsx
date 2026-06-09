@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { parseToc, TocItem } from "../lib/toc";
 import { chapterPath } from "../lib/routes";
+import { LatexText } from "./LatexText";
 
 export function TableOfContents({
   content,
@@ -76,7 +77,7 @@ export function TableOfContents({
                   : "text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200"
               }`}
             >
-              {item.text}
+              <LatexText text={item.text} />
             </a>
           </li>
         ))}

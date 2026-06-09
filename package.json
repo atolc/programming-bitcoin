@@ -9,10 +9,11 @@
     "split-sections": "node scripts/split-sections.mjs",
     "generate:manifest": "node scripts/generate-manifest.mjs",
     "bootstrap:en": "node scripts/bootstrap-en-docs.mjs",
-    "build": "node scripts/validate-math.mjs && node scripts/validate-locales.mjs && tsc -b && vite build && node scripts/copy-static.mjs",
+    "build": "node scripts/validate-math.mjs && node scripts/validate-locales.mjs && node scripts/validate-chapters.mjs && tsc -b && vite build && node scripts/copy-static.mjs",
     "normalize:math": "node scripts/normalize-math.mjs",
     "validate:math": "node scripts/validate-math.mjs",
     "validate:locales": "node scripts/validate-locales.mjs",
+    "validate:chapters": "node scripts/validate-chapters.mjs",
     "preview": "vite preview",
     "deploy": "pnpm build && gh-pages -d dist"
   },

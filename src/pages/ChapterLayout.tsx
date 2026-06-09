@@ -165,6 +165,64 @@ function ChapterLayoutInner() {
   const nextChapter =
     activeIndex < chapters.length - 1 ? chapters[activeIndex + 1] : null;
 
+  const activeSectionIndex = useMemo(() => {
+    if (!activeSection) return -1;
+    return activeChapter.sections.findIndex((s) => s.id === activeSection.id);
+  }, [activeChapter.sections, activeSection]);
+
+  const prevNav = useMemo(() => {
+    if (activeChapter.sections.length === 0 || activeSectionIndex === -1 || activeSectionIndex === 0) {
+      return prevChapter
+        ? {
+            label: "Capítulo Anterior",
+            title: `Cap. ${prevChapter.number}: ${prevChapter.title}`,
+            path: chapterPath(prevChapter.id),
+          }
+        : null;
+    }
+    const prevSec = activeChapter.sections[activeSectionIndex - 1];
+    return {
+      label: "Sección Anterior",
+      title: prevSec.title,
+      path: chapterPath(activeChapter.id, prevSec.id),
+    };
+  }, [activeChapter, activeSectionIndex, prevChapter]);
+
+  const nextNav = useMemo(() => {
+    if (activeChapter.sections.length === 0) {
+      return nextChapter
+        ? {
+            label: "Siguiente Capítulo",
+            title: `Cap. ${nextChapter.number}: ${nextChapter.title}`,
+            path: chapterPath(nextChapter.id),
+          }
+        : null;
+    }
+    if (activeSectionIndex === -1) {
+      const firstSec = activeChapter.sections[0];
+      return {
+        label: "Siguiente Sección",
+        title: firstSec.title,
+        path: chapterPath(activeChapter.id, firstSec.id),
+      };
+    }
+    if (activeSectionIndex === activeChapter.sections.length - 1) {
+      return nextChapter
+        ? {
+            label: "Siguiente Capítulo",
+            title: `Cap. ${nextChapter.number}: ${nextChapter.title}`,
+            path: chapterPath(nextChapter.id),
+          }
+        : null;
+    }
+    const nextSec = activeChapter.sections[activeSectionIndex + 1];
+    return {
+      label: "Siguiente Sección",
+      title: nextSec.title,
+      path: chapterPath(activeChapter.id, nextSec.id),
+    };
+  }, [activeChapter, activeSectionIndex, nextChapter]);
+
   if (invalidSection) {
     return <Navigate to={chapterPath(activeChapter.id)} replace />;
   }
@@ -182,7 +240,16 @@ function ChapterLayoutInner() {
       </BreadcrumbItem>
       <BreadcrumbSeparator>/</BreadcrumbSeparator>
       <BreadcrumbItem>
-        <BreadcrumbPage>Capítulo {activeChapter.number}</BreadcrumbPage>
+        {activeSection ? (
+          <BreadcrumbLink
+            render={<Link to={chapterPath(activeChapter.id)} />}
+            className="hover:text-primary"
+          >
+            Capítulo {activeChapter.number}
+          </BreadcrumbLink>
+        ) : (
+          <BreadcrumbPage>Capítulo {activeChapter.number}</BreadcrumbPage>
+        )}
       </BreadcrumbItem>
       <BreadcrumbSeparator>/</BreadcrumbSeparator>
       <BreadcrumbItem>
@@ -359,22 +426,22 @@ function ChapterLayoutInner() {
               </div>
 
               <div className="mt-16 flex flex-wrap gap-4 items-center justify-between border-t border-border pt-8 pb-12">
-                {prevChapter ? (
+                {prevNav ? (
                   <Card
                     className="group max-w-[280px] w-full hover:border-primary transition-all duration-200"
                     render={
                       <button
                         type="button"
-                        onClick={() => navigate(chapterPath(prevChapter.id))}
+                        onClick={() => navigate(prevNav.path)}
                       />
                     }
                   >
                     <CardContent className="flex flex-col items-start gap-1 p-4.5 text-left">
                       <span className="inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider text-muted-foreground group-hover:text-primary transition-colors">
-                        <ChevronLeft className="size-3.5" /> Anterior
+                        <ChevronLeft className="size-3.5" /> {prevNav.label}
                       </span>
                       <span className="text-sm font-semibold text-foreground truncate w-full">
-                        Cap. {prevChapter.number}: {prevChapter.title}
+                        <LatexText text={prevNav.title} />
                       </span>
                     </CardContent>
                   </Card>
@@ -382,22 +449,22 @@ function ChapterLayoutInner() {
                   <div className="w-full max-w-[280px]" />
                 )}
 
-                {nextChapter ? (
+                {nextNav ? (
                   <Card
                     className="group max-w-[280px] w-full hover:border-primary transition-all duration-200"
                     render={
                       <button
                         type="button"
-                        onClick={() => navigate(chapterPath(nextChapter.id))}
+                        onClick={() => navigate(nextNav.path)}
                       />
                     }
                   >
                     <CardContent className="flex flex-col items-end gap-1 p-4.5 text-right">
                       <span className="inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider text-muted-foreground group-hover:text-primary transition-colors">
-                        Siguiente <ChevronRight className="size-3.5" />
+                        {nextNav.label} <ChevronRight className="size-3.5" />
                       </span>
                       <span className="text-sm font-semibold text-foreground truncate w-full">
-                        Cap. {nextChapter.number}: {nextChapter.title}
+                        <LatexText text={nextNav.title} />
                       </span>
                     </CardContent>
                   </Card>

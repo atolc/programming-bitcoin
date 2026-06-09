@@ -53,17 +53,23 @@ export async function runPython(
   pyodide.setStdout({ batched: (msg) => { stdout += msg; } });
   pyodide.setStderr({ batched: (msg) => { stderr += msg; } });
 
-  const runTask = pyodide.runPythonAsync(code);
+  const localNamespace = pyodide.runPython("{}");
+  const runTask = pyodide.runPythonAsync(code, { globals: localNamespace });
 
   const timeout = new Promise<never>((_, reject) => {
     setTimeout(() => reject(new Error(i18n.t("pyodide.timeout"))), timeoutMs);
   });
 
   try {
-    await Promise.race([runTask, timeout]);
+    const result = await Promise.race([runTask, timeout]);
+    if (result && typeof result.destroy === "function") {
+      result.destroy();
+    }
     return { stdout, stderr };
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
     return { stdout, stderr, error: message };
+  } finally {
+    localNamespace.destroy();
   }
 }

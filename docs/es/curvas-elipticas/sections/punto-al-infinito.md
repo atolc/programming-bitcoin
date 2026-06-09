@@ -37,8 +37,8 @@ class Point:
       return "Point(infinito)"
     return f"Point({self.x}, {self.y})"
 
-O = Point(None, None, 0, 7)
-P = Point(3, 8, 0, 7)
+O = Point(None, None, 5, 7)
+P = Point(-1, -1, 5, 7)
 print(O)
 print(P)
 print("P == P?", P == P)

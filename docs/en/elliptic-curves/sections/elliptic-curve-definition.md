@@ -14,3 +14,14 @@ In cryptography we do not use the continuous curve from the book's figure, but a
 
 > [!TIP]
 > Think of an elliptic curve as a set of points $(x, y)$ that satisfy the equation, plus a special point called the **point at infinity** ($\mathcal{O}$).
+
+### What the Figures Are Teaching
+
+The continuous graphs in the book are there to build geometric intuition:
+
+- A line usually intersects a nonsingular cubic curve in three points.
+- Because the curve is symmetric over the $x$-axis, reflecting the third intersection gives a stable addition rule.
+- Some curves are connected and some are split into two visible pieces, but the same algebraic equation governs both.
+- The condition $4a^3 + 27b^2 \neq 0$ prevents cusps and self-intersections. Without that condition, the point-addition law breaks down.
+
+For Chapter 2, stay in the real-number picture long enough to understand slopes and reflections. In Chapter 3, the same formulas are moved into finite fields.

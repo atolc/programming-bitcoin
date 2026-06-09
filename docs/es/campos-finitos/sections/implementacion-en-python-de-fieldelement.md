@@ -75,3 +75,72 @@ Utilizamos el exponente de tipo entero y aplicamos el módulo $p-1$ al exponente
 ```
 
 ---
+
+### Clase completa del capítulo 1
+
+El libro construye esta clase por etapas: validación, igualdad, suma, resta, multiplicación, exponenciación y división. Aquí tienes la versión completa en un solo lugar para ejecutar todo el modelo de objetos.
+
+```python-sandbox
+class FieldElement:
+    def __init__(self, num, prime):
+        if num < 0 or num >= prime:
+            raise ValueError(f"{num} no está en el rango 0 a {prime - 1}")
+        self.num = num
+        self.prime = prime
+
+    def __repr__(self):
+        return f"FieldElement_{self.prime}({self.num})"
+
+    def __eq__(self, other):
+        if other is None:
+            return False
+        return self.num == other.num and self.prime == other.prime
+
+    def __ne__(self, other):
+        return not (self == other)
+
+    def _check_field(self, other):
+        if self.prime != other.prime:
+            raise TypeError("No se puede operar con dos campos distintos")
+
+    def __add__(self, other):
+        self._check_field(other)
+        return self.__class__((self.num + other.num) % self.prime, self.prime)
+
+    def __sub__(self, other):
+        self._check_field(other)
+        return self.__class__((self.num - other.num) % self.prime, self.prime)
+
+    def __mul__(self, other):
+        self._check_field(other)
+        return self.__class__((self.num * other.num) % self.prime, self.prime)
+
+    def __pow__(self, exponent):
+        reduced = exponent % (self.prime - 1)
+        return self.__class__(pow(self.num, reduced, self.prime), self.prime)
+
+    def __truediv__(self, other):
+        self._check_field(other)
+        inverse = pow(other.num, self.prime - 2, self.prime)
+        return self.__class__((self.num * inverse) % self.prime, self.prime)
+
+
+a = FieldElement(7, 13)
+b = FieldElement(12, 13)
+print("a + b =", a + b)
+print("a - b =", a - b)
+print("a * b =", a * b)
+print("a ** -3 =", a ** -3)
+print("a / b =", a / b)
+```
+
+### Cobertura de práctica
+
+Usa esta lista para confirmar que puedes reproducir todas las operaciones del capítulo 1:
+
+- Reducir enteros positivos y negativos dentro de $F_p$ con aritmética modular.
+- Explicar por qué $F_p$ debe tener orden primo para que todo elemento distinto de cero tenga inverso.
+- Calcular suma, resta, multiplicación, potencias y división a mano en un campo pequeño como $F_{19}$.
+- Usar el pequeño teorema de Fermat para reemplazar la división por multiplicación con $b^{p-2}$.
+- Confirmar que exponentes grandes y negativos pueden reducirse módulo $p-1$.
+- Extender `FieldElement` solo con operaciones que preserven el mismo primo del campo.

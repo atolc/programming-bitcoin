@@ -37,3 +37,28 @@ print("5G =", scalar_mult(5, G))
 ```
 
 La dificultad del problema del logaritmo discreto en curvas elípticas hace que conocer $k$ a partir de $kG$ sea computacionalmente inviable.
+
+### Por qué importa double-and-add
+
+La suma repetida es demasiado lenta cuando el escalar es una llave privada de 256 bits. Double-and-add usa la representación binaria de $k$, así que necesita como máximo una duplicación por bit y una suma por cada bit `1`.
+
+Por ejemplo, $13P$ es:
+
+$$13P = 8P + 4P + P$$
+
+porque $13$ es `1101` en binario. Es la misma idea de la exponenciación rápida: construir potencias duplicando y sumar solo las piezas marcadas por los bits.
+
+```python-sandbox
+def bits(n):
+    out = []
+    power = 1
+    while n:
+        if n & 1:
+            out.append(power)
+        power *= 2
+        n >>= 1
+    return out
+
+print("13P usa:", bits(13))
+print("201P usa:", bits(201))
+```

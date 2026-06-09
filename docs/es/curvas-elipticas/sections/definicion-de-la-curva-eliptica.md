@@ -14,3 +14,14 @@ En criptografía no usamos la curva continua de la figura del libro, sino una ve
 
 > [!TIP]
 > Piensa en la curva elíptica como un conjunto de puntos $(x, y)$ que satisfacen la ecuación, más un punto especial llamado **punto al infinito** ($\mathcal{O}$).
+
+### Qué enseñan las figuras
+
+Las gráficas continuas del libro sirven para construir intuición geométrica:
+
+- Una línea suele intersectar una curva cúbica no singular en tres puntos.
+- Como la curva es simétrica respecto al eje $x$, reflejar la tercera intersección produce una regla de suma estable.
+- Algunas curvas se ven conectadas y otras separadas en dos piezas, pero la misma ecuación algebraica gobierna ambos casos.
+- La condición $4a^3 + 27b^2 \neq 0$ evita cúspides y auto-intersecciones. Sin esa condición, la ley de suma de puntos deja de comportarse bien.
+
+En el capítulo 2 conviene quedarse en la imagen de números reales lo suficiente para entender pendientes y reflejos. En el capítulo 3, las mismas fórmulas se trasladan a campos finitos.

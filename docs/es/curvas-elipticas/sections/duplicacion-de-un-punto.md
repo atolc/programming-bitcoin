@@ -20,3 +20,24 @@ P = (3, 8)
 R = double_point(P)
 print(f"2P = {R}")
 ```
+
+### La excepción de la tangente vertical
+
+Si $y_1 = 0$, la tangente es vertical. En ese caso, duplicar el punto da el punto al infinito:
+
+$$2P = \mathcal{O}$$
+
+```python-sandbox
+def double_with_exception(p, a=0):
+    x1, y1 = p
+    if y1 == 0:
+        return None
+    s = (3 * x1**2 + a) / (2 * y1)
+    x3 = s**2 - 2 * x1
+    y3 = s * (x1 - x3) - y1
+    return (x3, y3)
+
+print("tangente vertical:", double_with_exception((4, 0)))
+```
+
+Este es el último caso especial con números reales antes de reutilizar la misma estructura sobre campos finitos.

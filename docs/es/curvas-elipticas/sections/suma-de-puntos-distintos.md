@@ -29,3 +29,32 @@ Q = (5, 9)
 R = add_points(P, Q)
 print(f"P + Q = {R}")
 ```
+
+### Todos los casos con puntos distintos
+
+Para dos puntos distintos en la misma curva hay tres casos importantes:
+
+- Si uno de los puntos es $\mathcal{O}$, se devuelve el otro punto sin cambios.
+- Si $x_1 = x_2$ y $y_1 = -y_2$, la línea es vertical y la suma es $\mathcal{O}$.
+- Si $x_1 \neq x_2$, se usa la fórmula de la pendiente.
+
+```python-sandbox
+def add_distinct(p1, p2):
+    if p1 is None:
+        return p2
+    if p2 is None:
+        return p1
+    x1, y1 = p1
+    x2, y2 = p2
+    if x1 == x2 and y1 != y2:
+        return None
+    s = (y2 - y1) / (x2 - x1)
+    x3 = s**2 - x1 - x2
+    y3 = s * (x1 - x3) - y1
+    return (x3, y3)
+
+print(add_distinct(None, (3, 7)))
+print(add_distinct((2, 5), (2, -5)))
+```
+
+El libro separa la geometría del código para que los casos especiales sean visibles. Una clase `Point` completa debe representarlos todos.

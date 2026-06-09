@@ -21,3 +21,16 @@ print(f"Points on the curve (excluding infinity): {count}")
 
 > [!TIP]
 > The point at infinity is still the neutral element of the group, even though it has no $(x, y)$ coordinates in the plane.
+
+### From Real Curves to Modular Curves
+
+Over the reals, a line intersects a visible curve. Over $F_p$, there is no smooth line to draw, but the algebra still works because every coordinate operation is reduced modulo $p$.
+
+The practical translation is:
+
+- Replace each integer coordinate with a `FieldElement`.
+- Replace division by multiplication with the modular inverse.
+- Keep the same point-addition formulas from Chapter 2.
+- Treat $\mathcal{O}$ as the identity, exactly as before.
+
+This is the bridge from geometry to cryptography: finite fields make the set of possible points finite, while scalar multiplication remains easy in one direction and hard to reverse.

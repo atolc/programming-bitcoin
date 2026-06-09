@@ -21,3 +21,39 @@ print(f"Signature: r={r}, s={s}")
 
 > [!TIP]
 > The nonce $k$ must **never** be reused or be predictable. A repeated $k$ leaks the private key.
+
+### Verification Equation
+
+Verification rearranges the signature so the verifier can compute a point using only public data:
+
+$$u = z / s \pmod{n}$$
+$$v = r / s \pmod{n}$$
+$$R = uG + vP$$
+
+The signature is valid when the $x$ coordinate of $R$ is congruent to $r$ modulo $n$.
+
+```python-sandbox
+def inv(n, order):
+    return pow(n, order - 2, order)
+
+order = 223
+z = 17
+r = 42
+s = 99
+u = z * inv(s, order) % order
+v = r * inv(s, order) % order
+print("u =", u)
+print("v =", v)
+print("real verification uses: u*G + v*PublicKey")
+```
+
+### Chapter 3 Practice Coverage
+
+You should now be able to:
+
+- Check whether finite-field points satisfy $y^2 = x^3 + 7$.
+- Add and double points using modular inverses.
+- Explain why scalar multiplication is fast but the discrete logarithm is hard.
+- Describe secp256k1's field prime, generator point, and group order.
+- Convert a message digest into the integer $z$ used by ECDSA.
+- Describe signing and verification without needing the private key during verification.

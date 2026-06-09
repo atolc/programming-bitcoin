@@ -75,3 +75,74 @@ We use an integer exponent and apply modulus $p-1$ to the exponent to natively s
 ```
 
 ---
+
+### Complete Chapter 1 Class
+
+The book builds this class incrementally: validation first, then equality, addition,
+subtraction, multiplication, exponentiation, and finally division. Here is the
+complete version in one place so you can run the whole object model at once.
+
+```python-sandbox
+class FieldElement:
+    def __init__(self, num, prime):
+        if num < 0 or num >= prime:
+            raise ValueError(f"{num} is not in field range 0 to {prime - 1}")
+        self.num = num
+        self.prime = prime
+
+    def __repr__(self):
+        return f"FieldElement_{self.prime}({self.num})"
+
+    def __eq__(self, other):
+        if other is None:
+            return False
+        return self.num == other.num and self.prime == other.prime
+
+    def __ne__(self, other):
+        return not (self == other)
+
+    def _check_field(self, other):
+        if self.prime != other.prime:
+            raise TypeError("Cannot operate on two different fields")
+
+    def __add__(self, other):
+        self._check_field(other)
+        return self.__class__((self.num + other.num) % self.prime, self.prime)
+
+    def __sub__(self, other):
+        self._check_field(other)
+        return self.__class__((self.num - other.num) % self.prime, self.prime)
+
+    def __mul__(self, other):
+        self._check_field(other)
+        return self.__class__((self.num * other.num) % self.prime, self.prime)
+
+    def __pow__(self, exponent):
+        reduced = exponent % (self.prime - 1)
+        return self.__class__(pow(self.num, reduced, self.prime), self.prime)
+
+    def __truediv__(self, other):
+        self._check_field(other)
+        inverse = pow(other.num, self.prime - 2, self.prime)
+        return self.__class__((self.num * inverse) % self.prime, self.prime)
+
+
+a = FieldElement(7, 13)
+b = FieldElement(12, 13)
+print("a + b =", a + b)
+print("a - b =", a - b)
+print("a * b =", a * b)
+print("a ** -3 =", a ** -3)
+print("a / b =", a / b)
+```
+
+### Practice Coverage
+
+Use this checklist to verify you can reproduce every operation from Chapter 1:
+
+- Reduce positive and negative integers into $F_p$ with modulo arithmetic.
+- Explain why $F_p$ must have prime order for every nonzero element to have an inverse.
+- Compute addition, subtraction, multiplication, powers, and division by hand in a small field such as $F_{19}$.
+- Use Fermat's little theorem to replace division by multiplication with $b^{p-2}$.
+- Confirm that large and negative exponents can be reduced modulo $p-1$.
+- Extend `FieldElement` only with operations that preserve the field prime.

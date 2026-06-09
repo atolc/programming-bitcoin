@@ -37,3 +37,28 @@ print("5G =", scalar_mult(5, G))
 ```
 
 The difficulty of the elliptic curve discrete logarithm problem makes it computationally infeasible to learn $k$ from $kG$.
+
+### Why Double-and-Add Matters
+
+Repeated addition is too slow when the scalar is a 256-bit private key. Double-and-add uses the binary representation of $k$, so it needs at most one doubling per bit and one addition for each `1` bit.
+
+For example, $13P$ is:
+
+$$13P = 8P + 4P + P$$
+
+because $13$ is `1101` in binary. This is the same idea as fast exponentiation: build powers by doubling, then add only the pieces requested by the bits.
+
+```python-sandbox
+def bits(n):
+    out = []
+    power = 1
+    while n:
+        if n & 1:
+            out.append(power)
+        power *= 2
+        n >>= 1
+    return out
+
+print("13P uses:", bits(13))
+print("201P uses:", bits(201))
+```

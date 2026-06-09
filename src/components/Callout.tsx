@@ -1,3 +1,4 @@
+import React from "react";
 import { AlertCircle, Info, Lightbulb, TriangleAlert } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import {
@@ -6,6 +7,7 @@ import {
   AlertTitle,
 } from "@/components/ui/alert";
 import { cn } from "../lib/utils";
+import { LatexText } from "./LatexText";
 
 type CalloutVariant = "important" | "tip" | "warning" | "note";
 
@@ -47,6 +49,33 @@ export function parseCallout(text: string): { variant: CalloutVariant; body: str
   return { variant, body: match[2].trim() };
 }
 
+function renderLatexInChildren(children: React.ReactNode): React.ReactNode {
+  return React.Children.map(children, (child) => {
+    if (typeof child === "string") {
+      return <LatexText text={child} />;
+    }
+    if (typeof child === "number") {
+      return String(child);
+    }
+    if (React.isValidElement(child)) {
+      const element = child as React.ReactElement<any>;
+      if (
+        element.props &&
+        typeof element.props === "object" &&
+        "children" in element.props &&
+        element.props.children !== undefined
+      ) {
+        return React.cloneElement(
+          element,
+          undefined,
+          renderLatexInChildren(element.props.children as React.ReactNode),
+        );
+      }
+    }
+    return child;
+  });
+}
+
 export function Callout({
   variant,
   children,
@@ -68,7 +97,7 @@ export function Callout({
         {t(config.labelKey)}
       </AlertTitle>
       <AlertDescription className="text-sm leading-relaxed text-foreground [&>p]:m-0">
-        {children}
+        {renderLatexInChildren(children)}
       </AlertDescription>
     </Alert>
   );

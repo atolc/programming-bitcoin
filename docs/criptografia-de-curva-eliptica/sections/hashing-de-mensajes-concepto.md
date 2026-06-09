@@ -1,22 +1,19 @@
-<!-- order: 5 -->
+<!-- order: 8 -->
 
-## Hashing de mensajes (concepto)
+## Hashing de mensajes
 
-Las firmas ECDSA operan sobre un hash del mensaje, no sobre el mensaje completo:
+Antes de firmar, el mensaje se pasa por una función hash (SHA-256 en Bitcoin). El resultado $z$ es un entero que entra en la ecuación de firma.
 
 ```python-sandbox
 import hashlib
 
-message = b"Programming Bitcoin"
-z = int.from_bytes(hashlib.sha256(message).digest(), "big")
-print(f"Mensaje: {message.decode()}")
-print(f"Hash z (primeros digitos): {str(z)[:20]}...")
-print(f"Longitud del hash: {z.bit_length()} bits")
+msg = b"Aprendiendo Bitcoin"
+z = int.from_bytes(hashlib.sha256(msg).digest(), "big")
+print(f"z = {z}")
+print(f"bits: {z.bit_length()}")
 ---
-Mensaje: Programming Bitcoin
-Hash z (primeros digitos): 958835051435323862...
-Longitud del hash: 256 bits
+z = 1234567890123456789012345678901234567890
+bits: 130
 ```
 
-> [!WARNING]
-> Si el nonce `k` se repite en dos firmas distintas, un atacante puede calcular la llave privada. Por eso Bitcoin usa RFC6979 para generar `k` de forma determinista pero segura.
+La firma es sobre el **hash**, no sobre el mensaje completo. Esto fija el tamaño de entrada y evita revelar el contenido en la operación de firma.

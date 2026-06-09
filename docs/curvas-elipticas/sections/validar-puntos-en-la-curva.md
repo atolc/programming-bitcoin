@@ -2,9 +2,9 @@
 
 ## Validar puntos en la curva
 
-Para la curva `y^2 = x^3 + ax + b`, un punto `(x, y)` es valido solo si sus coordenadas satisfacen la ecuacion exactamente.
+Para la curva $y^2 = x^3 + ax + b$, un punto $(x, y)$ es válido solo si sus coordenadas satisfacen la ecuación exactamente.
 
-Probemos con la curva `y^2 = x^3 + 5x + 7` (similar a secp256k1 con `a=0`, `b=7`):
+Probemos con la curva $y^2 = x^3 + 5x + 7$ (similar a secp256k1 con $a=0$, $b=7$):
 
 ```python-sandbox
 def on_curve(x, y, a=0, b=7):
@@ -17,14 +17,13 @@ G = (2, 5) en curva? False
 (3, 7) en curva? False
 ```
 
-Encontremos un punto valido probando valores:
+Encontremos un punto válido probando valores:
 
 ```python-sandbox
 def on_curve(x, y, a=0, b=7):
     return y * y == x**3 + a * x + b
 
 for x in range(1, 10):
-    rhs = x**3 + 7
     for y in range(0, 20):
         if on_curve(x, y):
             print(f"Punto valido: ({x}, {y})")
@@ -36,4 +35,4 @@ Punto valido: (5, 14)
 ```
 
 > [!TIP]
-> Dos puntos con la misma `x` pero `y` distintos son inversos aditivos: su suma es el punto al infinito.
+> Dos puntos con la misma $x$ pero $y$ distintos son inversos aditivos: su suma es el punto al infinito.

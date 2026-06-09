@@ -1,5 +1,6 @@
 import ReactMarkdown, { Components } from "react-markdown";
 import { CodeBlock } from "./CodeBlock";
+import { CodeSandbox } from "./CodeSandbox";
 import { slugify } from "../lib/toc";
 
 interface MarkdownRendererProps {
@@ -26,7 +27,7 @@ const markdownComponents: Components = {
     return <h3 id={id}>{children}</h3>;
   },
   code({ node, className, children, ...props }) {
-    const match = /language-(\w+)/.exec(className || "");
+    const match = /language-([\w-]+)/.exec(className || "");
     const isInline = !match;
 
     if (isInline) {
@@ -40,10 +41,31 @@ const markdownComponents: Components = {
       );
     }
 
+    const lang = match[1];
+
+    if (lang === "python-sandbox") {
+      const fullContent = String(children).replace(/\n$/, "");
+      const separatorIndex = fullContent.indexOf("\n---\n");
+      let codePart = fullContent;
+      let outputPart = "";
+
+      if (separatorIndex !== -1) {
+        codePart = fullContent.substring(0, separatorIndex);
+        outputPart = fullContent.substring(separatorIndex + 5); // Length of "\n---\n"
+      }
+
+      return (
+        <CodeSandbox
+          code={codePart}
+          output={outputPart}
+        />
+      );
+    }
+
     return (
       <CodeBlock
         code={String(children).replace(/\n$/, "")}
-        lang={match[1]}
+        lang={lang}
       />
     );
   },

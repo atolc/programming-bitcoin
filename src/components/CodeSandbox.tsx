@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Play, RotateCcw, Terminal, Check, Copy, Loader2 } from "lucide-react";
-import { codeToHtml } from "shiki";
+import { Play, RotateCcw, Check, Copy, Loader2, Edit2, Eye } from "lucide-react";
 import { usePyodideOptional } from "./PyodideProvider";
+import { PythonEditorPanel } from "./PythonEditorPanel";
+import { PythonConsole } from "./PythonConsole";
+import { outputsMatch } from "@/lib/pyodide";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Tooltip,
@@ -18,14 +19,6 @@ interface CodeSandboxProps {
   filename?: string;
 }
 
-function normalizeOutput(text: string) {
-  return text.trim().replace(/\r\n/g, "\n");
-}
-
-function outputsMatch(actual: string, expected: string) {
-  return normalizeOutput(actual) === normalizeOutput(expected);
-}
-
 export function CodeSandbox({
   code,
   expectedOutput = "",
@@ -33,7 +26,8 @@ export function CodeSandbox({
 }: CodeSandboxProps) {
   const { t } = useTranslation();
   const pyodide = usePyodideOptional();
-  const [html, setHtml] = useState<string>("");
+  const [currentCode, setCurrentCode] = useState(code);
+  const [isEditing, setIsEditing] = useState(false);
   const [copied, setCopied] = useState(false);
   const [isRunning, setIsRunning] = useState(false);
   const [hasRun, setHasRun] = useState(false);
@@ -43,21 +37,7 @@ export function CodeSandbox({
   const [isPreloading, setIsPreloading] = useState(false);
 
   useEffect(() => {
-    let isMounted = true;
-    async function highlight() {
-      try {
-        const highlighted = await codeToHtml(code, {
-          lang: "python",
-          theme: "github-dark",
-        });
-        if (isMounted) setHtml(highlighted);
-      } catch (err) {
-        console.error("Shiki highlight error:", err);
-        if (isMounted) setHtml("");
-      }
-    }
-    highlight();
-    return () => { isMounted = false; };
+    setCurrentCode(code);
   }, [code]);
 
   useEffect(() => {
@@ -68,7 +48,7 @@ export function CodeSandbox({
 
   const handleCopy = async () => {
     try {
-      await navigator.clipboard.writeText(code);
+      await navigator.clipboard.writeText(currentCode);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
@@ -89,7 +69,7 @@ export function CodeSandbox({
     setStderr("");
 
     try {
-      const result = await pyodide.runPython(code);
+      const result = await pyodide.runPython(currentCode);
       setStdout(result.stdout);
       setStderr(result.stderr);
       setError(result.error ?? null);
@@ -103,6 +83,7 @@ export function CodeSandbox({
   };
 
   const handleReset = () => {
+    setCurrentCode(code);
     setHasRun(false);
     setStdout("");
     setStderr("");
@@ -129,6 +110,26 @@ export function CodeSandbox({
         </div>
 
         <div className="flex items-center gap-2">
+          <Button
+            className="border-stone-700 bg-stone-800 text-stone-300 hover:bg-stone-700 hover:text-white"
+            onClick={() => setIsEditing(!isEditing)}
+            size="sm"
+            type="button"
+            variant="outline"
+          >
+            {isEditing ? (
+              <>
+                <Eye className="size-3.5" />
+                <span>{t("code.preview")}</span>
+              </>
+            ) : (
+              <>
+                <Edit2 className="size-3.5" />
+                <span>{t("code.edit")}</span>
+              </>
+            )}
+          </Button>
+
           <Tooltip>
             <TooltipTrigger
               render={
@@ -204,72 +205,24 @@ export function CodeSandbox({
         </Alert>
       ) : null}
 
-      <div className="relative">
-        {html ? (
-          <div
-            className="p-5 font-mono text-sm overflow-x-auto [&>pre]:!bg-transparent [&>pre]:!m-0 [&>pre]:!p-0 text-stone-100 max-h-[350px]"
-            dangerouslySetInnerHTML={{ __html: html }}
-          />
-        ) : (
-          <div className="p-5 font-mono text-sm overflow-x-auto text-stone-100 max-h-[350px]">
-            <pre className="!bg-transparent !m-0 !p-0"><code>{code}</code></pre>
-          </div>
-        )}
+      <div className="relative h-[250px]">
+        <PythonEditorPanel
+          code={currentCode}
+          onChange={setCurrentCode}
+          isEditing={isEditing}
+          height="250px"
+        />
       </div>
 
-      <div className="border-t border-stone-800 bg-stone-900/60 backdrop-blur-sm">
-        <div className="flex items-center justify-between px-4 py-2 bg-stone-900/90 text-xs font-mono text-stone-400 border-b border-stone-800">
-          <div className="flex items-center gap-1.5">
-            <Terminal className="size-3.5" />
-            <span>{t("code.console")}</span>
-          </div>
-          {matchExpected !== null ? (
-            <Badge
-              className="uppercase tracking-wider"
-              variant={matchExpected ? "success" : "warning"}
-            >
-              {matchExpected ? t("code.match") : t("code.mismatch")}
-            </Badge>
-          ) : null}
-        </div>
-
-        <div className="p-4 min-h-[72px] font-mono text-xs text-stone-300 leading-relaxed">
-          {isRunning ? (
-            <div className="flex items-center gap-2 text-stone-400">
-              <span className="size-2 rounded-full bg-primary animate-ping" />
-              <span>{t("code.runningScript")}</span>
-            </div>
-          ) : hasRun ? (
-            <div className="space-y-1">
-              <div className="text-stone-500">$ python {filename}</div>
-              {error ? (
-                <pre className="text-red-400 whitespace-pre-wrap font-semibold">{error}</pre>
-              ) : (
-                <>
-                  {stdout ? (
-                    <pre className="text-emerald-400 whitespace-pre-wrap font-semibold">{stdout.trim()}</pre>
-                  ) : null}
-                  {stderr ? (
-                    <pre className="text-amber-400 whitespace-pre-wrap">{stderr.trim()}</pre>
-                  ) : null}
-                  {!stdout && !stderr && !error ? (
-                    <pre className="text-stone-500 italic">{t("code.noOutput")}</pre>
-                  ) : null}
-                </>
-              )}
-              {!error ? (
-                <div className="text-[10px] text-stone-500 mt-2 border-t border-stone-800/40 pt-1">
-                  Process finished with exit code 0
-                </div>
-              ) : null}
-            </div>
-          ) : (
-            <div className="text-stone-500 italic">
-              {t("code.clickRun")}
-            </div>
-          )}
-        </div>
-      </div>
+      <PythonConsole
+        filename={filename}
+        isRunning={isRunning}
+        hasRun={hasRun}
+        stdout={stdout}
+        stderr={stderr}
+        error={error}
+        matchExpected={matchExpected}
+      />
     </div>
   );
 }

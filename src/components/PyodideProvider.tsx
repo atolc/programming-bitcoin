@@ -9,15 +9,22 @@ import {
 import {
   initPyodide,
   runPython as runPythonCode,
+  runPythonWithTests as runPythonWithTestsCode,
   type PyodideStatus,
   type PythonRunResult,
+  type PythonRunWithTestsResult,
 } from "../lib/pyodide";
 
 type PyodideContextValue = {
   status: PyodideStatus;
   statusMessage: string;
   ensureReady: () => Promise<void>;
-  runPython: (code: string) => Promise<PythonRunResult>;
+  runPython: (code: string, timeoutMs?: number) => Promise<PythonRunResult>;
+  runPythonWithTests: (
+    code: string,
+    testCode?: string,
+    timeoutMs?: number,
+  ) => Promise<PythonRunWithTestsResult>;
 };
 
 const PyodideContext = createContext<PyodideContextValue | null>(null);
@@ -44,16 +51,24 @@ export function PyodideProvider({ children }: { children: ReactNode }) {
   }, [status, statusMessage]);
 
   const runPython = useCallback(
-    async (code: string) => {
+    async (code: string, timeoutMs?: number) => {
       await ensureReady();
-      return runPythonCode(code);
+      return runPythonCode(code, timeoutMs);
+    },
+    [ensureReady],
+  );
+
+  const runPythonWithTests = useCallback(
+    async (code: string, testCode?: string, timeoutMs?: number) => {
+      await ensureReady();
+      return runPythonWithTestsCode(code, testCode, timeoutMs);
     },
     [ensureReady],
   );
 
   const value = useMemo(
-    () => ({ status, statusMessage, ensureReady, runPython }),
-    [status, statusMessage, ensureReady, runPython],
+    () => ({ status, statusMessage, ensureReady, runPython, runPythonWithTests }),
+    [status, statusMessage, ensureReady, runPython, runPythonWithTests],
   );
 
   return (

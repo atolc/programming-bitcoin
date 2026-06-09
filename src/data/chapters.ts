@@ -12,6 +12,23 @@ const sectionModules = import.meta.glob("../../docs/*/sections/*.md", {
   import: "default",
 });
 
+const FOLDER_CHAPTER_NUMBERS: Record<string, number> = {
+  "campos-finitos": 1,
+  "curvas-elipticas": 2,
+  "criptografia-de-curva-eliptica": 3,
+  serializacion: 4,
+  transacciones: 5,
+  script: 6,
+  "creacion-y-validacion-de-transacciones": 7,
+  "pay-to-script-hash": 8,
+  bloques: 9,
+  networking: 10,
+  "verificacion-simplificada-de-pagos": 11,
+  "filtros-bloom": 12,
+  segwit: 13,
+  "temas-avanzados-y-siguientes-pasos": 14,
+};
+
 const ENGLISH_CHAPTER_TITLES: Record<number, string> = {
   1: "Finite Fields",
   2: "Elliptic Curves",
@@ -154,7 +171,9 @@ const chapterNumberByFolder = Object.entries(chapterModules).reduce<
   const parts = path.split("/");
   const folder = parts[parts.length - 2] ?? "";
   acc[folder] =
-    chapterNumberFromContent(String(content)) || chapterNumberFromPath(path);
+    chapterNumberFromContent(String(content)) ||
+    FOLDER_CHAPTER_NUMBERS[folder] ||
+    chapterNumberFromPath(path);
   return acc;
 }, {});
 
@@ -193,7 +212,10 @@ export const chapters: Chapter[] = Object.entries(chapterModules)
     const parts = path.split("/");
     const filename = parts[parts.length - 1] ?? path;
     const folder = parts[parts.length - 2] ?? "";
-    const number = chapterNumberFromContent(String(content)) || chapterNumberFromPath(path);
+    const number =
+      chapterNumberFromContent(String(content)) ||
+      FOLDER_CHAPTER_NUMBERS[folder] ||
+      chapterNumberFromPath(path);
     const title = chapterTitle(String(content), folder);
     const englishTitle = ENGLISH_CHAPTER_TITLES[number];
     const id = slugify(title);

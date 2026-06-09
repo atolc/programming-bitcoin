@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "homepage": "https://echoe.github.io/programming-bitcoin/",
+  "homepage": "https://caeher.github.io/programming-bitcoin/",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build && node scripts/copy-static.mjs",
@@ -15,11 +15,14 @@
     "@vitejs/plugin-react": "latest",
     "class-variance-authority": "latest",
     "clsx": "latest",
+    "katex": "^0.17.0",
     "lucide-react": "latest",
     "react": "latest",
     "react-dom": "latest",
     "react-markdown": "latest",
     "react-router-dom": "^7.17.0",
+    "rehype-katex": "^7.0.1",
+    "remark-math": "^6.0.0",
     "shiki": "^4.2.0",
     "tailwind-merge": "latest"
   },
@@ -31,6 +34,7 @@
     "autoprefixer": "latest",
     "gh-pages": "latest",
     "postcss": "latest",
+    "postcss-nesting": "^14.0.0",
     "tailwindcss": "latest",
     "typescript": "latest",
     "vite": "latest"

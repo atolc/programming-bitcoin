@@ -1,6 +1,6 @@
 <!-- order: 2 -->
 
-## Sección 1: ¿Por qué empezar por Campos Finitos?
+## ¿Por qué empezar por Campos Finitos?
 
 Bitcoin utiliza la **criptografía de curva elíptica** (ECDSA) para la creación de firmas digitales y llaves públicas. Estas firmas prueban que el emisor de una transacción posee la llave privada que le permite gastar sus fondos, sin necesidad de revelar esa llave al resto de la red.
 

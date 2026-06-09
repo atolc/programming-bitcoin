@@ -1,6 +1,6 @@
 <!-- order: 9 -->
 
-## Sección 8: Exponentes Negativos y Grandes
+## Exponentes Negativos y Grandes
 
 ¿Qué significa elevar un número a un exponente negativo en un campo finito? Por ejemplo, $a^{-3}$.
 

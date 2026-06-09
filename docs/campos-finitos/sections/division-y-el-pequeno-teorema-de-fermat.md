@@ -1,6 +1,6 @@
 <!-- order: 8 -->
 
-## Sección 7: División y el Pequeño Teorema de Fermat
+## División y el Pequeño Teorema de Fermat
 
 La división en campos finitos es la operación que más confunde a los estudiantes.
 

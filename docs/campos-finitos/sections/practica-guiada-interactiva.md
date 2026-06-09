@@ -1,6 +1,6 @@
 <!-- order: 11 -->
 
-## Sección 10: Práctica Guiada Interactiva
+## Práctica Guiada Interactiva
 
 Resuelve los siguientes ejercicios utilizando tus conocimientos teóricos antes de desplegar las respuestas.
 

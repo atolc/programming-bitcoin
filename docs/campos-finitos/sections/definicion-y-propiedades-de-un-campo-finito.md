@@ -1,6 +1,6 @@
 <!-- order: 3 -->
 
-## Sección 2: Definición y Propiedades de un Campo Finito
+## Definición y Propiedades de un Campo Finito
 
 Matemáticamente, un **campo finito** es un conjunto finito de elementos junto con dos operaciones llamadas *suma* ($+$) y *multiplicación* ($*$).
 

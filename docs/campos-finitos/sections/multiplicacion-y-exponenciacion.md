@@ -1,6 +1,6 @@
 <!-- order: 6 -->
 
-## Sección 5: Multiplicación y Exponenciación
+## Multiplicación y Exponenciación
 
 La multiplicación en un campo finito también requiere envolver el resultado mediante el módulo $p$:
 

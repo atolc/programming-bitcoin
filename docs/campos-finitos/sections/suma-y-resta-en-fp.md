@@ -1,6 +1,6 @@
 <!-- order: 5 -->
 
-## Sección 4: Suma y Resta en $F_p$
+## Suma y Resta en $F_p$
 
 En un campo finito $F_p$, definimos la suma $+_f$ y la resta $-_f$ aplicando la operación normal en enteros y luego calculando el residuo módulo $p$.
 

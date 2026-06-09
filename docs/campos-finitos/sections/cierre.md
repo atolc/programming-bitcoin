@@ -4,7 +4,7 @@
 
 Los campos finitos transforman operaciones matemáticas en sistemas numéricos cerrados, discretos y deterministas. Esta envoltura perfecta es la que permite que Bitcoin use criptografía extremadamente compleja con números de 256 bits sin errores de precisión ni incompatibilidades entre sistemas operativos.
 
-En el **Capítulo 2**, estudiaremos las Curvas Elípticas. En el **Capítulo 3**, uniremos ambas piezas para dar vida a la Criptografía de Curva Elíptica: curvas definidas sobre coordenadas que viven dentro de un campo finito $F_p$.
+En el **Curvas Elípticas**, estudiaremos las Curvas Elípticas. En el **Criptografía de Curva Elíptica**, uniremos ambas piezas para dar vida a la Criptografía de Curva Elíptica: curvas definidas sobre coordenadas que viven dentro de un campo finito $F_p$.
 
 :::details
 Tabla rápida de operaciones en F_p

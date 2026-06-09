@@ -1,6 +1,6 @@
 <!-- order: 10 -->
 
-## Sección 9: Implementación en Python de `FieldElement`
+## Implementación en Python de `FieldElement`
 
 A continuación, implementaremos la clase `FieldElement` que representa un elemento individual de un campo finito de orden primo.
 

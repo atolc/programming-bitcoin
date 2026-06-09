@@ -1,6 +1,6 @@
 <!-- order: 4 -->
 
-## Sección 3: Aritmética Modular (La Envoltura)
+## Aritmética Modular (La Envoltura)
 
 La herramienta principal para lograr la cerradura matemática es la **aritmética modular** (módulo).
 

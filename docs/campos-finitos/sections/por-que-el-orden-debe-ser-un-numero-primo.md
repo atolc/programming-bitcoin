@@ -1,6 +1,6 @@
 <!-- order: 7 -->
 
-## Sección 6: ¿Por qué el Orden debe ser un Número Primo?
+## ¿Por qué el Orden debe ser un Número Primo?
 
 La razón por la cual los campos finitos que usa Bitcoin (como el campo de la curva `secp256k1`) tienen un orden primo $p$ es de suma importancia. **Si el orden del campo es primo, todos los elementos excepto el cero tienen un inverso multiplicativo.** Esto es lo que permite que la división sea posible y única.
 

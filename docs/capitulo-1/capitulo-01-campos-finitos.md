@@ -1,423 +1,505 @@
-# Capitulo 1: Campos finitos
+# Capítulo 1: Campos Finitos
 
-## Mapa del capitulo
+## Mapa del Capítulo
 
-Este capitulo construye una pieza matematica que Bitcoin necesita antes de hablar de llaves, firmas y curvas elipticas: los campos finitos.
+Este capítulo construye una pieza matemática fundamental que Bitcoin necesita antes de hablar de llaves, firmas y curvas elípticas: los **campos finitos**.
 
-La idea central es sencilla: en vez de trabajar con todos los numeros posibles, trabajamos con un conjunto limitado y definimos operaciones que siempre regresan al mismo conjunto.
+La idea central es sencilla: en lugar de trabajar con todos los números reales posibles (que son infinitos y sufren de imprecisiones de coma flotante), trabajamos con un conjunto limitado de elementos y definimos operaciones matemáticas especiales que garantizan que el resultado siempre permanezca dentro de ese mismo conjunto.
 
-Al terminar deberias poder:
+Al terminar este capítulo, serás capaz de:
+*   Explicar qué es un campo finito $F_p$.
+*   Utilizar la aritmética modular para mantener los resultados entre $0$ y $p-1$.
+*   Sumar, restar, multiplicar, elevar a potencias y dividir dentro de un campo finito.
+*   Entender y demostrar por qué el orden del campo debe ser un número primo en criptografía.
+*   Implementar la clase completa `FieldElement` en Python.
+*   Ver cómo esta estructura es la base para la criptografía de curva elíptica.
 
-- Explicar que es un campo finito `Fp`.
-- Usar modulo para mantener resultados entre `0` y `p - 1`.
-- Sumar, restar, multiplicar, elevar y dividir dentro de un campo finito.
-- Entender por que el modulo debe ser primo en los campos que usaremos.
-- Implementar una clase `FieldElement` en Python.
-- Ver por que esto es necesario para criptografia de curva eliptica.
+---
 
-## Por que empezar por campos finitos
+## Sección 1: ¿Por qué empezar por Campos Finitos?
 
-Bitcoin usa criptografia de curva eliptica para crear y verificar firmas digitales. Esas firmas son las que prueban que quien gasta una moneda conoce la llave privada correcta, sin revelar esa llave.
+Bitcoin utiliza la **criptografía de curva elíptica** (ECDSA) para la creación de firmas digitales y llaves públicas. Estas firmas prueban que el emisor de una transacción posee la llave privada que le permite gastar sus fondos, sin necesidad de revelar esa llave al resto de la red.
 
-Antes de llegar a las curvas elipticas necesitamos una aritmetica especial. No basta con los numeros reales que graficamos en el colegio, porque Bitcoin necesita operaciones discretas, exactas y verificables por cualquier nodo.
+Para que las computadoras puedan procesar y verificar estas curvas de forma exacta, segura y determinista, no podemos usar la geometría escolar de números reales continuos. Las computadoras sufren de errores de redondeo al manejar decimales pequeños y números infinitos, lo cual rompería el consenso global en Bitcoin.
 
-Un campo finito nos da justo eso:
+Necesitamos un sistema donde las operaciones sean:
+1.  **Discretas:** Sin decimales ni aproximaciones.
+2.  **Deterministas:** El resultado debe ser idéntico en cualquier computadora del mundo.
+3.  **Exactas:** Sin pérdida de precisión.
 
-- Un conjunto limitado de elementos.
-- Reglas cerradas para operar.
-- Resultados deterministas.
-- Una forma de hacer division sin decimales.
-- Una base para construir puntos de curvas elipticas en capitulos posteriores.
+Un **campo finito** nos proporciona precisamente esto. Provee un conjunto limitado de números enteros y define reglas especiales que garantizan que cualquier cálculo (incluso la división) resulte en otro número entero dentro del mismo conjunto.
 
-Piensa en este capitulo como aprender el sistema de coordenadas donde despues viviran las llaves publicas.
+---
 
-## Definicion de campo finito
+## Sección 2: Definición y Propiedades de un Campo Finito
 
-Un campo finito es un conjunto finito de elementos con dos operaciones principales: suma y multiplicacion.
+Matemáticamente, un **campo finito** es un conjunto finito de elementos junto con dos operaciones llamadas *suma* ($+$) y *multiplicación* ($*$).
 
-Para que un conjunto sea un campo, debe cumplir estas reglas:
+Para que este conjunto se considere un campo, debe cumplir rigurosamente con las siguientes propiedades:
 
-- **Cerradura:** si `a` y `b` estan en el campo, entonces `a + b` y `a * b` tambien estan en el campo.
-- **Identidad aditiva:** existe `0`, y `a + 0 = a`.
-- **Identidad multiplicativa:** existe `1`, y `a * 1 = a`.
-- **Inverso aditivo:** para cada `a`, existe `-a`, de forma que `a + (-a) = 0`.
-- **Inverso multiplicativo:** para cada `a != 0`, existe `a^-1`, de forma que `a * a^-1 = 1`.
+*   **Cerradura:** Si $a$ y $b$ pertenecen al campo, entonces $a + b$ y $a * b$ también pertenecen al campo. Esto significa que las operaciones no pueden "escapar" del conjunto.
+*   **Identidad Aditiva:** Existe un elemento $0$ en el campo tal que $a + 0 = a$.
+*   **Identidad Multiplicativa:** Existe un elemento $1$ en el campo tal que $a * 1 = a$.
+*   **Inverso Aditivo:** Para cada elemento $a$ en el campo, existe otro elemento $-a$ tal que $a + (-a) = 0$.
+*   **Inverso Multiplicativo:** Para cada elemento $a \neq 0$ en el campo, existe otro elemento $a^{-1}$ tal que $a * a^{-1} = 1$.
 
-La parte mas importante para programar es la cerradura. Si el campo tiene solo ciertos elementos, ninguna operacion valida puede escapar de ahi.
+### ¿Por qué necesitamos cambiar las reglas matemáticas?
+Imaginemos el conjunto simple $\{0, 1, 2\}$. Si usamos la suma tradicional de enteros:
+$$1 + 2 = 3$$
+Dado que $3$ no está en nuestro conjunto, el sistema no está cerrado y por lo tanto **no es un campo**. Para solucionarlo y mantener los resultados dentro de nuestro rango cerrado, recurrimos al módulo.
 
-Ejemplo: el conjunto `{0, 1, 2}` no esta cerrado bajo suma normal, porque `1 + 2 = 3` y `3` no pertenece al conjunto. Para convertir conjuntos finitos en algo util, necesitamos redefinir las operaciones.
+---
 
-## Conjuntos finitos y notacion
+## Sección 3: Aritmética Modular (La Envoltura)
 
-Si el campo tiene orden `p`, sus elementos son:
+La herramienta principal para lograr la cerradura matemática es la **aritmética modular** (módulo).
 
-```text
-Fp = {0, 1, 2, ..., p - 1}
+La expresión $a \pmod p$ se lee como "$a$ módulo $p$" y representa el **residuo** o resto al dividir $a$ entre $p$. Este residuo siempre será un número entero mayor o igual a $0$ y estrictamente menor que $p$ ($0 \le \text{residuo} < p$).
+
+Matemáticamente, $a \pmod p = r$ significa que existe un cociente entero $q$ tal que:
+$$a = q \cdot p + r$$
+
+### Ejemplos paso a paso:
+
+1.  **Módulo positivo:** $7 \pmod 3 = 1$
+    *   *Explicación:* $7 = 2 \cdot 3 + 1$. El cociente es $2$ y el resto es $1$.
+2.  **Módulo con números más grandes:** $1747 \pmod{241} = 60$
+    *   *Explicación:* $1747 = 7 \cdot 241 + 60$. El cociente es $7$ y el resto es $60$.
+3.  **Módulo negativo:** $-27 \pmod{13} = 12$
+    *   *Explicación:* Queremos que el residuo sea positivo. Dividimos hacia abajo: $-27 = (-3) \cdot 13 + 12$. El cociente es $-3$ y el resto es $12$.
+
+### La analogía del reloj
+Una forma intuitiva de comprender el módulo es pensar en las horas de un reloj de 12 horas.
+*   Si son las 3 y le sumamos 47 horas, podemos calcular el resultado con módulo 12:
+    $$(3 + 47) \pmod{12} = 50 \pmod{12} = 2 \text{ (las 2 en punto)}$$
+*   De igual manera hacia atrás: si son las 3 y retrocedemos 16 horas:
+    $$(3 - 16) \pmod{12} = -13 \pmod{12} = 11 \text{ (las 11 en punto)}$$
+
+Probemos este concepto ejecutando el siguiente código interactivo en Python:
+
+```python-sandbox
+# Módulos en Python
+print("Módulo simple (7 % 3):", 7 % 3)
+print("Módulo grande (1747 % 241):", 1747 % 241)
+print("Módulo negativo (-27 % 13):", -27 % 13)
+---
+Módulo simple (7 % 3): 1
+Módulo grande (1747 % 241): 60
+Módulo negativo (-27 % 13): 12
 ```
 
-El orden es el tamano del campo. Por ejemplo:
+### Notación de Campos Finitos
+Si el campo tiene orden $p$ (donde $p$ es un número primo), sus elementos son:
+$$F_p = \{0, 1, 2, \dots, p - 1\}$$
 
-```text
-F11 = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
-F17 = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16}
-F983 = {0, 1, 2, ..., 982}
+Por ejemplo, los elementos del campo $F_{11}$ son:
+$$F_{11} = \{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10\}$$
+
+> [!IMPORTANT]  
+> Un número entero como $7$ no existe flotando de manera independiente en el vacío; pertenece a un campo específico. Por ejemplo, $7 \in F_{11}$ no es igual y no se puede operar directamente con $7 \in F_{17}$. Pertenecen a campos con reglas y órdenes distintos.
+
+---
+
+## Sección 4: Suma y Resta en $F_p$
+
+En un campo finito $F_p$, definimos la suma $+_f$ y la resta $-_f$ aplicando la operación normal en enteros y luego calculando el residuo módulo $p$.
+
+$$\begin{aligned}
+a +_f b &= (a + b) \pmod p \\
+a -_f b &= (a - b) \pmod p
+\end{aligned}$$
+
+### Ejemplos detallados en $F_{19}$:
+
+*   **Suma normal:** $7 +_f 8$
+    $$7 + 8 = 15 \implies 15 \pmod{19} = 15$$
+*   **Suma que envuelve (Wrap-around):** $11 +_f 17$
+    $$11 + 17 = 28 \implies 28 \pmod{19} = 9 \quad (\text{ya que } 28 = 1 \cdot 19 + 9)$$
+*   **Resta simple:** $11 -_f 9$
+    $$11 - 9 = 2 \implies 2 \pmod{19} = 2$$
+*   **Resta con resultado negativo:** $6 -_f 13$
+    $$6 - 13 = -7 \implies -7 \pmod{19} = 12 \quad (\text{ya que } -7 = (-1) \cdot 19 + 12)$$
+
+Veamos el comportamiento de estas sumas y restas en Python:
+
+```python-sandbox
+p = 19
+# Suma que envuelve
+suma = (11 + 17) % p
+print(f"11 + 17 mod 19 = {suma}")
+
+# Resta con resultado negativo
+resta = (6 - 13) % p
+print(f"6 - 13 mod 19 = {resta}")
+---
+11 + 17 mod 19 = 9
+6 - 13 mod 19 = 12
 ```
 
-Observa que el elemento mas grande siempre es `p - 1`.
+---
 
-Cuando decimos que `7` esta en `F11`, no lo tratamos simplemente como el entero `7`, sino como un elemento del campo de orden `11`. Ese detalle importa: `7` en `F11` y `7` en `F13` no pertenecen al mismo campo, asi que no deberiamos sumarlos directamente en codigo.
+## Sección 5: Multiplicación y Exponenciación
 
-## Aritmetica modular
+La multiplicación en un campo finito también requiere envolver el resultado mediante el módulo $p$:
 
-La herramienta que mantiene los resultados dentro del campo es el modulo.
+$$a *_f b = (a \cdot b) \pmod p$$
 
-`a % p` significa: divide `a` entre `p` y quedate con el residuo. Ese residuo siempre queda entre `0` y `p - 1`.
+### Ejemplos en $F_{19}$:
+*   **Multiplicación básica:** $5 *_f 3$
+    $$5 \cdot 3 = 15 \implies 15 \pmod{19} = 15$$
+*   **Multiplicación con envoltura:** $8 *_f 17$
+    $$8 \cdot 17 = 136$$
+    $$136 \pmod{19} = 3 \quad (\text{ya que } 136 = 7 \cdot 19 + 3)$$
 
-Ejemplos:
+### Exponenciación
+La exponenciación es la multiplicación repetida de un elemento por sí mismo:
+$$a^n = \underbrace{a \cdot a \cdot \dots \cdot a}_{n \text{ veces}}$$
 
-```text
-7 % 3 = 1
-1747 % 241 = 60
--27 % 13 = 12
+En $F_{19}$, calculemos $7^3$:
+$$7^3 = 343 \implies 343 \pmod{19} = 1 \quad (\text{ya que } 343 = 18 \cdot 19 + 1)$$
+
+> [!TIP]  
+> Al programar exponenciaciones modulares en Python, **nunca** eleves primero y apliques módulo después (ej: `(7 ** 3) % 19`), porque si los números son muy grandes (como en Bitcoin, donde los números tienen 256 bits), la memoria colapsará. Usa la función integrada `pow(base, exponente, modulo)`, la cual calcula el residuo en cada paso intermedio del algoritmo de exponenciación binaria.
+
+Ejecutemos este concepto para verificar:
+
+```python-sandbox
+# Uso correcto de pow para exponenciación modular
+base = 7
+exponente = 3
+primo = 19
+
+resultado = pow(base, exponente, primo)
+print(f"7^3 mod 19 = {resultado}")
+---
+7^3 mod 19 = 1
 ```
 
-La forma intuitiva de verlo es como un reloj. Si son las 3 y pasan 47 horas:
+---
 
-```text
-(3 + 47) % 12 = 2
+## Sección 6: ¿Por qué el Orden debe ser un Número Primo?
+
+La razón por la cual los campos finitos que usa Bitcoin (como el campo de la curva `secp256k1`) tienen un orden primo $p$ es de suma importancia. **Si el orden del campo es primo, todos los elementos excepto el cero tienen un inverso multiplicativo.** Esto es lo que permite que la división sea posible y única.
+
+Si tomamos un elemento no nulo $k$ de nuestro campo $F_p$ (con $p$ primo) y multiplicamos cada uno de los elementos del campo por $k$:
+$$\{k \cdot 0, k \cdot 1, k \cdot 2, \dots, k \cdot (p-1)\} \pmod p$$
+El resultado de este conjunto será exactamente el conjunto original $\{0, 1, 2, \dots, p-1\}$ reordenado. No se pierde ningún elemento.
+
+### ¿Qué pasa si el orden del campo es compuesto?
+Tomemos el módulo 12 (compuesto). Si multiplicamos todos los números por 3, obtenemos:
+$$\begin{aligned}
+3 \cdot 0 \pmod{12} &= 0 \\
+3 \cdot 1 \pmod{12} &= 3 \\
+3 \cdot 2 \pmod{12} &= 6 \\
+3 \cdot 3 \pmod{12} &= 9 \\
+3 \cdot 4 \pmod{12} &= 0 \quad (\text{¡Se repite el 0 y colapsa!})
+\end{aligned}$$
+El conjunto resultante bajo multiplicación por 3 es $\{0, 3, 6, 9\}$, lo cual es un subconjunto incompleto. Esto rompe la simetría matemática y hace imposible definir un inverso multiplicativo único para el 3.
+
+---
+
+## Sección 7: División y el Pequeño Teorema de Fermat
+
+La división en campos finitos es la operación que más confunde a los estudiantes.
+
+En la aritmética de números enteros tradicionales, no podemos dividir de manera exacta (por ejemplo, $2 / 7$ no produce un entero). Sin embargo, en un campo finito la división debe resultar en un elemento del campo.
+
+Para resolver esto, recordamos la definición de división: **dividir es multiplicar por el inverso multiplicativo.**
+$$\frac{a}{b} = a \cdot b^{-1}$$
+
+¿Qué es $b^{-1}$? Es el elemento en el campo tal que:
+$$b \cdot b^{-1} \equiv 1 \pmod p$$
+
+Por ejemplo, en $F_{19}$, si queremos resolver $2 / 7$, buscamos un número $x$ tal que:
+$$x \cdot 7 \equiv 2 \pmod{19}$$
+Sabemos que $3 \cdot 7 = 21 \equiv 2 \pmod{19}$. Por lo tanto, $\frac{2}{7} = 3$.
+
+### ¿Cómo calculamos $b^{-1}$ sin adivinar?
+Utilizamos el **Pequeño Teorema de Fermat**. Este teorema establece que para cualquier primo $p$ y cualquier entero $b \neq 0$:
+$$b^{p-1} \equiv 1 \pmod p$$
+
+Si multiplicamos ambos lados por $b^{-1}$:
+$$b^{p-2} \equiv b^{-1} \pmod p$$
+
+¡Esta fórmula es mágica! Nos dice que el inverso multiplicativo de $b$ es simplemente $b$ elevado a la potencia $p-2$ en aritmética modular.
+Por lo tanto, la división se calcula como:
+$$\frac{a}{b} = a \cdot b^{p-2} \pmod p$$
+
+### Ejemplo paso a paso en $F_{19}$:
+Calculemos $2 / 7$:
+$$2 / 7 = 2 \cdot 7^{19-2} \pmod{19} = 2 \cdot 7^{17} \pmod{19}$$
+Usando Fermat y reduciendo potencias:
+$$2 \cdot 7^{17} \pmod{19} = 3$$
+
+Ejecutemos la prueba en Python utilizando `pow`:
+
+```python-sandbox
+# División en campos finitos mediante el teorema de Fermat
+a = 2
+b = 7
+p = 19
+
+# Calculamos el inverso de 7 mod 19, que es 7^(19-2) mod 19
+inverso_b = pow(b, p - 2, p)
+print(f"El inverso de 7 mod 19 es: {inverso_b}")
+
+# Multiplicamos a por el inverso de b
+resultado = (a * inverso_b) % p
+print(f"Resultado de 2 / 7 mod 19 es: {resultado}")
+---
+El inverso de 7 mod 19 es: 11
+Resultado de 2 / 7 mod 19 es: 3
 ```
 
-Tambien funciona hacia atras. Si son las 3 y retrocedes 16 horas:
+---
 
-```text
-(3 - 16) % 12 = 11
+## Sección 8: Exponentes Negativos y Grandes
+
+¿Qué significa elevar un número a un exponente negativo en un campo finito? Por ejemplo, $a^{-3}$.
+
+Al igual que en la matemática tradicional, el signo negativo denota el inverso:
+$$a^{-3} = (a^3)^{-1} = (a^{-1})^3$$
+
+Gracias al Pequeño Teorema de Fermat ($a^{p-1} \equiv 1 \pmod p$), podemos sumar o restar múltiplos de $p-1$ al exponente sin alterar el resultado final. Esto nos da una herramienta extremadamente útil en código:
+
+$$a^n \equiv a^{n \pmod{p-1}} \pmod p$$
+
+Esto no solo nos permite calcular exponentes negativos, sino también reducir exponentes de tamaño astronómico a un rango manejable.
+
+### Ejemplo en $F_{13}$:
+Calculemos $7^{-3}$:
+$$\begin{aligned}
+-3 \pmod{13 - 1} &= -3 \pmod{12} = 9 \\
+7^{-3} \pmod{13} &= 7^9 \pmod{13} = 8
+\end{aligned}$$
+
+Ejecutemos en Python:
+
+```python-sandbox
+# Exponente negativo y reducción modular del exponente
+base = 7
+exponente = -3
+p = 13
+
+# Reducimos el exponente
+exp_reducido = exponente % (p - 1)
+print(f"Exponente -3 mod 12 = {exp_reducido}")
+
+# Operamos con el exponente reducido
+resultado = pow(base, exp_reducido, p)
+print(f"7^-3 mod 13 = {resultado}")
+---
+Exponente -3 mod 12 = 9
+7^-3 mod 13 = 8
 ```
 
-Ese "envolver" los resultados es exactamente lo que necesitamos: aunque una operacion produzca un numero grande o negativo, el modulo lo regresa al rango valido del campo.
+---
 
-En Python:
+## Sección 9: Implementación en Python de `FieldElement`
 
-```python
-print(7 % 3)      # 1
-print(-27 % 13)  # 12
-```
+A continuación, implementaremos la clase `FieldElement` que representa un elemento individual de un campo finito de orden primo.
 
-## Suma y resta en fp
-
-En un campo `Fp`, la suma no se queda como suma normal. Sumamos y luego aplicamos modulo `p`.
-
-```text
-a +f b = (a + b) % p
-```
-
-En `F19`:
-
-```text
-7 +f 8 = (7 + 8) % 19 = 15
-11 +f 17 = (11 + 17) % 19 = 9
-```
-
-El segundo resultado se siente raro al principio, porque `11 + 17` normalmente es `28`. Pero en `F19`, `28` se envuelve y cae en `9`.
-
-La resta funciona igual:
-
-```text
-a -f b = (a - b) % p
-```
-
-En `F19`:
-
-```text
-11 -f 9 = (11 - 9) % 19 = 2
-6 -f 13 = (6 - 13) % 19 = 12
-```
-
-El inverso aditivo tambien sale del modulo:
-
-```text
--f 9 = (-9) % 19 = 10
-9 +f 10 = 0
-```
-
-Si quieres practicar, resuelve estas operaciones en `F57`:
-
-```text
-44 + 33
-9 - 29
-17 + 42 + 49
-52 - 30 - 38
-```
-
-Pista: haz la operacion normal y aplica `% 57` al final.
-
-## Multiplicacion y exponentiacion
-
-La multiplicacion tambien debe quedar cerrada. En `Fp`:
-
-```text
-a *f b = (a * b) % p
-```
-
-En `F19`:
-
-```text
-5 *f 3 = (5 * 3) % 19 = 15
-8 *f 17 = (8 * 17) % 19 = 3
-```
-
-`8 * 17 = 136`, pero `136 % 19 = 3`. El resultado vuelve al conjunto `{0, 1, ..., 18}`.
-
-La exponentiacion es multiplicacion repetida:
-
-```text
-a^n = a * a * a ... n veces
-```
-
-En un campo finito tambien reducimos con modulo:
-
-```text
-7^3 en F19 = 343 % 19 = 1
-```
-
-En Python conviene usar `pow(base, exponente, modulo)` porque calcula el modulo durante la exponentiacion y evita numeros gigantes:
-
-```python
-pow(7, 3, 19)  # 1
-```
-
-## Por que el orden debe ser primo
-
-Los campos que usaremos tienen orden primo: `F7`, `F19`, `F31`, `F223`, etc.
-
-La razon practica es que, si `p` es primo, cada elemento distinto de cero tiene inverso multiplicativo. Eso es lo que hace posible la division dentro del campo.
-
-Mira esta idea en `F19`. Si tomas cualquier `k` distinto de cero y multiplicas todo el conjunto por `k`, aplicando modulo `19`, obtienes los mismos elementos en otro orden:
-
-```text
-{k * 0, k * 1, k * 2, ..., k * 18} mod 19
-```
-
-No se pierden elementos. En cambio, si el orden fuera compuesto, un divisor del orden podria colapsar el conjunto en un subconjunto mas pequeno. Por ejemplo, modulo `12`, multiplicar por `3` produce:
-
-```text
-0, 3, 6, 9, 0, 3, 6, 9, ...
-```
-
-No aparecen todos los elementos. Eso rompe la simetria que necesitamos para que todos los elementos no cero tengan inverso.
-
-## Division y pequeno teorema de fermat
-
-La division es la operacion menos intuitiva del capitulo.
-
-En aritmetica normal, dividir es deshacer una multiplicacion:
-
-```text
-7 * 8 = 56  implica  56 / 8 = 7
-```
-
-En un campo finito hacemos lo mismo. Si en `F19`:
-
-```text
-3 *f 7 = 21 % 19 = 2
-```
-
-entonces:
-
-```text
-2 /f 7 = 3
-```
-
-La pregunta es: como encontramos ese `3` sin adivinar?
-
-Usamos el pequeno teorema de Fermat:
-
-```text
-n^(p - 1) % p = 1
-```
-
-si `p` es primo y `n != 0`.
-
-Eso nos permite calcular el inverso multiplicativo:
-
-```text
-b^-1 = b^(p - 2)
-```
-
-Entonces la division se vuelve multiplicacion:
-
-```text
-a /f b = a *f b^(p - 2)
-```
-
-En `F19`:
-
-```text
-2 /f 7 = 2 * 7^(19 - 2) % 19 = 3
-7 /f 5 = 7 * 5^(19 - 2) % 19 = 9
-```
-
-En Python:
-
-```python
-num = self.num * pow(other.num, self.prime - 2, self.prime)
-num %= self.prime
-```
-
-No se puede dividir por `0`, igual que en aritmetica normal.
-
-## Exponentes negativos
-
-Los exponentes negativos tambien se interpretan mediante inversos.
-
-Por ejemplo:
-
-```text
-a^-3 = 1 / a^3
-```
-
-Dentro de `Fp`, Fermat nos da una forma elegante de convertir exponentes negativos a positivos. Como:
-
-```text
-a^(p - 1) = 1
-```
-
-podemos sumar o restar multiplos de `p - 1` al exponente sin cambiar el resultado.
-
-La forma practica en codigo es:
-
-```python
-n = exponent % (self.prime - 1)
-num = pow(self.num, n, self.prime)
-```
-
-Esto sirve para exponentes negativos y tambien para exponentes enormes.
-
-Ejemplo: en `F13`, `7^-3` da `8`.
-
-```python
-pow(7, -3 % (13 - 1), 13)  # 8
-```
-
-## Implementacion de fieldelement
-
-La clase `FieldElement` representa un elemento de un campo `Fprime`.
-
-Primero validamos que `num` este en el rango correcto:
+### 1. Inicialización y Validación
+El constructor de la clase recibe el valor `num` y el orden primo `prime`. Se asegura de que el número esté dentro del rango válido del campo ($0 \le num < prime$).
 
 ```python
 class FieldElement:
     def __init__(self, num, prime):
         if num >= prime or num < 0:
-            error = "Num {} not in field range 0 to {}".format(num, prime - 1)
+            error = "El número {} no pertenece al campo de orden 0 a {}".format(num, prime - 1)
             raise ValueError(error)
         self.num = num
         self.prime = prime
+
+    def __repr__(self):
+        return f"FieldElement_{self.prime}({self.num})"
 ```
 
-La igualdad debe comparar tanto el numero como el campo:
+### 2. Comparaciones (Igualdad y Diferencia)
+Para comparar dos elementos, debemos asegurarnos de que tengan el mismo valor numérico y que pertenezcan al mismo campo.
 
 ```python
-def __eq__(self, other):
-    if other is None:
-        return False
-    return self.num == other.num and self.prime == other.prime
+    def __eq__(self, other):
+        if other is None:
+            return False
+        return self.num == other.num and self.prime == other.prime
 
-def __ne__(self, other):
-    return not (self == other)
+    def __ne__(self, other):
+        return not (self == other)
 ```
 
-Para sumar, restar y multiplicar, primero comprobamos que ambos elementos pertenecen al mismo campo:
+### 3. Operaciones Aritméticas Básicas
+Antes de realizar cualquier operación matemática, validamos que ambos operandos pertenezcan al mismo campo finito (`self.prime == other.prime`).
 
 ```python
-def __add__(self, other):
-    if self.prime != other.prime:
-        raise TypeError("Cannot add two numbers in different Fields")
-    num = (self.num + other.num) % self.prime
-    return self.__class__(num, self.prime)
+    def __add__(self, other):
+        if self.prime != other.prime:
+            raise TypeError("No se pueden sumar elementos de campos distintos")
+        num = (self.num + other.num) % self.prime
+        return self.__class__(num, self.prime)
 
-def __sub__(self, other):
-    if self.prime != other.prime:
-        raise TypeError("Cannot subtract two numbers in different Fields")
-    num = (self.num - other.num) % self.prime
-    return self.__class__(num, self.prime)
+    def __sub__(self, other):
+        if self.prime != other.prime:
+            raise TypeError("No se pueden restar elementos de campos distintos")
+        num = (self.num - other.num) % self.prime
+        return self.__class__(num, self.prime)
 
-def __mul__(self, other):
-    if self.prime != other.prime:
-        raise TypeError("Cannot multiply two numbers in different Fields")
-    num = (self.num * other.num) % self.prime
-    return self.__class__(num, self.prime)
+    def __mul__(self, other):
+        if self.prime != other.prime:
+            raise TypeError("No se pueden multiplicar elementos de campos distintos")
+        num = (self.num * other.num) % self.prime
+        return self.__class__(num, self.prime)
 ```
 
-La potencia usa un exponente entero, no otro `FieldElement`:
+### 4. Exponenciación y División
+Utilizamos el exponente de tipo entero y aplicamos el módulo $p-1$ al exponente para poder admitir de forma nativa exponentes negativos y de gran tamaño. Para la división, multiplicamos por el inverso de Fermat.
 
 ```python
-def __pow__(self, exponent):
-    n = exponent % (self.prime - 1)
-    num = pow(self.num, n, self.prime)
-    return self.__class__(num, self.prime)
+    def __pow__(self, exponent):
+        n = exponent % (self.prime - 1)
+        num = pow(self.num, n, self.prime)
+        return self.__class__(num, self.prime)
+
+    def __truediv__(self, other):
+        if self.prime != other.prime:
+            raise TypeError("No se pueden dividir elementos de campos distintos")
+        # Usamos el Teorema de Fermat: num * (other.num ** (prime - 2)) mod prime
+        num = self.num * pow(other.num, self.prime - 2, self.prime)
+        num %= self.prime
+        return self.__class__(num, self.prime)
 ```
 
-La division usa el inverso multiplicativo:
+---
 
-```python
-def __truediv__(self, other):
-    if self.prime != other.prime:
-        raise TypeError("Cannot divide two numbers in different Fields")
-    num = self.num * pow(other.num, self.prime - 2, self.prime)
-    num %= self.prime
-    return self.__class__(num, self.prime)
+## Sección 10: Práctica Guiada Interactiva
+
+Resuelve los siguientes ejercicios utilizando tus conocimientos teóricos antes de desplegar las respuestas.
+
+### Ejercicio 1: Sumas y Restas en $F_{57}$
+Resuelve las siguientes operaciones matemáticas:
+1.  $44 +_f 33$
+2.  $9 -_f 29$
+3.  $17 +_f 42 +_f 49$
+4.  $52 -_f 30 -_f 38$
+
+<details>
+<summary><b>Ver solución paso a paso del Ejercicio 1</b></summary>
+
+Para resolver en $F_{57}$, realizamos la operación tradicional y al final aplicamos el módulo $\% 57$:
+
+1.  **$44 + 33 = 77$**
+    $$77 \pmod{57} = 20$$
+2.  **$9 - 29 = -20$**
+    $$-20 \pmod{57} = 37 \quad (\text{puesto que } -20 = -1 \cdot 57 + 37)$$
+3.  **$17 + 42 + 49 = 108$**
+    $$108 \pmod{57} = 51 \quad (\text{puesto que } 108 = 1 \cdot 57 + 51)$$
+4.  **$52 - 30 - 38 = -16$**
+    $$-16 \pmod{57} = 41 \quad (\text{puesto que } -16 = -1 \cdot 57 + 41)$$
+
+Comprobemos esto con un Sandbox:
+
+```python-sandbox
+p = 57
+print("1. 44 + 33 mod 57 =", (44 + 33) % p)
+print("2. 9 - 29 mod 57 =", (9 - 29) % p)
+print("3. 17 + 42 + 49 mod 57 =", (17 + 42 + 49) % p)
+print("4. 52 - 30 - 38 mod 57 =", (52 - 30 - 38) % p)
+---
+1. 44 + 33 mod 57 = 20
+2. 9 - 29 mod 57 = 37
+3. 17 + 42 + 49 mod 57 = 51
+4. 52 - 30 - 38 mod 57 = 41
 ```
+</details>
 
-`self.__class__` permite que esta logica sea heredable si luego creamos clases especializadas para Bitcoin.
+---
 
-## Practica guiada
+### Ejercicio 2: Multiplicación y Exponenciación en $F_{97}$
+Resuelve:
+1.  $95 * 45 * 31$
+2.  $17 * 13 * 19 * 44$
+3.  $12^7 * 77^{49}$
 
-Haz estos ejercicios antes de pasar al siguiente capitulo.
+<details>
+<summary><b>Ver solución paso a paso del Ejercicio 2</b></summary>
 
-1. En `F57`, calcula:
+1.  **$95 \cdot 45 \cdot 31 = 132525$**
+    $$132525 \pmod{97} = 23$$
+2.  **$17 \cdot 13 \cdot 19 \cdot 44 = 184756$**
+    $$184756 \pmod{97} = 62$$
+3.  **$12^7 \cdot 77^{49} \pmod{97}$**
+    *   Podemos elevar cada término individual y luego multiplicarlos:
+        $$\begin{aligned}
+        12^7 \pmod{97} &= 77 \\
+        77^{49} \pmod{97} &= 27 \\
+        (77 \cdot 27) \pmod{97} &= 2079 \pmod{97} = 42
+        \end{aligned}$$
 
-```text
-44 + 33
-9 - 29
-17 + 42 + 49
-52 - 30 - 38
+Ejecutemos la validación:
+
+```python-sandbox
+p = 97
+print("1. 95 * 45 * 31 mod 97 =", (95 * 45 * 31) % p)
+print("2. 17 * 13 * 19 * 44 mod 97 =", (17 * 13 * 19 * 44) % p)
+
+term1 = pow(12, 7, p)
+term2 = pow(77, 49, p)
+print("3. (12^7 * 77^49) mod 97 =", (term1 * term2) % p)
+---
+1. 95 * 45 * 31 mod 97 = 23
+2. 17 * 13 * 19 * 44 mod 97 = 62
+3. (12^7 * 77^49) mod 97 = 42
 ```
+</details>
 
-2. En `F97`, calcula:
+---
 
-```text
-95 * 45 * 31
-17 * 13 * 19 * 44
-12^7 * 77^49
+### Ejercicio 3: División y Exponentes Negativos en $F_{31}$
+Resuelve:
+1.  $3 / 24$
+2.  $17^{-3}$
+3.  $4^{-4} * 11$
+
+<details>
+<summary><b>Ver solución paso a paso del Ejercicio 3</b></summary>
+
+1.  **$3 / 24 = 3 \cdot 24^{29} \pmod{31}$**
+    $$24^{-1} \pmod{31} = 24^{29} \pmod{31} = 29$$
+    $$3 \cdot 29 \pmod{31} = 87 \pmod{31} = 25$$
+2.  **$17^{-3} \pmod{31}$**
+    *   El exponente se reduce mod $30$:
+        $$-3 \pmod{30} = 27$$
+        $$17^{27} \pmod{31} = 15$$
+3.  **$4^{-4} \cdot 11 \pmod{31}$**
+    *   Reducimos $-4 \pmod{30} = 26$
+        $$4^{26} \pmod{31} = 16$$
+        $$16 \cdot 11 \pmod{31} = 176 \pmod{31} = 21$$
+
+Verifiquemos en la consola:
+
+```python-sandbox
+p = 31
+# 1. División
+inv_24 = pow(24, p - 2, p)
+print("1. 3 / 24 mod 31 =", (3 * inv_24) % p)
+
+# 2. Exponente negativo
+print("2. 17^-3 mod 31 =", pow(17, -3 % (p - 1), p))
+
+# 3. Exponente negativo con multiplicación
+inv_pot_4 = pow(4, -4 % (p - 1), p)
+print("3. 4^-4 * 11 mod 31 =", (inv_pot_4 * 11) % p)
+---
+1. 3 / 24 mod 31 = 25
+2. 17^-3 mod 31 = 15
+3. 4^-4 * 11 mod 31 = 21
 ```
+</details>
 
-3. En `F31`, calcula:
-
-```text
-3 / 24
-17^-3
-4^-4 * 11
-```
-
-4. Implementa `FieldElement` y verifica:
-
-```python
-a = FieldElement(7, 13)
-b = FieldElement(12, 13)
-c = FieldElement(6, 13)
-
-print(a + b == c)  # True
-print(a ** -3 == FieldElement(8, 13))  # True
-```
-
-La meta no es memorizar resultados. La meta es que cada operacion te recuerde este flujo:
-
-```text
-operar como entero -> aplicar modulo -> regresar un FieldElement
-```
+---
 
 ## Cierre
 
-Los campos finitos convierten la aritmetica en un sistema cerrado y programable. Esa cerradura es lo que permite que Bitcoin use numeros enormes sin perder exactitud ni depender de aproximaciones.
+Los campos finitos transforman operaciones matemáticas en sistemas numéricos cerrados, discretos y deterministas. Esta envoltura perfecta es la que permite que Bitcoin use criptografía extremadamente compleja con números de 256 bits sin errores de precisión ni incompatibilidades entre sistemas operativos.
 
-En el capitulo 2 aprenderas curvas elipticas. En el capitulo 3 combinaremos ambas ideas: puntos de curvas elipticas cuyas coordenadas viven dentro de campos finitos.
+En el **Capítulo 2**, estudiaremos las Curvas Elípticas. En el **Capítulo 3**, uniremos ambas piezas para dar vida a la Criptografía de Curva Elíptica: curvas definidas sobre coordenadas que viven dentro de un campo finito $F_p$.

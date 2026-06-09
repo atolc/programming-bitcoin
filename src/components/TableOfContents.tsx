@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { parseToc, TocItem } from "../lib/toc";
+import { chapterPath } from "../lib/routes";
 
 export function TableOfContents({
   content,
@@ -64,10 +65,10 @@ export function TableOfContents({
             style={{ paddingLeft: `${(item.level - 2) * 12}px` }}
           >
             <a
-              href={`${basePath}/docs/${chapterId}/${item.id}`}
+              href={`${basePath}${chapterPath(chapterId, item.id)}`}
               onClick={(e) => {
                 e.preventDefault();
-                navigate(`/docs/${chapterId}/${item.id}`);
+                navigate(chapterPath(chapterId, item.id));
               }}
               className={`block py-0.5 transition-colors duration-150 leading-relaxed ${
                 activeId === item.id

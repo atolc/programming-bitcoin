@@ -1,4 +1,6 @@
 import ReactMarkdown, { Components } from "react-markdown";
+import remarkMath from "remark-math";
+import rehypeKatex from "rehype-katex";
 import { CodeBlock } from "./CodeBlock";
 import { CodeSandbox } from "./CodeSandbox";
 import { slugify } from "../lib/toc";
@@ -33,7 +35,7 @@ const markdownComponents: Components = {
     if (isInline) {
       return (
         <code
-          className="rounded bg-stone-250 dark:bg-stone-800 px-1.5 py-0.5 text-sm font-semibold text-stone-900 dark:text-stone-100"
+          className="rounded bg-stone-200 dark:bg-stone-800 px-1.5 py-0.5 text-sm font-semibold text-stone-900 dark:text-stone-100"
           {...props}
         >
           {children}
@@ -74,7 +76,11 @@ const markdownComponents: Components = {
 export function MarkdownRenderer({ content }: MarkdownRendererProps) {
   return (
     <div className="prose prose-stone dark:prose-invert max-w-none prose-pre:bg-transparent prose-pre:p-0 prose-code:before:content-none prose-code:after:content-none prose-headings:scroll-mt-24">
-      <ReactMarkdown components={markdownComponents}>
+      <ReactMarkdown
+        remarkPlugins={[remarkMath]}
+        rehypePlugins={[rehypeKatex]}
+        components={markdownComponents}
+      >
         {content}
       </ReactMarkdown>
     </div>

@@ -57,19 +57,15 @@ export type Chapter = {
   sections: Section[];
 };
 
-function localeFromPath(path: string): Locale | undefined {
-  const match = path.match(/\/docs\/(es|en)\//);
-  return match?.[1] as Locale | undefined;
-}
+const SECTION_PATH_RE = /\/docs\/(?:es|en)\/([^/]+)\/sections\//;
+const CHAPTER_PATH_RE = /\/docs\/(?:es|en)\/([^/]+)\/index\.md$/;
 
 function folderFromChapterPath(path: string) {
-  const parts = path.split("/");
-  return parts[parts.length - 2] ?? "";
+  return path.match(CHAPTER_PATH_RE)?.[1] ?? "";
 }
 
 function folderFromSectionPath(path: string) {
-  const parts = path.split("/");
-  return parts[parts.length - 4] ?? "";
+  return path.match(SECTION_PATH_RE)?.[1] ?? "";
 }
 
 function chapterNumberFromPath(path: string) {

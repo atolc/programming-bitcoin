@@ -76,10 +76,7 @@ function ChapterLayoutInner() {
   const searchInputRef = useRef<HTMLInputElement>(null);
 
   const validChapter = findChapterById(locale, chapterId);
-
-  if (chapterId && !validChapter) {
-    return <Navigate to={homePath()} replace />;
-  }
+  const redirectHome = Boolean(chapterId && !validChapter);
 
   const activeChapter = useMemo(() => {
     return (
@@ -226,6 +223,10 @@ function ChapterLayoutInner() {
       path: chapterPath(activeChapter.folder, nextSec.id),
     };
   }, [activeChapter, activeSectionIndex, nextChapter, t, chapterPath]);
+
+  if (redirectHome) {
+    return <Navigate to={homePath()} replace />;
+  }
 
   if (invalidSection) {
     return <Navigate to={chapterPath(activeChapter.folder)} replace />;

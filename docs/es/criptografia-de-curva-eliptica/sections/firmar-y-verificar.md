@@ -17,8 +17,6 @@ k = 12345
 r = 99   # x de kG mod n
 s = 42   # k^-1 (z + r*priv) mod n
 print(f"Firma: r={r}, s={s}")
----
-Firma: r=99, s=42
 ```
 
 > [!TIP]

@@ -42,8 +42,4 @@ P = Point(3, 8, 0, 7)
 print(O)
 print(P)
 print("P == P?", P == P)
----
-Point(infinity)
-Point(3, 8)
-P == P? True
 ```

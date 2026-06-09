@@ -24,9 +24,6 @@ hash160 = "a1b2c3..."  # hash160(redeem_script)
 script_pubkey = f"OP_HASH160 {hash160} OP_EQUAL"
 print("script_pubkey P2SH:", script_pubkey)
 print("Dirección mainnet empieza por: 3")
----
-script_pubkey P2SH: OP_HASH160 a1b2c3... OP_EQUAL
-Dirección mainnet empieza por: 3
 ```
 
 > [!TIP]

@@ -26,8 +26,6 @@ def build_filterload(filter_bytes: bytes, n_hash: int, tweak: int, flags: int) -
 
 msg = build_filterload(b"\x00" * 8, 5, 42, 0)
 print(msg["command"], len(msg["filter_bytes"]))
----
-filterload 8
 ```
 
 El nodo solo aplica el filtro a conexiones que lo hayan cargado explícitamente. Sin `filterload`, seguirás recibiendo solo `inv` genéricos.

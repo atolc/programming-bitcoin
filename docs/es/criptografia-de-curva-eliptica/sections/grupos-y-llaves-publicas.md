@@ -20,9 +20,6 @@ priv = 201
 # pub = priv * G  (multiplicacion escalar en la curva)
 print(f"Llave privada: {priv}")
 print("Llave publica: priv * G (punto en la curva)")
----
-Llave privada: 201
-Llave publica: priv * G (punto en la curva)
 ```
 
 La seguridad depende de que nadie pueda recuperar $e$ a partir de $eG$.

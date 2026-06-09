@@ -22,9 +22,6 @@ class SimplePeer:
 peer = SimplePeer()
 print(peer.on_version())
 print("Connected?", peer.connected)
----
-verack
-Connected? True
 ```
 
 The `services` field indicates node capabilities (for example, whether it advertises being a full node with `NODE_NETWORK`). The `nonce` prevents a node from connecting to itself through NAT.

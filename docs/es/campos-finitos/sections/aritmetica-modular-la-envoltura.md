@@ -32,10 +32,6 @@ Probemos este concepto ejecutando el siguiente código interactivo en Python:
 print("Módulo simple (7 % 3):", 7 % 3)
 print("Módulo grande (1747 % 241):", 1747 % 241)
 print("Módulo negativo (-27 % 13):", -27 % 13)
----
-Módulo simple (7 % 3): 1
-Módulo grande (1747 % 241): 60
-Módulo negativo (-27 % 13): 12
 ```
 
 ### Notación de Campos Finitos

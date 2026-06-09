@@ -34,8 +34,6 @@ def scalar_mult(k, P):
 
 G = (170, 142)
 print("5G =", scalar_mult(5, G))
----
-5G = (106, 66)
 ```
 
 The difficulty of the elliptic curve discrete logarithm problem makes it computationally infeasible to learn $k$ from $kG$.

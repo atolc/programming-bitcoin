@@ -24,9 +24,6 @@ index = 0
 sequence = 0xffffffff
 print(f"Input apunta a tx {prev_hash[:4].hex()}... salida #{index}")
 print(f"Sequence: {sequence:#010x}")
----
-Input apunta a tx a1b2c3d4... salida #0
-Sequence: 0xffffffff
 ```
 
 > [!TIP]

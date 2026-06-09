@@ -24,9 +24,6 @@ index = 0
 sequence = 0xffffffff
 print(f"Input points to tx {prev_hash[:4].hex()}... output #{index}")
 print(f"Sequence: {sequence:#010x}")
----
-Input points to tx a1b2c3d4... output #0
-Sequence: 0xffffffff
 ```
 
 > [!TIP]

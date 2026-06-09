@@ -28,8 +28,6 @@ embedded = "hash160(pubkey)"
 assert stack.pop() == embedded     # OP_EQUALVERIFY
 valid = "CHECKSIG(sig, pubkey)"  # OP_CHECKSIG
 print("Valid spend:", valid)
----
-Valid spend: CHECKSIG(sig, pubkey)
 ```
 
 ### P2PKH address

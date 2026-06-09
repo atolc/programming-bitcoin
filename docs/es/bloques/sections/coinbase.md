@@ -24,8 +24,6 @@ BLOCK_SUBSIDY = 50 * 10**8  # 50 BTC en satoshis (bloque génesis)
 fees = 125_000
 coinbase_output = BLOCK_SUBSIDY + fees
 print(f"Salida coinbase maxima: {coinbase_output} sat")
----
-Salida coinbase maxima: 500125000 sat
 ```
 
 Desde **BIP34**, los mineros incluyen la altura del bloque al inicio del `script_sig` coinbase. Eso evita duplicar coinbases idénticas entre bloques distintos.

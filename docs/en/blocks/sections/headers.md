@@ -27,8 +27,6 @@ def double_sha256(data: bytes) -> bytes:
 header = b"\x01\x00\x00\x00" + b"\x00" * 76
 block_hash = double_sha256(header)
 print(block_hash[::-1].hex())  # display in big-endian
----
-0000000000000000000000000000000000000000000000000000000000000000
 ```
 
 The `merkle_root` field connects the header to all transactions: changing a single transaction alters the root and therefore the block hash.

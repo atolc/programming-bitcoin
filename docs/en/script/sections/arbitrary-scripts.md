@@ -29,9 +29,6 @@ secret = b"hello"
 h = hash160(secret)
 print("Puzzle hash:", h.hex())
 print("Valid preimage:", hash160(b"hello") == h)
----
-Puzzle hash: 77c8c5d8228355835c70b1e5be2bf7de906cd4b1
-Valid preimage: True
 ```
 
 > [!TIP]

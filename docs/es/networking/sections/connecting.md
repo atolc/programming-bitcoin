@@ -21,9 +21,6 @@ def connect(host: str, port: int = 8333, timeout: float = 10.0):
 # Ejemplo conceptual (no conecta sin un peer real)
 print("Puerto mainnet P2P:", 8333)
 print("Tras TCP, enviar version y esperar verack")
----
-Puerto mainnet P2P: 8333
-Tras TCP, enviar version y esperar verack
 ```
 
 En testnet el puerto por defecto es **18333**; en regtest, **18444**. Tras el handshake, el nodo suele enviar `getaddr` o esperar mensajes `inv` del peer.

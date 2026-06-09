@@ -31,9 +31,6 @@ hash160 = bytes.fromhex("89abcdefabbaabbaabbaabbaabbaabbaabbaabba")
 script = bytes([0x76, 0xa9]) + push(hash160) + bytes([0x88, 0xac])
 print("P2PKH script:", script.hex())
 print("Longitud:", len(script), "bytes")
----
-P2PKH script: 76a91489abcdefabbaabbaabbaabbaabbaabbaabba88ac
-Longitud: 25 bytes
 ```
 
 > [!TIP]

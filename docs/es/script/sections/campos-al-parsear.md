@@ -42,8 +42,6 @@ while i < len(raw):
     else:
         ops.append(f"0x{b:02x}")
 print(ops)
----
-['0x76', '0xa9', b'abc']
 ```
 
 > [!TIP]

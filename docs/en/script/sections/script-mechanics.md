@@ -22,8 +22,6 @@ for val in [2, 3, "ADD", 5, "EQUAL"]:
     else:
         stack.append(val)
 print("Top of stack:", stack[-1])
----
-Top of stack: 1
 ```
 
 > [!TIP]

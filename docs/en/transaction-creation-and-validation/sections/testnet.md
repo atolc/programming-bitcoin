@@ -26,9 +26,6 @@ NETWORKS = {
 }
 for name, cfg in NETWORKS.items():
     print(f"{name}: P2PKH prefix 0x{cfg['p2pkh_prefix']:02x}")
----
-mainnet: P2PKH prefix 0x00
-testnet: P2PKH prefix 0x6f
 ```
 
 > [!TIP]

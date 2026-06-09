@@ -17,11 +17,6 @@ The book covers the core of a node and a wallet; production Bitcoin adds layers 
 topics = ["Taproot", "Lightning", "PSBT", "BIP158"]
 for i, topic in enumerate(topics, 1):
     print(f"{i}. {topic}")
----
-1. Taproot
-2. Lightning
-3. PSBT
-4. BIP158
 ```
 
 > [!TIP]

@@ -18,8 +18,6 @@ pubkey_hash = b"\xcd" * 20
 redeem_script = bytes([0x00, 0x14]) + pubkey_hash
 script_pubkey_hash = hash160(redeem_script)
 print("p2sh hash20:", script_pubkey_hash.hex())
----
-p2sh hash20: 1f96423e7652364167cd33eb0c213c50e9f52bf6
 ```
 
 El nodo primero resuelve p2sh (comprueba que `hash160(redeem_script)` coincide) y luego ejecuta el witness program como p2wpkh.

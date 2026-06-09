@@ -17,11 +17,6 @@ El libro cubre el núcleo de un nodo y una wallet; Bitcoin en producción añade
 topics = ["Taproot", "Lightning", "PSBT", "BIP158"]
 for i, topic in enumerate(topics, 1):
     print(f"{i}. {topic}")
----
-1. Taproot
-2. Lightning
-3. PSBT
-4. BIP158
 ```
 
 > [!TIP]

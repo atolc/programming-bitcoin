@@ -37,9 +37,6 @@ print(f"Exponent -3 mod 12 = {exp_reducido}")
 # Operate with the reduced exponent
 resultado = pow(base, exp_reducido, p)
 print(f"7^-3 mod 13 = {resultado}")
----
-Exponent -3 mod 12 = 9
-7^-3 mod 13 = 8
 ```
 
 ---

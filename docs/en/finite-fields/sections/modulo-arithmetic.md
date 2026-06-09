@@ -32,10 +32,6 @@ Let's try this concept by running the following interactive Python code:
 print("Simple modulo (7 % 3):", 7 % 3)
 print("Large modulo (1747 % 241):", 1747 % 241)
 print("Negative modulo (-27 % 13):", -27 % 13)
----
-Simple modulo (7 % 3): 1
-Large modulo (1747 % 241): 60
-Negative modulo (-27 % 13): 12
 ```
 
 ### Finite Field Notation

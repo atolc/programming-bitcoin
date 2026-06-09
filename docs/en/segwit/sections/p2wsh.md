@@ -15,8 +15,6 @@ witness_script = bytes.fromhex("522102" + "ab" * 32 + "2102" + "cd" * 32 + "52ae
 wsh = hashlib.sha256(witness_script).digest()
 script_pubkey = bytes([0x00, 0x20]) + wsh
 print("script_pubkey length:", len(script_pubkey))
----
-script_pubkey length: 34
 ```
 
 When validating, the interpreter checks that `SHA256(witness_script)` matches the program and then executes the script with the witness elements as the initial stack.

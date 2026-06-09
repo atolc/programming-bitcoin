@@ -22,9 +22,6 @@ big = n.to_bytes(4, "big")
 little = n.to_bytes(4, "little")
 print("big-endian:   ", big.hex())
 print("little-endian:", little.hex())
----
-big-endian:    12345678
-little-endian: 78563412
 ```
 
 > [!TIP]

@@ -17,9 +17,6 @@ serialized = version.to_bytes(4, "little")
 print("Version 2 in bytes:", serialized.hex())
 recovered = int.from_bytes(serialized, "little")
 print("Recovered:", recovered)
----
-Version 2 in bytes: 02000000
-Recovered: 2
 ```
 
 > [!TIP]

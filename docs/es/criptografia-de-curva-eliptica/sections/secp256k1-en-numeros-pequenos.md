@@ -14,8 +14,6 @@ def on_curve(x, y):
 
 G = (170, 142)
 print("G en curva?", on_curve(*G))
----
-G en curva? True
 ```
 
 La curva real de Bitcoin es **secp256k1**:

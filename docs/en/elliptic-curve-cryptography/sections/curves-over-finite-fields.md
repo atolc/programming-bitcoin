@@ -17,8 +17,6 @@ def on_curve(x, y):
 
 count = sum(1 for x in range(p) for y in range(p) if on_curve(x, y))
 print(f"Points on the curve (excluding infinity): {count}")
----
-Points on the curve (excluding infinity): 222
 ```
 
 > [!TIP]

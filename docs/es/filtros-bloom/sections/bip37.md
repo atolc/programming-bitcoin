@@ -27,8 +27,6 @@ filter_params = {
     "nFlags": BLOOM_UPDATE_P2PUBKEY_ONLY,
 }
 print(f"Filtro: {filter_params['size']} bytes, {filter_params['nHashFuncs']} funciones")
----
-Filtro: 36000 bytes, 7 funciones
 ```
 
 > [!TIP]

@@ -26,8 +26,6 @@ def tx_weight(base_bytes: int, witness_bytes: int) -> int:
 
 base, witness = 100, 65
 print(f"Weight: {tx_weight(base, witness)} vbytes equiv: {tx_weight(base, witness) / 4:.1f}")
----
-Weight: 465 vbytes equiv: 116.2
 ```
 
 La comisión efectiva se expresa en **sat/vbyte** usando el weight dividido por 4.

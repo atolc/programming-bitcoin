@@ -20,8 +20,6 @@ pubkey = b"\x02" + b"\xab" * 32
 h160 = hash160(pubkey)
 script_pubkey = bytes([0x00, 0x14]) + h160  # OP_0 push20
 print("script_pubkey (hex):", script_pubkey.hex())
----
-script_pubkey (hex): 0014ababababababababababababababababababab
 ```
 
 El **witness program** es la versión (0) seguida del programa (el hash20). Al gastar, el intérprete Script valida la firma contra ese hash.

@@ -25,8 +25,6 @@ tx_hashes = [bytes([i]) * 32 for i in range(4)]
 level1 = merkle_level(tx_hashes)
 root = merkle_level(level1)[0]
 print("Root:", root[:4].hex())
----
-Root: 5d0a4f2c
 ```
 
 The **Merkle root** (`merkle_root`) is stored in the block header. Changing any transaction alters the root and therefore the block hash.

@@ -22,9 +22,6 @@ class SimplePeer:
 peer = SimplePeer()
 print(peer.on_version())
 print("Conectado?", peer.connected)
----
-verack
-Conectado? True
 ```
 
 El campo `services` indica capacidades del nodo (por ejemplo, si anuncia ser nodo completo con `NODE_NETWORK`). El `nonce` evita que un nodo se conecte a sí mismo a través de NAT.

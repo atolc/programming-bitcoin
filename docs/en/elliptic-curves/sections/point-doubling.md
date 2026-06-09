@@ -19,6 +19,4 @@ def double_point(p, a=0, b=7):
 P = (3, 8)
 R = double_point(P)
 print(f"2P = {R}")
----
-2P = (2.25, 5.375)
 ```

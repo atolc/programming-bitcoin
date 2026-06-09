@@ -17,8 +17,6 @@ k = 12345
 r = 99   # x of kG mod n
 s = 42   # k^-1 (z + r*priv) mod n
 print(f"Signature: r={r}, s={s}")
----
-Signature: r=99, s=42
 ```
 
 > [!TIP]

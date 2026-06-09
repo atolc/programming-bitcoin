@@ -18,8 +18,6 @@ witness_script = b"\x51"  # OP_1 (ejemplo minimo)
 program = bytes([0x00, 0x20]) + hashlib.sha256(witness_script).digest()
 p2sh = hash160(program)
 print("Anidado p2sh-p2wsh, hash20:", p2sh.hex())
----
-Anidado p2sh-p2wsh, hash20: 751e76e8199196d454941c45d1b3a323f1433bd6
 ```
 
 Los flujos multisig complejos suelen usar p2sh-p2wsh para que las firmas queden en witness (descuento de peso) mientras la dirección sigue siendo reconocible por wallets antiguas.

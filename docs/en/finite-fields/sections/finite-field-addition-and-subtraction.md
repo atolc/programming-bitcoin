@@ -33,9 +33,6 @@ print(f"11 + 17 mod 19 = {suma}")
 # Subtraction with a negative result
 resta = (6 - 13) % p
 print(f"6 - 13 mod 19 = {resta}")
----
-11 + 17 mod 19 = 9
-6 - 13 mod 19 = 12
 ```
 
 ---

@@ -16,9 +16,6 @@ pubkey = bytes.fromhex("02" + "ab" * 32)  # example compressed SEC
 script_pubkey = bytes([len(pubkey)]) + pubkey + bytes([0xac])  # OP_CHECKSIG
 print("P2PK script_pubkey:", script_pubkey.hex()[:40] + "...")
 print("Size:", len(script_pubkey), "bytes")
----
-P2PK script_pubkey: 21ababababababababababababababababab...
-Size: 35 bytes
 ```
 
 Satoshi used P2PK in block rewards during the first years. Today it is obsolete for normal payments because:

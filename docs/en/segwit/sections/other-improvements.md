@@ -17,9 +17,6 @@ witness_bytes = 107
 weight = legacy_tx_bytes * 4 + witness_bytes
 print(f"Example tx weight: {weight}")
 print(f"Similar txs per block (max): ~{MAX_BLOCK_WEIGHT // weight}")
----
-Example tx weight: 1107
-Similar txs per block (max): ~3613
 ```
 
 **Future versions.** The witness program version byte (`OP_0` today) leaves room for new schemes (Taproot uses version 1).

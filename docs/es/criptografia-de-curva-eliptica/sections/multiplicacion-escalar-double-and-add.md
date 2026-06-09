@@ -34,8 +34,6 @@ def scalar_mult(k, P):
 
 G = (170, 142)
 print("5G =", scalar_mult(5, G))
----
-5G = (106, 66)
 ```
 
 La dificultad del problema del logaritmo discreto en curvas elípticas hace que conocer $k$ a partir de $kG$ sea computacionalmente inviable.

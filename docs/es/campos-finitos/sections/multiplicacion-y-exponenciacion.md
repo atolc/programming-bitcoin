@@ -33,8 +33,6 @@ primo = 19
 
 resultado = pow(base, exponente, primo)
 print(f"7^3 mod 19 = {resultado}")
----
-7^3 mod 19 = 1
 ```
 
 ---

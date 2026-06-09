@@ -33,8 +33,6 @@ def validate_chain_link(prev_hash: bytes, header: bytes) -> bool:
 prev = bytes.fromhex("00" * 32)
 fake_header = b"\x00" * 4 + prev + b"\x00" * 44
 print("Enlace valido?", validate_chain_link(prev, fake_header))
----
-Enlace valido? True
 ```
 
 Si la respuesta `headers` alcanza el límite del mensaje (~2000 encabezados), el cliente envía otro `getheaders` usando el último hash recibido como nuevo locator.

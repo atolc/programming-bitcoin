@@ -20,9 +20,6 @@ pubkeys = [f"pubkey_{i}" for i in range(n)]
 bare_script = [f"OP_{m}"] + pubkeys + [f"OP_{n}", "OP_CHECKMULTISIG"]
 print("Bare multisig:", " ".join(bare_script))
 print(f"Elements in script_pubkey: {len(bare_script)}")
----
-Bare multisig: OP_2 pubkey_0 pubkey_1 pubkey_2 OP_3 OP_CHECKMULTISIG
-Elements in script_pubkey: 6
 ```
 
 > [!TIP]

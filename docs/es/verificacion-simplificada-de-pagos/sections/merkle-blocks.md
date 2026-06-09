@@ -26,8 +26,6 @@ def verify_merkle_root(computed: bytes, header_root: bytes) -> bool:
 header_merkle_root = bytes.fromhex("ab" * 32)
 computed_root = bytes.fromhex("ab" * 32)
 print("Prueba valida?", verify_merkle_root(computed_root, header_merkle_root))
----
-Prueba valida? True
 ```
 
 Si la raíz coincide, la transacción de interés está **comprometida** en ese bloque. La profundidad de confirmación (bloques encadenados después) mide cuánto confiar en la irreversibilidad del pago.

@@ -16,8 +16,6 @@ MSG_TX = 1
 
 request = {"type": MSG_MERKLEBLOCK, "hash": "abc123..."}
 print(f"Solicitando tipo {request['type']} (merkleblock)")
----
-Solicitando tipo 4 (merkleblock)
 ```
 
 La wallet reconstruye la raíz Merkle del `merkleblock` y la compara con el encabezado que ya tiene de la cadena SPV.

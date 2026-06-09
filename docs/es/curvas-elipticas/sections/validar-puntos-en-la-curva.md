@@ -12,9 +12,6 @@ def on_curve(x, y, a=0, b=7):
 
 print("G = (2, 5) en curva?", on_curve(2, 5))
 print("(3, 7) en curva?", on_curve(3, 7))
----
-G = (2, 5) en curva? False
-(3, 7) en curva? False
 ```
 
 Encontremos un punto válido probando valores:
@@ -27,11 +24,6 @@ for x in range(1, 10):
     for y in range(0, 20):
         if on_curve(x, y):
             print(f"Punto valido: ({x}, {y})")
----
-Punto valido: (3, 8)
-Punto valido: (3, 16)
-Punto valido: (5, 9)
-Punto valido: (5, 14)
 ```
 
 > [!TIP]

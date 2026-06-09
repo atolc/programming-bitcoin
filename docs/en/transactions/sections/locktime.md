@@ -23,10 +23,6 @@ def interpret_locktime(lt):
 
 for lt in [0, 250000, 600_000_000]:
     print(f"locktime {lt}: {interpret_locktime(lt)}")
----
-locktime 0: no restriction
-locktime 250000: block >= 250000
-locktime 600000000: timestamp >= 600000000
 ```
 
 > [!TIP]

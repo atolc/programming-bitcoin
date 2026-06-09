@@ -22,9 +22,6 @@ satoshis = int(btc * 100_000_000)
 amount_bytes = satoshis.to_bytes(8, "little")
 print(f"{btc} BTC = {satoshis} satoshis")
 print("Amount serializado:", amount_bytes.hex())
----
-0.001 BTC = 100000 satoshis
-Amount serializado: a086010000000000
 ```
 
 > [!TIP]

@@ -38,10 +38,6 @@ script_pubkey = bytes([0xa9, 0x14]) + h + bytes([0x87])  # HASH160 push EQUAL
 print("hash160:", h.hex())
 print("script_pubkey:", script_pubkey.hex())
 print("Longitud script_pubkey:", len(script_pubkey))
----
-hash160: 76f86fa9eee8a97bc160a3ad804ddcde469e2541
-script_pubkey: a91476f86fa9eee8a97bc160a3ad804ddcde469e254187
-Longitud script_pubkey: 23
 ```
 
 > [!TIP]

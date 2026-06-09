@@ -28,8 +28,6 @@ tx = {
     "locktime": 0,
 }
 print(f"Entradas: {len(tx['inputs'])}, Salidas: {len(tx['outputs'])}")
----
-Entradas: 1, Salidas: 1
 ```
 
 > [!TIP]

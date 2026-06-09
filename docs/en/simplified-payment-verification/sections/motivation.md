@@ -15,9 +15,6 @@ FULL_NODE_GB = 600
 SPV_HEADERS_MB = 60  # ~800k blocks x 80 bytes
 print(f"Full node: ~{FULL_NODE_GB} GB")
 print(f"Headers only: ~{SPV_HEADERS_MB} MB")
----
-Full node: ~600 GB
-Headers only: ~60 MB
 ```
 
 SPV assumes the chain with the most accumulated work is the correct one. It does not detect invalid transactions on its own that never made it into a mined block, but it can verify that a payment was **included** in a confirmed block.

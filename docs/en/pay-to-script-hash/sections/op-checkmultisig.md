@@ -21,9 +21,6 @@ stack = ["OP_0", "sig_a", "sig_b", "OP_2", "pub_a", "pub_b", "pub_c", "OP_3"]
 consumed = 8
 print(f"Elements consumed: {consumed} (includes the dummy OP_0)")
 print("Result: 1 if >= 2 valid signatures")
----
-Elements consumed: 8 (includes the dummy OP_0)
-Result: 1 if >= 2 valid signatures
 ```
 
 > [!TIP]

@@ -29,9 +29,6 @@ prefix = b"\x02" if y_par else b"\x03"
 sec_compressed = prefix + x
 print(f"SEC comprimido: {len(sec_compressed)} bytes")
 print(sec_compressed.hex())
----
-SEC comprimido: 33 bytes
-0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798
 ```
 
 > [!TIP]

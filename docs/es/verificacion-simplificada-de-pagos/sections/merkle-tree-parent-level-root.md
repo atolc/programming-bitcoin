@@ -25,8 +25,6 @@ tx_hashes = [bytes([i]) * 32 for i in range(4)]
 level1 = merkle_level(tx_hashes)
 root = merkle_level(level1)[0]
 print("Raiz:", root[:4].hex())
----
-Raiz: 5d0a4f2c
 ```
 
 La **raíz Merkle** (`merkle_root`) se guarda en el encabezado del bloque. Cambiar cualquier transacción altera la raíz y, por tanto, el hash del bloque.

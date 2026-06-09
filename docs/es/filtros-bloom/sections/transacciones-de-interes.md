@@ -15,8 +15,6 @@ def affects_wallet(tx_outputs, watched_scripts: set) -> bool:
 watched = {b"\x76\xa9\x14" + b"pubkeyhash"}
 outputs = [b"\x76\xa9\x14" + b"pubkeyhash", b"\x00\xa9\x14" + b"other"]
 print("Nos afecta?", affects_wallet(outputs, watched))
----
-Nos afecta? True
 ```
 
 Los **falsos positivos** del filtro hacen que recibas `tx` ajenas ocasionalmente. La wallet las descarta tras parsear; el coste es ancho de banda, no seguridad directa.

@@ -20,9 +20,6 @@ priv = 201
 # pub = priv * G  (scalar multiplication on the curve)
 print(f"Private key: {priv}")
 print("Public key: priv * G (point on the curve)")
----
-Private key: 201
-Public key: priv * G (point on the curve)
 ```
 
 Security depends on nobody being able to recover $e$ from $eG$.

@@ -26,8 +26,6 @@ def verify_merkle_root(computed: bytes, header_root: bytes) -> bool:
 header_merkle_root = bytes.fromhex("ab" * 32)
 computed_root = bytes.fromhex("ab" * 32)
 print("Valid proof?", verify_merkle_root(computed_root, header_merkle_root))
----
-Valid proof? True
 ```
 
 If the root matches, the transaction of interest is **committed** in that block. Confirmation depth (blocks chained after) measures how much to trust the irreversibility of the payment.

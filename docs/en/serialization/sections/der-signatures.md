@@ -28,8 +28,6 @@ def encode_int(n):
 r, s = 0x7c4d7d0e, 0x9b5a7c0d
 der = b"\x30" + bytes([len(encode_int(r) + encode_int(s))]) + encode_int(r) + encode_int(s)
 print("DER:", der.hex())
----
-DER: 304402207c4d7d0e02209b5a7c0d
 ```
 
 > [!TIP]

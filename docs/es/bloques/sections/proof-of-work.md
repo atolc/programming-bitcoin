@@ -17,8 +17,7 @@ def bits_to_target(bits: int) -> int:
 bits = 0x1d00ffff  # bits del bloque génesis
 target = bits_to_target(bits)
 print(f"Target (primeros digitos): {str(target)[:20]}...")
----
-Target (primeros digitos): 269595352910004905...
+
 ```
 
 El minero prueba distintos valores de `nonce` (y también puede modificar datos extra en la coinbase) hasta obtener un hash por debajo del target. Verificar un bloque es barato: basta recalcular el hash y comparar.

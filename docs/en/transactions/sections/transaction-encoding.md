@@ -35,8 +35,6 @@ def double_sha256(data):
 raw = bytes.fromhex("0200000001")  # example fragment
 txid = double_sha256(raw)[::-1]
 print("txid (example):", txid.hex())
----
-txid (example): 8f4b4e3c2a1d0e9f7b6a5c4d3e2f1a0b9c8d7e6f5a4b3c2d1e0f9a8b7c6d5e
 ```
 
 > [!TIP]

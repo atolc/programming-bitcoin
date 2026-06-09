@@ -48,9 +48,6 @@ print(f"The inverse of 7 mod 19 is: {inverso_b}")
 # Multiply a by the inverse of b
 resultado = (a * inverso_b) % p
 print(f"Result of 2 / 7 mod 19 is: {resultado}")
----
-The inverse of 7 mod 19 is: 11
-Result of 2 / 7 mod 19 is: 3
 ```
 
 ---

@@ -40,9 +40,6 @@ sig_der = bytes.fromhex("3045022100ab" + "00" * 20)
 script_sig_len = len(sig_der) + 1 + 33  # signature+sighash + compressed pubkey
 print(f"SIGHASH flag: {SIGHASH_ALL}")
 print(f"Approx script_sig: {script_sig_len} bytes")
----
-SIGHASH flag: 1
-Approx script_sig: 108 bytes
 ```
 
 > [!TIP]

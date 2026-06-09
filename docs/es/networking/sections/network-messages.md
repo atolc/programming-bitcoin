@@ -29,8 +29,6 @@ payload_size = (0).to_bytes(4, "little")
 checksum = b"\x00" * 4
 envelope = NETWORK_MAGIC + command + payload_size + checksum
 print(f"Sobre minimo: {len(envelope)} bytes")
----
-Sobre minimo: 24 bytes
 ```
 
 > [!TIP]

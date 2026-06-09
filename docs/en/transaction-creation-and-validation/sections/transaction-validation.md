@@ -24,13 +24,6 @@ valid = all(checks.values())
 print("Valid transaction:", valid)
 for k, v in checks.items():
     print(f"  {k}: {'✓' if v else '✗'}")
----
-Valid transaction: True
-  syntax OK: ✓
-  UTXO exists: ✓
-  values balance: ✓
-  script executes: ✓
-  valid signature: ✓
 ```
 
 > [!TIP]

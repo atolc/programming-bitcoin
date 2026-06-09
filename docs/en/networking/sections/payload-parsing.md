@@ -18,8 +18,6 @@ def read_envelope(data: bytes):
 
 cmd, n, ok = read_envelope(b"\xf9\xbe\xb4\xd9" + b"ping\x00\x00\x00\x00\x00\x00\x00\x00" + b"\x08\x00\x00\x00" + b"\x00"*4 + b"\x01"*8)
 print(cmd, n, ok)
----
-ping 8 False
 ```
 
 In practice you will implement `serialize` / `parse` functions per message: `VersionMessage`, `InvMessage`, `HeadersMessage`, etc. The pattern is always the same as with transactions: fields in order, little-endian except hashes shown in big-endian to the user.

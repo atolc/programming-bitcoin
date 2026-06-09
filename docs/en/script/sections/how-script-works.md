@@ -24,9 +24,6 @@ script_pubkey = ["DUP", "HASH160", "abc123", "EQUALVERIFY", "CHECKSIG"]
 full = script_sig + script_pubkey
 print("Steps to execute:", len(full))
 print("Order:", " -> ".join(full[:3]) + " -> ...")
----
-Steps to execute: 7
-Order: signature -> pubkey -> DUP -> ...
 ```
 
 > [!TIP]

@@ -29,9 +29,6 @@ bf = BloomFilter(64, 3)
 bf.add(b"mi_direccion")
 print(bf.probably_contains(b"mi_direccion"))
 print(bf.probably_contains(b"otra"))
----
-True
-False
 ```
 
 For SPV wallets, the filter represents the addresses or scripts you care about. The full node compares each transaction in the block against the filter and only forwards probable matches.

@@ -29,9 +29,6 @@ bf = BloomFilter(64, 3)
 bf.add(b"mi_direccion")
 print(bf.probably_contains(b"mi_direccion"))
 print(bf.probably_contains(b"otra"))
----
-True
-False
 ```
 
 Para wallets SPV, el filtro representa las direcciones o scripts que te interesan. El nodo completo compara cada transacción del bloque contra el filtro y solo te reenvía coincidencias probables.

@@ -21,9 +21,6 @@ stack = ["OP_0", "sig_a", "sig_b", "OP_2", "pub_a", "pub_b", "pub_c", "OP_3"]
 consumed = 8
 print(f"Elementos consumidos: {consumed} (incluye el dummy OP_0)")
 print("Resultado: 1 si >= 2 firmas válidas")
----
-Elementos consumidos: 8 (incluye el dummy OP_0)
-Resultado: 1 si >= 2 firmas válidas
 ```
 
 > [!TIP]

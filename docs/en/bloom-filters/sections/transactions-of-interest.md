@@ -15,8 +15,6 @@ def affects_wallet(tx_outputs, watched_scripts: set) -> bool:
 watched = {b"\x76\xa9\x14" + b"pubkeyhash"}
 outputs = [b"\x76\xa9\x14" + b"pubkeyhash", b"\x00\xa9\x14" + b"other"]
 print("Affects us?", affects_wallet(outputs, watched))
----
-Affects us? True
 ```
 
 Bloom filter **false positives** cause you to receive unrelated `tx` messages occasionally. The wallet discards them after parsing; the cost is bandwidth, not direct security risk.

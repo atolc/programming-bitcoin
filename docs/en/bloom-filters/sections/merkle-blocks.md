@@ -16,8 +16,6 @@ MSG_TX = 1
 
 request = {"type": MSG_MERKLEBLOCK, "hash": "abc123..."}
 print(f"Requesting type {request['type']} (merkleblock)")
----
-Requesting type 4 (merkleblock)
 ```
 
 The wallet reconstructs the Merkle root from the `merkleblock` and compares it with the header it already has from the SPV chain.

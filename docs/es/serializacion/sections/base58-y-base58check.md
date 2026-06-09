@@ -38,8 +38,6 @@ def b58encode(b):
 
 payload = bytes.fromhex("001234567890abcdef1234567890abcdef12345678")
 print("Base58 (ejemplo):", b58encode(payload)[:20] + "...")
----
-Base58 (ejemplo): 1J3q8bK9mN2pR5sT7vW...
 ```
 
 > [!TIP]

@@ -29,10 +29,6 @@ OPCODES = {
 script_hex = "76a914"  # OP_DUP OP_HASH160 PUSH(20)
 for b in bytes.fromhex(script_hex):
     print(f"0x{b:02x} -> {OPCODES.get(b, 'PUSHDATA/other')}")
----
-0x76 -> OP_DUP
-0xa9 -> OP_HASH160
-0x14 -> PUSHDATA/other
 ```
 
 > [!TIP]

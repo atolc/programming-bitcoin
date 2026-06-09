@@ -16,8 +16,6 @@ outputs = [40_000, 30_000]
 fee = input_total - sum(outputs)
 fee_rate = fee / 250  # suponiendo 250 vbytes
 print(f"Comisión: {fee} sats ({fee_rate:.1f} sat/vB)")
----
-Comisión: 30000 sats (120.0 sat/vB)
 ```
 
 Los mineros priorizan transacciones con mayor **tasa de comisión por vbyte** (sat/vB). El tamaño en vbytes depende del peso de la transacción (post-SegWit usa *virtual size*).

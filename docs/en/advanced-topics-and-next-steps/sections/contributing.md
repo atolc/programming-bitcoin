@@ -19,8 +19,6 @@ Good practices when contributing:
 ```python-sandbox
 workflow = ["fork", "branch", "tests", "PR", "review", "merge"]
 print(" -> ".join(workflow))
----
-fork -> branch -> tests -> PR -> review -> merge
 ```
 
 > [!TIP]

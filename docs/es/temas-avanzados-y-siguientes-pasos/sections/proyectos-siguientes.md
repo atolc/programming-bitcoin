@@ -18,10 +18,6 @@ projects = {
 }
 for name, scope in projects.items():
     print(f"{name}: {scope}")
----
-spv_client: headers + merkleblock
-toy_miner: regtest + PoW loop
-block_parser: blk.dat reader
 ```
 
 Empieza por **regtest** o **testnet**: puedes minar bloques al instante y no arriesgas fondos reales. Usa `bitcoin-cli` o tu propia serialización para comparar resultados byte a byte.

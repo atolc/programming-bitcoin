@@ -7,7 +7,7 @@ import { chapterPath } from "../lib/routes";
 import { getReadChapters } from "../lib/readProgress";
 import { cn } from "../lib/utils";
 
-const CHAPTERS_WITH_SANDBOX = new Set(["capitulo-1", "capitulo-2", "capitulo-3"]);
+const CHAPTERS_WITH_SANDBOX = new Set([1, 2, 3]);
 
 function preloadPyodide() {
   import("../lib/pyodide").then((m) => m.initPyodide()).catch(() => {});
@@ -66,8 +66,10 @@ export function LandingPage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {chapters.map((chapter) => {
-              const isRead = readChapters.has(chapter.id);
-              const hasSandbox = CHAPTERS_WITH_SANDBOX.has(chapter.id);
+              const isRead =
+                readChapters.has(chapter.id) ||
+                chapter.aliases.some((alias) => readChapters.has(alias));
+              const hasSandbox = CHAPTERS_WITH_SANDBOX.has(chapter.number);
 
               return (
                 <Link

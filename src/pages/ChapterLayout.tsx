@@ -13,7 +13,7 @@ import {
   CheckCircle2,
   Home,
 } from "lucide-react";
-import { chapters, type Chapter } from "../data/chapters";
+import { chapters, findChapterById, type Chapter } from "../data/chapters";
 import { MarkdownRenderer } from "../components/MarkdownRenderer";
 import { TableOfContents } from "../components/TableOfContents";
 import { AppHeader } from "../components/AppHeader";
@@ -22,7 +22,7 @@ import { chapterPath, homePath } from "../lib/routes";
 import { markChapterRead, getReadChapters } from "../lib/readProgress";
 import { cn } from "../lib/utils";
 
-const SANDBOX_CHAPTERS = new Set(["capitulo-1", "capitulo-2", "capitulo-3"]);
+const SANDBOX_CHAPTERS = new Set([1, 2, 3]);
 
 const LazyPyodideProvider = lazy(() =>
   import("../components/PyodideProvider").then((m) => ({
@@ -39,7 +39,7 @@ function ChapterLayoutInner() {
   const [readChapters, setReadChapters] = useState<Set<string>>(() => getReadChapters());
   const searchInputRef = useRef<HTMLInputElement>(null);
 
-  const validChapter = chapters.find((chapter) => chapter.id === chapterId);
+  const validChapter = findChapterById(chapterId);
 
   if (chapterId && !validChapter) {
     return <Navigate to={homePath()} replace />;
@@ -246,7 +246,9 @@ function ChapterLayoutInner() {
                 {filteredChapters.length > 0 ? (
                   filteredChapters.map((chapter) => {
                     const isActive = activeChapter.id === chapter.id;
-                    const isRead = readChapters.has(chapter.id);
+                    const isRead =
+                      readChapters.has(chapter.id) ||
+                      chapter.aliases.some((alias) => readChapters.has(alias));
                     return (
                       <button
                         key={chapter.id}
@@ -354,7 +356,8 @@ function ChapterLayoutInner() {
 
 export function ChapterLayout() {
   const { chapterId } = useParams();
-  const needsPyodide = chapterId ? SANDBOX_CHAPTERS.has(chapterId) : false;
+  const chapter = findChapterById(chapterId);
+  const needsPyodide = chapter ? SANDBOX_CHAPTERS.has(chapter.number) : false;
 
   if (needsPyodide) {
     return (

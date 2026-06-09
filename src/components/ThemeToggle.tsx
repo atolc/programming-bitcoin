@@ -1,13 +1,21 @@
 import { useEffect, useState } from "react";
 import { Sun, Moon } from "lucide-react";
 
+type Theme = "light" | "dark";
+
+function getPreferredTheme(): Theme {
+  if (typeof window === "undefined") return "light";
+
+  const storedTheme = localStorage.getItem("theme");
+  if (storedTheme === "light" || storedTheme === "dark") {
+    return storedTheme;
+  }
+
+  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+}
+
 export function ThemeToggle() {
-  const [theme, setTheme] = useState(() => {
-    if (typeof window !== "undefined") {
-      return localStorage.getItem("theme") || "light";
-    }
-    return "light";
-  });
+  const [theme, setTheme] = useState<Theme>(getPreferredTheme);
 
   useEffect(() => {
     const root = window.document.documentElement;
@@ -22,8 +30,9 @@ export function ThemeToggle() {
   return (
     <button
       onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-      className="relative flex size-9 items-center justify-center rounded-lg border border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-900 text-stone-750 dark:text-stone-300 shadow-sm hover:bg-stone-50 dark:hover:bg-stone-850 transition-all duration-200 active:scale-95 cursor-pointer"
-      aria-label="Toggle theme"
+      className="relative flex size-9 items-center justify-center rounded-lg border border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-900 text-stone-700 dark:text-stone-300 shadow-sm hover:bg-stone-50 dark:hover:bg-stone-800 transition-all duration-200 active:scale-95 cursor-pointer"
+      aria-label={theme === "dark" ? "Activar modo claro" : "Activar modo oscuro"}
+      title={theme === "dark" ? "Activar modo claro" : "Activar modo oscuro"}
     >
       <div className="relative size-5 overflow-hidden">
         <span

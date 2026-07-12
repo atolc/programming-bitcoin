@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "homepage": "https://caeher.github.io/programming-bitcoin/",
+  "homepage": "https://atolc.github.io/programming-bitcoin/",
   "scripts": {
     "dev": "vite",
     "split-sections": "node scripts/split-sections.mjs",

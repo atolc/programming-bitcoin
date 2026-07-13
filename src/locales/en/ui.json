@@ -108,7 +108,8 @@
     "preparing": "Preparing Python environment...",
     "pythonUnavailable": "Python engine unavailable",
     "edit": "Edit",
-    "preview": "Preview"
+    "preview": "Preview",
+    "exitCode": "Process finished with exit code 0"
   },
   "theme": {
     "light": "Switch to light mode",

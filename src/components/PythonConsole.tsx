@@ -78,7 +78,7 @@ export function PythonConsole({
             )}
             {!error ? (
               <div className="text-[10px] text-stone-500 mt-2 border-t border-stone-800/40 pt-1">
-                Process finished with exit code 0
+                {t("code.exitCode")}
               </div>
             ) : null}
           </div>

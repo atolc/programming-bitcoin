@@ -108,7 +108,8 @@
     "preparing": "Preparando entorno Python...",
     "pythonUnavailable": "Motor Python no disponible",
     "edit": "Editar",
-    "preview": "Vista previa"
+    "preview": "Vista previa",
+    "exitCode": "Proceso terminado con código de salida 0"
   },
   "theme": {
     "light": "Activar modo claro",

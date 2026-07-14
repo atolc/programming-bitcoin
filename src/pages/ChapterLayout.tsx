@@ -19,6 +19,7 @@ import {
   findChapterById,
   findSectionById,
   type Chapter,
+  SANDBOX_CHAPTER_NUMBERS,
 } from "../data/chapters";
 import { MarkdownRenderer } from "../components/MarkdownRenderer";
 import { TableOfContents } from "../components/TableOfContents";
@@ -54,8 +55,6 @@ import {
   ProgressTrack,
 } from "@/components/ui/progress";
 import { ScrollArea } from "@/components/ui/scroll-area";
-
-const SANDBOX_CHAPTERS = new Set([1, 2, 3]);
 
 const LazyPyodideProvider = lazy(() =>
   import("../components/PyodideProvider").then((m) => ({
@@ -493,7 +492,7 @@ export function ChapterLayout() {
   const { locale } = useLocale();
   const { chapterId } = useParams();
   const chapter = findChapterById(locale, chapterId);
-  const needsPyodide = chapter ? SANDBOX_CHAPTERS.has(chapter.number) : false;
+  const needsPyodide = chapter ? SANDBOX_CHAPTER_NUMBERS.has(chapter.number) : false;
 
   if (needsPyodide) {
     return (

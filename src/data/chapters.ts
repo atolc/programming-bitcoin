@@ -35,6 +35,12 @@ const ENGLISH_CHAPTER_TITLES: Record<number, string> = {
   14: "Advanced Topics and Next Steps",
 };
 
+/**
+ * Chapter numbers that have an interactive Python sandbox (Pyodide).
+ * Update this list when enabling the sandbox in new chapters.
+ */
+export const SANDBOX_CHAPTER_NUMBERS = new Set([1, 2, 3]);
+
 export type Section = {
   id: string;
   key: string;

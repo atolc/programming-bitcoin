@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { ArrowRight, CheckCircle2, Code2 } from "lucide-react";
 import { useTranslation, Trans } from "react-i18next";
 import { AppHeader } from "../components/AppHeader";
-import { getChapters } from "../data/chapters";
+import { getChapters, SANDBOX_CHAPTER_NUMBERS } from "../data/chapters";
 import { useLocale } from "../context/LocaleContext";
 import { getReadChapters } from "../lib/readProgress";
 import { Badge } from "@/components/ui/badge";
@@ -15,8 +15,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { GradientButton } from "@/components/ui/gradient-button";
-
-const CHAPTERS_WITH_SANDBOX = new Set([1, 2, 3]);
 
 function preloadPyodide() {
   import("../lib/pyodide").then((m) => m.initPyodide()).catch(() => {});
@@ -96,7 +94,7 @@ export function LandingPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {chapters.map((chapter) => {
               const isRead = readChapters.has(String(chapter.number));
-              const hasSandbox = CHAPTERS_WITH_SANDBOX.has(chapter.number);
+              const hasSandbox = SANDBOX_CHAPTER_NUMBERS.has(chapter.number);
 
               return (
                 <Card

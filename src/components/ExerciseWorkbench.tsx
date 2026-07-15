@@ -69,7 +69,12 @@ export function ExerciseWorkbench({ exercise, locale }: ExerciseWorkbenchProps) 
     setError(null);
     setPassed(null);
     setShowSolution(false);
+    // Reset the Pyodide global namespace so that state mutations (e.g. env-var
+    // changes, top-level imports) from the previous exercise do not leak into
+    // this one. This is a no-op if Pyodide has not been loaded yet.
+    pyodide.resetGlobals();
   }, [exercise.id, exercise.starterCode]);
+
 
   useEffect(() => {
     if (pyodide.status === "ready" || pyodide.status === "loading") return;

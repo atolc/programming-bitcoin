@@ -8,6 +8,7 @@ import {
 } from "react";
 import {
   initPyodide,
+  resetPyodideGlobals,
   runPython as runPythonCode,
   runPythonWithTests as runPythonWithTestsCode,
   type PyodideStatus,
@@ -15,10 +16,12 @@ import {
   type PythonRunWithTestsResult,
 } from "../lib/pyodide";
 
+
 type PyodideContextValue = {
   status: PyodideStatus;
   statusMessage: string;
   ensureReady: () => Promise<void>;
+  resetGlobals: () => void;
   runPython: (code: string, timeoutMs?: number) => Promise<PythonRunResult>;
   runPythonWithTests: (
     code: string,
@@ -26,6 +29,7 @@ type PyodideContextValue = {
     timeoutMs?: number,
   ) => Promise<PythonRunWithTestsResult>;
 };
+
 
 const PyodideContext = createContext<PyodideContextValue | null>(null);
 
@@ -66,10 +70,15 @@ export function PyodideProvider({ children }: { children: ReactNode }) {
     [ensureReady],
   );
 
+  const resetGlobals = useCallback(() => {
+    resetPyodideGlobals();
+  }, []);
+
   const value = useMemo(
-    () => ({ status, statusMessage, ensureReady, runPython, runPythonWithTests }),
-    [status, statusMessage, ensureReady, runPython, runPythonWithTests],
+    () => ({ status, statusMessage, ensureReady, resetGlobals, runPython, runPythonWithTests }),
+    [status, statusMessage, ensureReady, resetGlobals, runPython, runPythonWithTests],
   );
+
 
   return (
     <PyodideContext.Provider value={value}>{children}</PyodideContext.Provider>

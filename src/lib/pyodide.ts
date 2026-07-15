@@ -36,6 +36,40 @@ export function getPyodideInstance(): PyodideInterface | null {
   return pyodideInstance;
 }
 
+/**
+ * Resets the Pyodide global namespace between exercise executions.
+ *
+ * Even though `runPythonWithTests` creates a fresh `localNamespace` per run,
+ * mutations to the real global scope (e.g. `import os; os.environ[...] = ...`)
+ * persist in `pyodide.globals` across executions. This function:
+ *  1. Clears all user-defined keys from `pyodide.globals`, keeping only `__builtins__`.
+ *  2. Removes any user-imported module names from `sys.modules` so that
+ *     re-importing in the next exercise starts fresh.
+ *
+ * It is a no-op when Pyodide has not been initialised yet.
+ */
+export function resetPyodideGlobals(): void {
+  if (!pyodideInstance) return;
+
+  const pyodide = pyodideInstance;
+
+  // Remove user-imported modules from sys.modules, preserving stdlib + core
+  // Pyodide packages that cannot be cleanly re-imported.
+  pyodide.runPython(`
+import sys as _sys
+_keep = set(_sys.stdlib_module_names) | {'_pyodide', 'pyodide', 'micropip', 'packaging'}
+_to_remove = [k for k in list(_sys.modules.keys()) if k.split('.')[0] not in _keep]
+for _k in _to_remove:
+    _sys.modules.pop(_k, None)
+del _keep, _to_remove
+`);
+
+  // Clear the global namespace back to just __builtins__.
+  const builtins = pyodide.globals.get("__builtins__");
+  pyodide.globals.clear();
+  pyodide.globals.set("__builtins__", builtins);
+}
+
 export type PythonRunResult = {
   stdout: string;
   stderr: string;

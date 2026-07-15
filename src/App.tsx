@@ -5,6 +5,7 @@ import { PracticeLayout } from "./pages/PracticeLayout";
 import { PracticeIndexPage } from "./pages/PracticeIndexPage";
 import { PracticeChapterPage } from "./pages/PracticeChapterPage";
 import { ExerciseWorkbenchPage } from "./pages/ExerciseWorkbenchPage";
+import { NotFoundPage } from "./pages/NotFoundPage";
 import { LocaleProvider } from "./context/LocaleContext";
 import {
   findChapterByIdLegacy,
@@ -79,7 +80,7 @@ export function App() {
           </Route>
           <Route path=":chapterId" element={<ChapterLayout />} />
           <Route path=":chapterId/:sectionId" element={<ChapterLayout />} />
-          <Route path="*" element={<Navigate to={homePath(locale)} replace />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Route>
       ))}
       <Route path="/docs/:chapterId" element={<LegacyDocsRedirect />} />
@@ -89,7 +90,7 @@ export function App() {
       />
       <Route path="/:chapterId/:sectionId" element={<LegacyChapterRedirect />} />
       <Route path="/:chapterId" element={<LegacyChapterRedirect />} />
-      <Route path="*" element={<Navigate to={homePath(DEFAULT_LOCALE)} replace />} />
+      <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
 }

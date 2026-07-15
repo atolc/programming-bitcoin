@@ -122,5 +122,12 @@
     "downloading": "Descargando motor Python...",
     "preparing": "Preparando entorno...",
     "timeout": "Tiempo de ejecución agotado (5s)"
+  },
+  "notFound": {
+    "title": "Página no encontrada",
+    "description": "La página que buscas no existe o fue movida.",
+    "goHome": "Ir al inicio",
+    "browseChapters": "Ver capítulos",
+    "goBack": "Volver atrás"
   }
 }

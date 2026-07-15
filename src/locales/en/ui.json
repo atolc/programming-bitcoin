@@ -122,5 +122,12 @@
     "downloading": "Downloading Python engine...",
     "preparing": "Preparing environment...",
     "timeout": "Execution timed out (5s)"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "description": "The page you're looking for doesn't exist or has been moved.",
+    "goHome": "Go home",
+    "browseChapters": "Browse chapters",
+    "goBack": "Go back"
   }
 }

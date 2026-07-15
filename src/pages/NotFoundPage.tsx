@@ -4,16 +4,15 @@ import { useTranslation } from "react-i18next";
 import { AppHeader } from "../components/AppHeader";
 import { Button } from "@/components/ui/button";
 import { GradientButton } from "@/components/ui/gradient-button";
-import { DEFAULT_LOCALE } from "../lib/locale";
 import { homePath } from "../lib/routes";
 import { LocaleProvider } from "../context/LocaleContext";
 import { parseLocale } from "../lib/locale";
 
-function NotFoundContent() {
+function NotFoundContent({ locale }: { locale: ReturnType<typeof parseLocale> }) {
   const { t } = useTranslation();
   const location = useLocation();
 
-  const homeHref = homePath(DEFAULT_LOCALE);
+  const homeHref = homePath(locale);
 
   return (
     <div className="app-shell min-h-screen relative overflow-hidden bg-background text-foreground transition-colors duration-300">
@@ -96,7 +95,7 @@ export function NotFoundPage() {
 
   return (
     <LocaleProvider locale={detectedLocale}>
-      <NotFoundContent />
+      <NotFoundContent locale={detectedLocale} />
     </LocaleProvider>
   );
 }

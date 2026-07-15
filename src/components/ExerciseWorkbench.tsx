@@ -17,6 +17,7 @@ import { usePyodide } from "./PyodideProvider";
 import {
   getLocalizedExerciseContent,
   type Exercise,
+  getExerciseFilename,
 } from "@/data/exercises";
 import { outputsMatch } from "@/lib/pyodide";
 import type {
@@ -48,6 +49,7 @@ export function ExerciseWorkbench({ exercise, locale }: ExerciseWorkbenchProps) 
   const { t } = useTranslation();
   const pyodide = usePyodide();
   const content = getLocalizedExerciseContent(exercise, locale);
+  const filename = getExerciseFilename(exercise);
   const [currentCode, setCurrentCode] = useState(exercise.starterCode);
   const [copied, setCopied] = useState(false);
   const [isRunning, setIsRunning] = useState(false);
@@ -201,7 +203,7 @@ export function ExerciseWorkbench({ exercise, locale }: ExerciseWorkbenchProps) 
               <div className="size-3 rounded-full bg-amber-500/80" />
               <div className="size-3 rounded-full bg-emerald-500/80" />
               <span className="ml-2 text-xs font-mono text-stone-400 select-none">
-                main.py
+                {filename}
               </span>
             </div>
 
@@ -283,6 +285,7 @@ export function ExerciseWorkbench({ exercise, locale }: ExerciseWorkbenchProps) 
 
           {!exercise.offline ? (
             <PythonConsole
+              filename={filename}
               isRunning={isRunning}
               hasRun={hasRun}
               stdout={stdout}

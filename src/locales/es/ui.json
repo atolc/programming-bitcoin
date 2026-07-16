@@ -61,6 +61,7 @@
     "clearSearch": "Limpiar búsqueda",
     "chaptersNav": "Capítulos del Libro",
     "noResults": "No se encontraron capítulos",
+    "noResultsFor": "Sin resultados para \"{{query}}\"",
     "openSection": "Abrir sección",
     "prevChapter": "Capítulo Anterior",
     "nextChapter": "Siguiente Capítulo",

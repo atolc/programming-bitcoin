@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
+import { lazy, Suspense, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import {
   useNavigate,
   useParams,
@@ -19,6 +19,7 @@ import {
   findChapterById,
   findSectionById,
   type Chapter,
+  type Section,
   SANDBOX_CHAPTER_NUMBERS,
 } from "../data/chapters";
 import { MarkdownRenderer } from "../components/MarkdownRenderer";
@@ -61,6 +62,21 @@ const LazyPyodideProvider = lazy(() =>
     default: m.PyodideProvider,
   })),
 );
+
+function highlightMatch(text: string, query: string): ReactNode {
+  if (!query) return text;
+  const idx = text.toLowerCase().indexOf(query.toLowerCase());
+  if (idx === -1) return text;
+  return (
+    <>
+      {text.slice(0, idx)}
+      <mark className="bg-primary/20 text-primary rounded px-0.5">
+        {text.slice(idx, idx + query.length)}
+      </mark>
+      {text.slice(idx + query.length)}
+    </>
+  );
+}
 
 function ChapterLayoutInner() {
   const { t } = useTranslation();
@@ -141,20 +157,30 @@ function ChapterLayoutInner() {
 
   const filteredChapters = useMemo(() => {
     const normalized = query.trim().toLowerCase();
-    if (!normalized) return chapters;
+    if (!normalized) {
+      return chapters.map((chapter) => ({ chapter, matchedSection: undefined }));
+    }
 
-    return chapters.filter((chapter) => {
-      return (
-        chapter.title.toLowerCase().includes(normalized) ||
-        chapter.content.toLowerCase().includes(normalized) ||
-        chapter.sections.some((section) => {
+    return chapters
+      .map((chapter) => {
+        const matchedSection = chapter.sections.find((section) => {
           return (
             section.title.toLowerCase().includes(normalized) ||
             section.content.toLowerCase().includes(normalized)
           );
-        })
-      );
-    });
+        });
+
+        const matchesChapter =
+          chapter.title.toLowerCase().includes(normalized) ||
+          chapter.content.toLowerCase().includes(normalized) ||
+          !!matchedSection;
+
+        if (matchesChapter) {
+          return { chapter, matchedSection };
+        }
+        return null;
+      })
+      .filter((item): item is { chapter: Chapter; matchedSection: Section | undefined } => item !== null);
   }, [query, chapters]);
 
   const activeIndex = useMemo(() => {
@@ -339,7 +365,7 @@ function ChapterLayoutInner() {
                     {t("chapter.chaptersNav")}
                   </p>
                   {filteredChapters.length > 0 ? (
-                    filteredChapters.map((chapter) => {
+                    filteredChapters.map(({ chapter, matchedSection }) => {
                       const isActive = activeChapter.id === chapter.id;
                       const isRead = readChapters.has(String(chapter.number));
                       return (
@@ -350,7 +376,10 @@ function ChapterLayoutInner() {
                             isActive && "bg-accent text-accent-foreground font-medium",
                           )}
                           onClick={() => {
-                            navigate(chapterPath(chapter.folder));
+                            const path = matchedSection
+                              ? chapterPath(chapter.folder, matchedSection.id)
+                              : chapterPath(chapter.folder);
+                            navigate(path);
                             setMenuOpen(false);
                           }}
                           type="button"
@@ -366,13 +395,35 @@ function ChapterLayoutInner() {
                           >
                             {chapter.number}
                           </span>
-                          <span className="leading-snug truncate flex-1">{chapter.title}</span>
+                          <div className="flex flex-col flex-1 min-w-0">
+                            <span className="leading-snug truncate">
+                              {highlightMatch(chapter.title, query)}
+                            </span>
+                            {matchedSection && (
+                              <span className="text-xs text-muted-foreground truncate">
+                                § {highlightMatch(matchedSection.title, query)}
+                              </span>
+                            )}
+                          </div>
                           {isRead && !isActive ? (
                             <CheckCircle2 className="size-3.5 shrink-0 text-success" />
                           ) : null}
                         </Button>
                       );
                     })
+                  ) : query ? (
+                    <div className="px-3 py-6 text-center">
+                      <p className="text-xs text-muted-foreground">
+                        {t("chapter.noResultsFor", { query })}
+                      </p>
+                      <button
+                        onClick={() => setQuery("")}
+                        className="mt-2 text-xs text-primary font-medium hover:underline cursor-pointer"
+                        type="button"
+                      >
+                        {t("chapter.clearSearch")}
+                      </button>
+                    </div>
                   ) : (
                     <div className="px-3 py-4 text-center text-xs text-muted-foreground">
                       {t("chapter.noResults")}

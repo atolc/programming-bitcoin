@@ -10,6 +10,7 @@ import { Callout, parseCallout } from "./Callout";
 import { Collapsible } from "./Collapsible";
 import { slugify } from "../lib/toc";
 import { remarkDirectiveComponents } from "../lib/remark-directive-components";
+import { ErrorBoundary } from "./ErrorBoundary";
 
 interface MarkdownRendererProps {
   content: string;
@@ -165,16 +166,27 @@ const markdownComponents: Components = {
   },
 };
 
+function MarkdownErrorFallback() {
+  const { t } = useTranslation();
+  return (
+    <div className="rounded-lg border border-destructive/30 bg-destructive/5 px-4 py-3 text-sm text-destructive">
+      {t("error.markdownRenderFailed")}
+    </div>
+  );
+}
+
 export function MarkdownRenderer({ content }: MarkdownRendererProps) {
   return (
-    <div className="prose prose-stone dark:prose-invert max-w-none prose-pre:bg-transparent prose-pre:p-0 prose-code:before:content-none prose-code:after:content-none prose-headings:scroll-mt-24">
-      <ReactMarkdown
-        remarkPlugins={[remarkMath, remarkDirective, remarkDirectiveComponents]}
-        rehypePlugins={[rehypeKatex]}
-        components={markdownComponents}
-      >
-        {content}
-      </ReactMarkdown>
-    </div>
+    <ErrorBoundary fallback={<MarkdownErrorFallback />}>
+      <div className="prose prose-stone dark:prose-invert max-w-none prose-pre:bg-transparent prose-pre:p-0 prose-code:before:content-none prose-code:after:content-none prose-headings:scroll-mt-24">
+        <ReactMarkdown
+          remarkPlugins={[remarkMath, remarkDirective, remarkDirectiveComponents]}
+          rehypePlugins={[rehypeKatex]}
+          components={markdownComponents}
+        >
+          {content}
+        </ReactMarkdown>
+      </div>
+    </ErrorBoundary>
   );
 }

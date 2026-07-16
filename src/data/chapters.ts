@@ -5,6 +5,7 @@ import {
   findChapterByFolder,
   findSectionKeyBySlug,
 } from "./content-manifest";
+import exercisesManifest from "./exercises-manifest.json";
 
 const chapterModules = import.meta.glob("../../docs/*/*/index.md", {
   eager: true,
@@ -37,9 +38,15 @@ const ENGLISH_CHAPTER_TITLES: Record<number, string> = {
 
 /**
  * Chapter numbers that have an interactive Python sandbox (Pyodide).
- * Update this list when enabling the sandbox in new chapters.
+ * Derived dynamically from the exercises manifest: any chapter with at least
+ * one `demo` exercise gets the sandbox badge and Pyodide preloading on hover.
+ * No manual updates needed when new chapters are added.
  */
-export const SANDBOX_CHAPTER_NUMBERS = new Set([1, 2, 3]);
+export const SANDBOX_CHAPTER_NUMBERS: ReadonlySet<number> = new Set(
+  (exercisesManifest as unknown as { chapter: number; kind: string }[])
+    .filter((e) => e.kind === "demo")
+    .map((e) => e.chapter),
+);
 
 export type Section = {
   id: string;

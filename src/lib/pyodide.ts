@@ -107,6 +107,7 @@ export async function runPythonWithTests(
   timeoutMs = 5000,
 ): Promise<PythonRunWithTestsResult> {
   const pyodide = await initPyodide();
+  resetPyodideGlobals();
   let stdout = "";
   let stderr = "";
 

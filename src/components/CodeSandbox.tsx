@@ -88,6 +88,7 @@ export function CodeSandbox({
     setStdout("");
     setStderr("");
     setError(null);
+    pyodide?.resetGlobals();
   };
 
   const pyodideLoading = pyodide?.status === "loading" || isPreloading;

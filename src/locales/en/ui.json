@@ -129,5 +129,11 @@
     "goHome": "Go home",
     "browseChapters": "Browse chapters",
     "goBack": "Go back"
+  },
+  "error": {
+    "title": "Something went wrong",
+    "description": "An unexpected error occurred. Try reloading the page.",
+    "reload": "Reload page",
+    "markdownRenderFailed": "This content could not be rendered."
   }
 }

@@ -129,5 +129,11 @@
     "goHome": "Ir al inicio",
     "browseChapters": "Ver capítulos",
     "goBack": "Volver atrás"
+  },
+  "error": {
+    "title": "Algo salió mal",
+    "description": "Ocurrió un error inesperado. Intenta recargar la página.",
+    "reload": "Recargar página",
+    "markdownRenderFailed": "Este contenido no se pudo mostrar."
   }
 }

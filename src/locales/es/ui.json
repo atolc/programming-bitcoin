@@ -8,7 +8,10 @@
   "language": {
     "label": "Idioma",
     "es": "Español",
-    "en": "English"
+    "en": "English",
+    "fr": "Français",
+    "pt": "Português",
+    "zh": "中文"
   },
   "landing": {
     "hero": "Guía de estudio interactiva basada en el aclamado libro de Jimmy Song. Explora los 14 capítulos con código Python ejecutable en el navegador, quizzes de autoevaluación y notas clave.",

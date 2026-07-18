@@ -1,0 +1,143 @@
+{
+  "header": {
+    "subtitle": "Guide d'étude et résumés",
+    "toggleNav": "Basculer la navigation",
+    "github": "Voir sur GitHub",
+    "practice": "Pratique"
+  },
+  "language": {
+    "label": "Langue",
+    "es": "Español",
+    "en": "English",
+    "fr": "Français",
+    "pt": "Português",
+    "zh": "中文"
+  },
+  "landing": {
+    "hero": "Guide d'étude interactif basé sur le livre acclamé de Jimmy Song. Explorez les 14 chapitres avec du code Python exécutable dans le navigateur, des quiz d'auto-évaluation et des notes clés.",
+    "cta": "Commencer le chapitre 1",
+    "chaptersTitle": "Chapitres du livre",
+    "chaptersCount": "{{count}} chapitres prêts à explorer",
+    "read": "Lu",
+    "sandbox": "Comprend des bacs à sable Python interactifs",
+    "readChapter": "Lire le chapitre",
+    "footer": "Basé sur <em>Programming Bitcoin: Learn How to Program Bitcoin from Scratch</em> de Jimmy Song.",
+    "practiceTitle": "Pratique interactive",
+    "practiceDescription": "Travaillez les exercices du livre avec un éditeur Python dans le navigateur, une validation automatique et des exemples exécutables.",
+    "openPractice": "Ouvrir la pratique"
+  },
+  "practice": {
+    "badge": "Pyodide",
+    "title": "Pratique",
+    "subtitle": "Résolvez les exercices du livre et exécutez des exemples de code dans votre navigateur. Modifiez le Python à droite, lisez les instructions à gauche et cliquez sur Exécuter pour vérifier votre solution.",
+    "exerciseCount": "{{count}} exercices",
+    "chapterExercises": "{{count}} exercices dans ce chapitre",
+    "openChapter": "Voir les exercices",
+    "backToIndex": "Tous les chapitres",
+    "backToChapter": "Retour à la liste des chapitres",
+    "prevExercise": "Précédent",
+    "nextExercise": "Suivant",
+    "noExercises": "Aucun exercice ne correspond à ce filtre.",
+    "filterAll": "Tous",
+    "filterBook": "Livre",
+    "filterCoding": "Code",
+    "filterDemo": "Démos",
+    "filterMath": "Mathématiques"
+  },
+  "exercise": {
+    "pass": "Réussi",
+    "fail": "Échoué",
+    "showSolution": "Afficher la solution",
+    "offline": "Hors ligne",
+    "offlineDescription": "Cet exercice nécessite un accès réseau ou un environnement Python local. Lisez les instructions et essayez-le sur votre machine avec le dépôt officiel du livre.",
+    "progress": "Progression",
+    "progressCount": "{{passed}} / {{total}} réussis",
+    "panelInstructions": "Instructions et exemple",
+    "panelEditor": "Éditeur de code",
+    "example": "Exemple"
+  },
+  "chapter": {
+    "home": "Accueil",
+    "chapter": "Chapitre",
+    "allChapters": "Tous les chapitres",
+    "searchPlaceholder": "Rechercher dans les résumés...",
+    "clearSearch": "Effacer la recherche",
+    "chaptersNav": "Chapitres du livre",
+    "noResults": "Aucun chapitre trouvé",
+    "noResultsFor": "Aucun résultat pour « {{query}} »",
+    "openSection": "Ouvrir la section",
+    "prevChapter": "Chapitre précédent",
+    "nextChapter": "Chapitre suivant",
+    "prevSection": "Section précédente",
+    "nextSection": "Section suivante",
+    "chapterShort": "Chap."
+  },
+  "toc": {
+    "sections": "Sections"
+  },
+  "quiz": {
+    "finalTest": "Test final",
+    "title": "Vérifiez votre compréhension",
+    "description": "Répondez sans regarder les formules. Si vous vous trompez, utilisez l'explication comme indice et revisitez la section concernée.",
+    "progress": "Vous avez répondu à {{answered}} sur {{total}}.",
+    "question": "Question {{current}} sur {{total}}",
+    "check": "Vérifier",
+    "next": "Suivant",
+    "finish": "Terminer",
+    "restart": "Recommencer",
+    "perfect": "Parfait : vous maîtrisez ce chapitre.",
+    "good": "Bel effort : révisez les questions manquées et réessayez.",
+    "score": "{{correct}} sur {{total}} correctes"
+  },
+  "callout": {
+    "important": "Important",
+    "tip": "Astuce",
+    "warning": "Avertissement",
+    "note": "Remarque"
+  },
+  "code": {
+    "copy": "Copier le code",
+    "copyShort": "Copier",
+    "copied": "Copié",
+    "runningScript": "Exécution du script Python...",
+    "clickRun": "Cliquez sur « Exécuter » pour lancer le code avec Pyodide.",
+    "run": "Exécuter",
+    "running": "Exécution...",
+    "loadingPython": "Chargement de Python...",
+    "reset": "Réinitialiser",
+    "console": "Console",
+    "match": "Correspond",
+    "mismatch": "Ne correspond pas",
+    "noOutput": "(aucune sortie)",
+    "preparing": "Préparation de l'environnement Python...",
+    "pythonUnavailable": "Moteur Python indisponible",
+    "edit": "Modifier",
+    "preview": "Aperçu",
+    "exitCode": "Processus terminé avec le code de sortie 0"
+  },
+  "theme": {
+    "light": "Passer en mode clair",
+    "dark": "Passer en mode sombre"
+  },
+  "markdown": {
+    "details": "Détails"
+  },
+  "pyodide": {
+    "downloading": "Téléchargement du moteur Python...",
+    "preparing": "Préparation de l'environnement...",
+    "timeout": "Délai d'exécution dépassé (5s)"
+  },
+  "notFound": {
+    "title": "Page introuvable",
+    "description": "La page que vous recherchez n'existe pas ou a été déplacée.",
+    "goHome": "Retour à l'accueil",
+    "browseChapters": "Parcourir les chapitres",
+    "goBack": "Retour"
+  },
+  "error": {
+    "title": "Une erreur est survenue",
+    "description": "Une erreur inattendue s'est produite. Essayez de recharger la page.",
+    "reload": "Recharger la page",
+    "markdownRenderFailed": "Ce contenu n'a pas pu être affiché."
+  }
+}

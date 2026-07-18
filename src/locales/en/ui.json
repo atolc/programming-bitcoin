@@ -8,7 +8,10 @@
   "language": {
     "label": "Language",
     "es": "Español",
-    "en": "English"
+    "en": "English",
+    "fr": "Français",
+    "pt": "Português",
+    "zh": "中文"
   },
   "landing": {
     "hero": "Interactive study guide based on Jimmy Song's acclaimed book. Explore all 14 chapters with in-browser runnable Python code, self-assessment quizzes, and key notes.",

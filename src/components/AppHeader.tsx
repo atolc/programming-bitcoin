@@ -4,6 +4,7 @@ import { BookOpen, Code2, Menu, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { ThemeToggle } from "./ThemeToggle";
 import { LanguageSwitcher } from "./LanguageSwitcher";
+import { ProgressTransfer } from "./ProgressTransfer";
 import { Button } from "@/components/ui/button";
 import {
   Breadcrumb,
@@ -101,6 +102,7 @@ export function AppHeader({
           </Button>
           <LanguageSwitcher />
           <ThemeToggle />
+          <ProgressTransfer />
 
           <Button
             render={<a href={githubUrl} target="_blank" rel="noreferrer" />}

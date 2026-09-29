@@ -6,6 +6,7 @@ import { AppHeader } from "../components/AppHeader";
 import { getChapters, SANDBOX_CHAPTER_NUMBERS } from "../data/chapters";
 import { useLocale } from "../context/LocaleContext";
 import { getReadChapters } from "../lib/readProgress";
+import { useProgressRevision } from "../hooks/useProgressRevision";
 import { Badge } from "@/components/ui/badge";
 import {
   Card,
@@ -24,7 +25,8 @@ export function LandingPage() {
   const { t } = useTranslation();
   const { locale, chapterPath, practicePath } = useLocale();
   const chapters = getChapters(locale);
-  const readChapters = useMemo(() => getReadChapters(), []);
+  const progressRevision = useProgressRevision();
+  const readChapters = useMemo(() => getReadChapters(), [progressRevision]);
   const firstChapter = chapters[0];
 
   return (

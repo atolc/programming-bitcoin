@@ -3,7 +3,8 @@
     "subtitle": "Study Guide & Summaries",
     "toggleNav": "Toggle navigation",
     "github": "View on GitHub",
-    "practice": "Practice"
+    "practice": "Practice",
+    "progressBackup": "Transfer progress"
   },
   "language": {
     "label": "Language",
@@ -55,6 +56,20 @@
     "panelInstructions": "Instructions and example",
     "panelEditor": "Code editor",
     "example": "Example"
+  },
+  "progressBackup": {
+    "title": "Progress backup",
+    "description": "Export your read chapters and exercise progress as a JSON file to use in another browser or on another device.",
+    "mergeDescription": "Importing merges this backup with progress saved in this browser. Passed exercises stay passed.",
+    "export": "Export JSON",
+    "import": "Import JSON",
+    "exportSuccess": "Progress backup downloaded.",
+    "exportError": "Progress backup could not be downloaded.",
+    "importSuccess": "Imported {{readChapters}} chapters and {{exercises}} exercises.",
+    "fileTooLarge": "The file exceeds the 1 MB size limit.",
+    "invalidFile": "This is not a valid progress backup file.",
+    "unsupportedVersion": "This progress backup version is not supported.",
+    "storageError": "Progress could not be saved in this browser."
   },
   "chapter": {
     "home": "Home",

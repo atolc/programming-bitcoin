@@ -12,6 +12,7 @@ import {
 import { findChapterByFolder } from "../data/content-manifest";
 import { useLocale } from "../context/LocaleContext";
 import { getPracticeProgress } from "../lib/practiceProgress";
+import { useProgressRevision } from "../hooks/useProgressRevision";
 import { practicePath } from "../lib/routes";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -36,7 +37,8 @@ export function PracticeChapterPage() {
   const { locale } = useLocale();
   const { chapterSlug } = useParams();
   const [filter, setFilter] = useState<ExerciseKind | "all">("all");
-  const progress = useMemo(() => getPracticeProgress(), []);
+  const progressRevision = useProgressRevision();
+  const progress = useMemo(() => getPracticeProgress(), [progressRevision]);
 
   const chapterMeta = chapterSlug
     ? findChapterByFolder(locale, chapterSlug)

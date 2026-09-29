@@ -3,7 +3,8 @@
     "subtitle": "Guía de Estudio y Resúmenes",
     "toggleNav": "Alternar navegación",
     "github": "Ver en GitHub",
-    "practice": "Práctica"
+    "practice": "Práctica",
+    "progressBackup": "Transferir progreso"
   },
   "language": {
     "label": "Idioma",
@@ -55,6 +56,20 @@
     "panelInstructions": "Instrucciones y ejemplo",
     "panelEditor": "Editor de código",
     "example": "Ejemplo"
+  },
+  "progressBackup": {
+    "title": "Copia de seguridad del progreso",
+    "description": "Exporta tus capítulos leídos y el progreso de los ejercicios en un archivo JSON para usarlo en otro navegador o dispositivo.",
+    "mergeDescription": "Al importar, se combinará esta copia con el progreso guardado en este navegador. Los ejercicios aprobados se conservan.",
+    "export": "Exportar JSON",
+    "import": "Importar JSON",
+    "exportSuccess": "Se descargó la copia de seguridad del progreso.",
+    "exportError": "No se pudo descargar la copia de seguridad.",
+    "importSuccess": "Se importaron {{readChapters}} capítulos y {{exercises}} ejercicios.",
+    "fileTooLarge": "El archivo supera el tamaño máximo de 1 MB.",
+    "invalidFile": "El archivo no es una copia de progreso válida.",
+    "unsupportedVersion": "Esta versión de la copia de progreso no es compatible.",
+    "storageError": "No se pudo guardar el progreso en este navegador."
   },
   "chapter": {
     "home": "Inicio",

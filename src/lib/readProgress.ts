@@ -1,7 +1,8 @@
 import { CHAPTER_MANIFEST } from "../data/content-manifest";
 import { slugify } from "./toc";
+import { notifyProgressUpdated } from "./progressEvents";
 
-const STORAGE_KEY = "pb-read-chapters-v2";
+export const READ_PROGRESS_STORAGE_KEY = "pb-read-chapters-v2";
 const LEGACY_STORAGE_KEY = "pb-read-chapters";
 
 function chapterNumberFromLegacyId(id: string): string | undefined {
@@ -31,7 +32,10 @@ function migrateLegacyProgress(): Set<string> {
       if (number) migrated.add(number);
     }
     if (migrated.size > 0) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify([...migrated]));
+      localStorage.setItem(
+        READ_PROGRESS_STORAGE_KEY,
+        JSON.stringify([...migrated]),
+      );
       localStorage.removeItem(LEGACY_STORAGE_KEY);
     }
     return migrated;
@@ -42,19 +46,33 @@ function migrateLegacyProgress(): Set<string> {
 
 export function getReadChapters(): Set<string> {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
+    const raw = localStorage.getItem(READ_PROGRESS_STORAGE_KEY);
     if (!raw) return migrateLegacyProgress();
-    const parsed = JSON.parse(raw) as string[];
-    return new Set(parsed);
+    const parsed = JSON.parse(raw) as unknown;
+    if (!Array.isArray(parsed)) return new Set();
+    const knownChapters = new Set(
+      CHAPTER_MANIFEST.map(({ number }) => String(number)),
+    );
+    return new Set(
+      parsed.filter(
+        (chapter): chapter is string =>
+          typeof chapter === "string" && knownChapters.has(chapter),
+      ),
+    );
   } catch {
     return new Set();
   }
 }
 
+export function saveReadChapters(chapters: Iterable<string>) {
+  localStorage.setItem(READ_PROGRESS_STORAGE_KEY, JSON.stringify([...chapters]));
+}
+
 export function markChapterRead(chapterNumber: number) {
   const read = getReadChapters();
   read.add(String(chapterNumber));
-  localStorage.setItem(STORAGE_KEY, JSON.stringify([...read]));
+  saveReadChapters(read);
+  notifyProgressUpdated();
 }
 
 export function isChapterRead(chapterNumber: number): boolean {

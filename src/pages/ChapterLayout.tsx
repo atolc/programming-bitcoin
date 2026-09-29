@@ -27,6 +27,7 @@ import { TableOfContents } from "../components/TableOfContents";
 import { AppHeader } from "../components/AppHeader";
 import { useLocale } from "../context/LocaleContext";
 import { markChapterRead, getReadChapters } from "../lib/readProgress";
+import { useProgressRevision } from "../hooks/useProgressRevision";
 import { cn } from "../lib/utils";
 import { LatexText } from "../components/LatexText";
 import { Badge } from "@/components/ui/badge";
@@ -87,7 +88,8 @@ function ChapterLayoutInner() {
   const [query, setQuery] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrollPercent, setScrollPercent] = useState(0);
-  const [readChapters, setReadChapters] = useState<Set<string>>(() => getReadChapters());
+  const progressRevision = useProgressRevision();
+  const readChapters = useMemo(() => getReadChapters(), [progressRevision]);
   const searchInputRef = useRef<HTMLInputElement>(null);
 
   const validChapter = findChapterById(locale, chapterId);
@@ -152,7 +154,6 @@ function ChapterLayoutInner() {
   useEffect(() => {
     if (!activeChapter.number) return;
     markChapterRead(activeChapter.number);
-    setReadChapters(getReadChapters());
   }, [activeChapter.number]);
 
   const filteredChapters = useMemo(() => {

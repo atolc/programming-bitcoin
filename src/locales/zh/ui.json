@@ -3,7 +3,8 @@
     "subtitle": "学习指南与摘要",
     "toggleNav": "切换导航",
     "github": "在 GitHub 上查看",
-    "practice": "练习"
+    "practice": "练习",
+    "progressBackup": "转移学习进度"
   },
   "language": {
     "label": "语言",
@@ -55,6 +56,20 @@
     "panelInstructions": "说明与示例",
     "panelEditor": "代码编辑器",
     "example": "示例"
+  },
+  "progressBackup": {
+    "title": "学习进度备份",
+    "description": "将已读章节和练习进度导出为 JSON 文件，以便在其他浏览器或设备上使用。",
+    "mergeDescription": "导入时会将备份与此浏览器中保存的进度合并。已通过的练习会继续保持通过状态。",
+    "export": "导出 JSON",
+    "import": "导入 JSON",
+    "exportSuccess": "学习进度备份已下载。",
+    "exportError": "无法下载学习进度备份。",
+    "importSuccess": "已导入 {{readChapters}} 个章节和 {{exercises}} 道练习。",
+    "fileTooLarge": "文件超过 1 MB 的大小限制。",
+    "invalidFile": "这不是有效的学习进度备份文件。",
+    "unsupportedVersion": "不支持此学习进度备份版本。",
+    "storageError": "无法在此浏览器中保存学习进度。"
   },
   "chapter": {
     "home": "首页",

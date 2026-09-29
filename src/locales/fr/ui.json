@@ -3,7 +3,8 @@
     "subtitle": "Guide d'étude et résumés",
     "toggleNav": "Basculer la navigation",
     "github": "Voir sur GitHub",
-    "practice": "Pratique"
+    "practice": "Pratique",
+    "progressBackup": "Transférer la progression"
   },
   "language": {
     "label": "Langue",
@@ -55,6 +56,20 @@
     "panelInstructions": "Instructions et exemple",
     "panelEditor": "Éditeur de code",
     "example": "Exemple"
+  },
+  "progressBackup": {
+    "title": "Sauvegarde de la progression",
+    "description": "Exportez les chapitres lus et la progression des exercices dans un fichier JSON pour les utiliser dans un autre navigateur ou sur un autre appareil.",
+    "mergeDescription": "L'importation ajoute cette sauvegarde à la progression enregistrée dans ce navigateur. Les exercices réussis le restent.",
+    "export": "Exporter en JSON",
+    "import": "Importer un JSON",
+    "exportSuccess": "La sauvegarde de la progression a été téléchargée.",
+    "exportError": "Impossible de télécharger la sauvegarde de la progression.",
+    "importSuccess": "{{readChapters}} chapitres et {{exercises}} exercices importés.",
+    "fileTooLarge": "Le fichier dépasse la limite de 1 Mo.",
+    "invalidFile": "Ce fichier de sauvegarde de progression n'est pas valide.",
+    "unsupportedVersion": "Cette version de sauvegarde de progression n'est pas prise en charge.",
+    "storageError": "Impossible d'enregistrer la progression dans ce navigateur."
   },
   "chapter": {
     "home": "Accueil",

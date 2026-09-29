@@ -10,6 +10,7 @@ import {
 } from "../data/exercises";
 import { useLocale } from "../context/LocaleContext";
 import { getChapterPracticeStats } from "../lib/practiceProgress";
+import { useProgressRevision } from "../hooks/useProgressRevision";
 import { practicePath } from "../lib/routes";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -28,6 +29,7 @@ function preloadPyodide() {
 export function PracticeIndexPage() {
   const { t } = useTranslation();
   const { locale } = useLocale();
+  useProgressRevision();
   const chapters = getChapters(locale);
   const counts = useMemo(() => getExerciseCountsByChapter(), []);
 

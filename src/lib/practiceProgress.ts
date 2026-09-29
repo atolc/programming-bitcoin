@@ -1,28 +1,43 @@
-const STORAGE_KEY = "pb-practice-progress-v1";
+import { notifyProgressUpdated } from "./progressEvents";
+
+export const PRACTICE_PROGRESS_STORAGE_KEY = "pb-practice-progress-v1";
 
 export type PracticeStatus = "passed" | "attempted";
 
 export function getPracticeProgress(): Record<string, PracticeStatus> {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
+    const raw = localStorage.getItem(PRACTICE_PROGRESS_STORAGE_KEY);
     if (!raw) return {};
-    return JSON.parse(raw) as Record<string, PracticeStatus>;
+    const parsed = JSON.parse(raw) as unknown;
+    if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) return {};
+    return Object.fromEntries(
+      Object.entries(parsed).filter(
+        (entry): entry is [string, PracticeStatus] =>
+          entry[1] === "passed" || entry[1] === "attempted",
+      ),
+    );
   } catch {
     return {};
   }
+}
+
+export function savePracticeProgress(progress: Record<string, PracticeStatus>) {
+  localStorage.setItem(PRACTICE_PROGRESS_STORAGE_KEY, JSON.stringify(progress));
 }
 
 export function markExerciseAttempted(exerciseId: string) {
   const progress = getPracticeProgress();
   if (progress[exerciseId] === "passed") return;
   progress[exerciseId] = "attempted";
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
+  savePracticeProgress(progress);
+  notifyProgressUpdated();
 }
 
 export function markExercisePassed(exerciseId: string) {
   const progress = getPracticeProgress();
   progress[exerciseId] = "passed";
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
+  savePracticeProgress(progress);
+  notifyProgressUpdated();
 }
 
 export function getChapterPracticeStats(exerciseIds: string[]) {

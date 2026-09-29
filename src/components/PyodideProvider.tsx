@@ -7,7 +7,9 @@ import {
   type ReactNode,
 } from "react";
 import {
+  cancelPyodideExecution,
   initPyodide,
+  isPyodideExecutionCancelledError,
   resetPyodideGlobals,
   runPython as runPythonCode,
   runPythonWithTests as runPythonWithTestsCode,
@@ -21,6 +23,7 @@ type PyodideContextValue = {
   status: PyodideStatus;
   statusMessage: string;
   ensureReady: () => Promise<void>;
+  cancelExecution: () => boolean;
   resetGlobals: () => void;
   runPython: (code: string, timeoutMs?: number) => Promise<PythonRunResult>;
   runPythonWithTests: (
@@ -48,11 +51,24 @@ export function PyodideProvider({ children }: { children: ReactNode }) {
       setStatus("ready");
       setStatusMessage("");
     } catch (err) {
-      setStatus("error");
-      setStatusMessage(err instanceof Error ? err.message : String(err));
+      if (isPyodideExecutionCancelledError(err)) {
+        setStatus("idle");
+        setStatusMessage("");
+      } else {
+        setStatus("error");
+        setStatusMessage(err instanceof Error ? err.message : String(err));
+      }
       throw err;
     }
   }, [status, statusMessage]);
+
+  const cancelExecution = useCallback(() => {
+    const cancelled = cancelPyodideExecution();
+    if (!cancelled) return false;
+    setStatus("idle");
+    setStatusMessage("");
+    return true;
+  }, []);
 
   const runPython = useCallback(
     async (code: string, timeoutMs?: number) => {
@@ -75,8 +91,24 @@ export function PyodideProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const value = useMemo(
-    () => ({ status, statusMessage, ensureReady, resetGlobals, runPython, runPythonWithTests }),
-    [status, statusMessage, ensureReady, resetGlobals, runPython, runPythonWithTests],
+    () => ({
+      status,
+      statusMessage,
+      ensureReady,
+      cancelExecution,
+      resetGlobals,
+      runPython,
+      runPythonWithTests,
+    }),
+    [
+      status,
+      statusMessage,
+      ensureReady,
+      cancelExecution,
+      resetGlobals,
+      runPython,
+      runPythonWithTests,
+    ],
   );
 
 

@@ -8,6 +8,7 @@ import {
   Loader2,
   Eye,
   EyeOff,
+  Square,
 } from "lucide-react";
 import { MarkdownRenderer } from "./MarkdownRenderer";
 import { CodeBlock } from "./CodeBlock";
@@ -19,7 +20,10 @@ import {
   type Exercise,
   getExerciseFilename,
 } from "@/data/exercises";
-import { outputsMatch } from "@/lib/pyodide";
+import {
+  isPyodideExecutionCancelledError,
+  outputsMatch,
+} from "@/lib/pyodide";
 import type {
   PythonRunResult,
   PythonRunWithTestsResult,
@@ -133,12 +137,18 @@ export function ExerciseWorkbench({ exercise, locale }: ExerciseWorkbenchProps) 
         if (outputPassed) markExercisePassed(exercise.id);
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : String(err));
-      setHasRun(true);
-      setPassed(false);
+      if (!isPyodideExecutionCancelledError(err)) {
+        setError(err instanceof Error ? err.message : String(err));
+        setHasRun(true);
+        setPassed(false);
+      }
     } finally {
       setIsRunning(false);
     }
+  };
+
+  const handleCancel = () => {
+    if (pyodide.cancelExecution()) setIsRunning(false);
   };
 
   const handleReset = () => {
@@ -229,26 +239,37 @@ export function ExerciseWorkbench({ exercise, locale }: ExerciseWorkbenchProps) 
 
               {!exercise.offline ? (
                 <>
-                  <Button
-                    className="border-transparent bg-primary text-primary-foreground hover:bg-primary/90"
-                    disabled={isRunning || pyodideLoading}
-                    onClick={handleRun}
-                    size="sm"
-                    type="button"
-                  >
-                    {isRunning || pyodideLoading ? (
-                      <Loader2 className="size-3.5 animate-spin" />
-                    ) : (
-                      <Play className="size-3.5 fill-current" />
-                    )}
-                    <span>
-                      {pyodideLoading
-                        ? t("code.loadingPython")
-                        : isRunning
-                          ? t("code.running")
+                  {isRunning ? (
+                    <Button
+                      className="border-red-800 bg-red-950/80 text-red-200 hover:bg-red-900"
+                      onClick={handleCancel}
+                      size="sm"
+                      type="button"
+                      variant="outline"
+                    >
+                      <Square className="size-3.5 fill-current" />
+                      <span>{t("code.stop")}</span>
+                    </Button>
+                  ) : (
+                    <Button
+                      className="border-transparent bg-primary text-primary-foreground hover:bg-primary/90"
+                      disabled={pyodideLoading}
+                      onClick={handleRun}
+                      size="sm"
+                      type="button"
+                    >
+                      {pyodideLoading ? (
+                        <Loader2 className="size-3.5 animate-spin" />
+                      ) : (
+                        <Play className="size-3.5 fill-current" />
+                      )}
+                      <span>
+                        {pyodideLoading
+                          ? t("code.loadingPython")
                           : t("code.run")}
-                    </span>
-                  </Button>
+                      </span>
+                    </Button>
+                  )}
                   {hasRun ? (
                     <Button
                       className="border-stone-700 bg-stone-800 text-stone-300 hover:bg-stone-700"

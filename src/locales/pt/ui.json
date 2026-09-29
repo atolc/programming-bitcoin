@@ -119,6 +119,7 @@
     "clickRun": "Clique em \"Executar\" para rodar o código com Pyodide.",
     "run": "Executar",
     "running": "Executando...",
+    "stop": "Parar",
     "loadingPython": "Carregando Python...",
     "reset": "Redefinir",
     "console": "Console",
@@ -141,7 +142,8 @@
   "pyodide": {
     "downloading": "Baixando mecanismo Python...",
     "preparing": "Preparando ambiente...",
-    "timeout": "Tempo de execução esgotado ({{seconds}}s)"
+    "timeout": "Tempo de execução esgotado ({{seconds}}s)",
+    "cancelled": "Execução cancelada"
   },
   "notFound": {
     "title": "Página não encontrada",

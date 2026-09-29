@@ -119,6 +119,7 @@
     "clickRun": "点击“运行”以使用 Pyodide 执行代码。",
     "run": "运行",
     "running": "运行中...",
+    "stop": "停止",
     "loadingPython": "正在加载 Python...",
     "reset": "重置",
     "console": "控制台",
@@ -141,7 +142,8 @@
   "pyodide": {
     "downloading": "正在下载 Python 引擎...",
     "preparing": "正在准备环境...",
-    "timeout": "执行超时（{{seconds}}秒）"
+    "timeout": "执行超时（{{seconds}}秒）",
+    "cancelled": "执行已取消"
   },
   "notFound": {
     "title": "页面未找到",

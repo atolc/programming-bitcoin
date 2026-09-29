@@ -1,10 +1,22 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Play, RotateCcw, Check, Copy, Loader2, Edit2, Eye } from "lucide-react";
+import {
+  Play,
+  RotateCcw,
+  Check,
+  Copy,
+  Loader2,
+  Edit2,
+  Eye,
+  Square,
+} from "lucide-react";
 import { usePyodideOptional } from "./PyodideProvider";
 import { PythonEditorPanel } from "./PythonEditorPanel";
 import { PythonConsole } from "./PythonConsole";
-import { outputsMatch } from "@/lib/pyodide";
+import {
+  isPyodideExecutionCancelledError,
+  outputsMatch,
+} from "@/lib/pyodide";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import {
@@ -75,11 +87,17 @@ export function CodeSandbox({
       setError(result.error ?? null);
       setHasRun(true);
     } catch (err) {
-      setError(err instanceof Error ? err.message : String(err));
-      setHasRun(true);
+      if (!isPyodideExecutionCancelledError(err)) {
+        setError(err instanceof Error ? err.message : String(err));
+        setHasRun(true);
+      }
     } finally {
       setIsRunning(false);
     }
+  };
+
+  const handleCancel = () => {
+    if (pyodide?.cancelExecution()) setIsRunning(false);
   };
 
   const handleReset = () => {
@@ -158,10 +176,21 @@ export function CodeSandbox({
             <TooltipPopup>{t("code.copy")}</TooltipPopup>
           </Tooltip>
 
-          {!hasRun ? (
+          {isRunning ? (
+            <Button
+              className="border-red-800 bg-red-950/80 text-red-200 hover:bg-red-900"
+              onClick={handleCancel}
+              size="sm"
+              type="button"
+              variant="outline"
+            >
+              <Square className="size-3.5 fill-current" />
+              <span>{t("code.stop")}</span>
+            </Button>
+          ) : !hasRun ? (
             <Button
               className="border-transparent bg-primary text-primary-foreground hover:bg-primary/90"
-              disabled={isRunning || pyodideLoading}
+              disabled={pyodideLoading}
               onClick={handleRun}
               size="sm"
               type="button"

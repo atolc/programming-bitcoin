@@ -121,17 +121,6 @@ function ChapterLayoutInner() {
   const activeTitle = activeSection?.title ?? activeChapter.title;
 
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.ctrlKey || e.metaKey) && e.key === "k") {
-        e.preventDefault();
-        searchInputRef.current?.focus();
-      }
-    };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, []);
-
-  useEffect(() => {
     const handleScroll = () => {
       const docHeight =
         document.documentElement.scrollHeight - window.innerHeight;
@@ -249,6 +238,39 @@ function ChapterLayoutInner() {
       path: chapterPath(activeChapter.folder, nextSec.id),
     };
   }, [activeChapter, activeSectionIndex, nextChapter, t, chapterPath]);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const target = e.target;
+      const isEditing =
+        target instanceof HTMLElement &&
+        (target.matches("input, textarea, [contenteditable='true']") ||
+          target.closest(".monaco-editor") !== null);
+      if (isEditing) return;
+
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        searchInputRef.current?.focus();
+        return;
+      }
+
+      if (e.altKey || e.ctrlKey || e.metaKey) return;
+
+      if ((e.key === "ArrowLeft" || e.key === "[") && prevNav) {
+        e.preventDefault();
+        navigate(prevNav.path);
+      } else if ((e.key === "ArrowRight" || e.key === "]") && nextNav) {
+        e.preventDefault();
+        navigate(nextNav.path);
+      } else if (e.key === "Escape" && menuOpen) {
+        e.preventDefault();
+        setMenuOpen(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [menuOpen, navigate, nextNav, prevNav]);
 
   if (redirectHome) {
     return <Navigate to={homePath()} replace />;
@@ -486,6 +508,7 @@ function ChapterLayoutInner() {
                     render={
                       <button
                         type="button"
+                        aria-keyshortcuts="ArrowLeft ["
                         onClick={() => navigate(prevNav.path)}
                       />
                     }
@@ -493,6 +516,9 @@ function ChapterLayoutInner() {
                     <CardContent className="flex flex-col items-start gap-1 p-4.5 text-left">
                       <span className="inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider text-muted-foreground group-hover:text-primary transition-colors">
                         <ChevronLeft className="size-3.5" /> {prevNav.label}
+                        <span className="hidden sm:flex gap-0.5">
+                          <Kbd>←</Kbd>
+                        </span>
                       </span>
                       <span className="text-sm font-semibold text-foreground truncate w-full">
                         <LatexText text={prevNav.title} />
@@ -509,13 +535,18 @@ function ChapterLayoutInner() {
                     render={
                       <button
                         type="button"
+                        aria-keyshortcuts="ArrowRight ]"
                         onClick={() => navigate(nextNav.path)}
                       />
                     }
                   >
                     <CardContent className="flex flex-col items-end gap-1 p-4.5 text-right">
                       <span className="inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider text-muted-foreground group-hover:text-primary transition-colors">
-                        {nextNav.label} <ChevronRight className="size-3.5" />
+                        {nextNav.label}
+                        <span className="hidden sm:flex gap-0.5">
+                          <Kbd>→</Kbd>
+                        </span>
+                        <ChevronRight className="size-3.5" />
                       </span>
                       <span className="text-sm font-semibold text-foreground truncate w-full">
                         <LatexText text={nextNav.title} />

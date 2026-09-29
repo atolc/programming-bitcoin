@@ -132,6 +132,20 @@ pnpm generate:exercises
 pnpm validate:exercises
 ```
 
+## Chapter reader keyboard shortcuts
+
+When reading a chapter, use these shortcuts to navigate without the mouse:
+
+| Shortcut | Action |
+|---|---|
+| `ArrowLeft` or `[` | Open the previous section or chapter |
+| `ArrowRight` or `]` | Open the next section or chapter |
+| `Ctrl+K` or `⌘K` | Focus the chapter search |
+| `Escape` | Close the mobile chapter menu |
+
+Shortcuts are ignored while focus is in an input, textarea, editable content, or
+the Monaco editor so they do not interfere with typing or editor commands.
+
 ---
 
 ## Adding a new language

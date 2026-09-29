@@ -176,6 +176,8 @@ function MarkdownErrorFallback() {
 }
 
 export function MarkdownRenderer({ content }: MarkdownRendererProps) {
+  const renderedContent = content.replace(/^<!--\s*order:\s*\d+\s*-->\s*/, "");
+
   return (
     <ErrorBoundary fallback={<MarkdownErrorFallback />}>
       <div className="prose prose-stone dark:prose-invert max-w-none prose-pre:bg-transparent prose-pre:p-0 prose-code:before:content-none prose-code:after:content-none prose-headings:scroll-mt-24">
@@ -184,7 +186,7 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
           rehypePlugins={[rehypeKatex]}
           components={markdownComponents}
         >
-          {content}
+          {renderedContent}
         </ReactMarkdown>
       </div>
     </ErrorBoundary>

@@ -40,8 +40,10 @@ export function markExercisePassed(exerciseId: string) {
   notifyProgressUpdated();
 }
 
-export function getChapterPracticeStats(exerciseIds: string[]) {
-  const progress = getPracticeProgress();
+export function getChapterPracticeStats(
+  exerciseIds: string[],
+  progress: Record<string, PracticeStatus> = getPracticeProgress(),
+) {
   let passed = 0;
   let attempted = 0;
   for (const id of exerciseIds) {

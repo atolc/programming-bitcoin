@@ -5,12 +5,13 @@ import { useTranslation } from "react-i18next";
 import { AppHeader } from "../components/AppHeader";
 import { getChapters } from "../data/chapters";
 import {
+  EXERCISES,
   getChapterExerciseIds,
   getExerciseCountsByChapter,
 } from "../data/exercises";
 import { useLocale } from "../context/LocaleContext";
 import { getChapterPracticeStats } from "../lib/practiceProgress";
-import { useProgressRevision } from "../hooks/useProgressRevision";
+import { usePracticeProgress } from "../hooks/use-practice-progress";
 import { practicePath } from "../lib/routes";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -29,9 +30,16 @@ function preloadPyodide() {
 export function PracticeIndexPage() {
   const { t } = useTranslation();
   const { locale } = useLocale();
-  useProgressRevision();
+  const practiceProgress = usePracticeProgress();
   const chapters = getChapters(locale);
   const counts = useMemo(() => getExerciseCountsByChapter(), []);
+  const totalStats = getChapterPracticeStats(
+    EXERCISES.map((exercise) => exercise.id),
+    practiceProgress,
+  );
+  const totalProgress = totalStats.total > 0
+    ? (totalStats.passed / totalStats.total) * 100
+    : 0;
 
   return (
     <div className="app-shell min-h-screen bg-background text-foreground">
@@ -50,11 +58,35 @@ export function PracticeIndexPage() {
           </p>
         </div>
 
+        <Card className="mb-8 border-primary/20 bg-gradient-to-br from-card/90 to-primary/5">
+          <CardContent className="grid gap-4 p-5 sm:grid-cols-[1fr_auto] sm:items-center sm:p-6">
+            <div className="space-y-3">
+              <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1">
+                <span className="font-semibold">{t("practice.totalProgress")}</span>
+                <span className="text-sm text-muted-foreground">
+                  {t("exercise.progressCount", {
+                    passed: totalStats.passed,
+                    total: totalStats.total,
+                  })}
+                </span>
+              </div>
+              <Progress value={totalProgress}>
+                <ProgressTrack>
+                  <ProgressIndicator />
+                </ProgressTrack>
+              </Progress>
+            </div>
+            <span className="text-2xl font-bold tabular-nums text-primary">
+              {Math.round(totalProgress)}%
+            </span>
+          </CardContent>
+        </Card>
+
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {chapters.map((chapter) => {
             const exerciseIds = getChapterExerciseIds(chapter.number);
             const count = counts[chapter.number] ?? exerciseIds.length;
-            const stats = getChapterPracticeStats(exerciseIds);
+            const stats = getChapterPracticeStats(exerciseIds, practiceProgress);
             const progress =
               stats.total > 0 ? (stats.passed / stats.total) * 100 : 0;
 

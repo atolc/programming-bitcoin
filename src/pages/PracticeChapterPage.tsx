@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
 import { ArrowLeft, CheckCircle2, ChevronRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -11,8 +11,7 @@ import {
 } from "../data/exercises";
 import { findChapterByFolder } from "../data/content-manifest";
 import { useLocale } from "../context/LocaleContext";
-import { getPracticeProgress } from "../lib/practiceProgress";
-import { useProgressRevision } from "../hooks/useProgressRevision";
+import { usePracticeProgress } from "../hooks/use-practice-progress";
 import { practicePath } from "../lib/routes";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -37,8 +36,7 @@ export function PracticeChapterPage() {
   const { locale } = useLocale();
   const { chapterSlug } = useParams();
   const [filter, setFilter] = useState<ExerciseKind | "all">("all");
-  const progressRevision = useProgressRevision();
-  const progress = useMemo(() => getPracticeProgress(), [progressRevision]);
+  const progress = usePracticeProgress();
 
   const chapterMeta = chapterSlug
     ? findChapterByFolder(locale, chapterSlug)

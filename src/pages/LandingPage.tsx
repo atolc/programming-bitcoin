@@ -4,9 +4,12 @@ import { ArrowRight, CheckCircle2, Code2 } from "lucide-react";
 import { useTranslation, Trans } from "react-i18next";
 import { AppHeader } from "../components/AppHeader";
 import { getChapters, SANDBOX_CHAPTER_NUMBERS } from "../data/chapters";
+import { getChapterExerciseIds } from "../data/exercises";
 import { useLocale } from "../context/LocaleContext";
 import { getReadChapters } from "../lib/readProgress";
+import { getChapterPracticeStats } from "../lib/practiceProgress";
 import { useProgressRevision } from "../hooks/useProgressRevision";
+import { usePracticeProgress } from "../hooks/use-practice-progress";
 import { Badge } from "@/components/ui/badge";
 import {
   Card,
@@ -16,6 +19,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { GradientButton } from "@/components/ui/gradient-button";
+import { Progress, ProgressIndicator, ProgressTrack } from "@/components/ui/progress";
 
 function preloadPyodide() {
   import("../lib/pyodide").then((m) => m.initPyodide()).catch(() => {});
@@ -27,6 +31,7 @@ export function LandingPage() {
   const chapters = getChapters(locale);
   const progressRevision = useProgressRevision();
   const readChapters = useMemo(() => getReadChapters(), [progressRevision]);
+  const practiceProgress = usePracticeProgress();
   const firstChapter = chapters[0];
 
   return (
@@ -97,6 +102,13 @@ export function LandingPage() {
             {chapters.map((chapter) => {
               const isRead = readChapters.has(String(chapter.number));
               const hasSandbox = SANDBOX_CHAPTER_NUMBERS.has(chapter.number);
+              const exerciseStats = getChapterPracticeStats(
+                getChapterExerciseIds(chapter.number),
+                practiceProgress,
+              );
+              const exerciseProgress = exerciseStats.total > 0
+                ? (exerciseStats.passed / exerciseStats.total) * 100
+                : 0;
 
               return (
                 <Card
@@ -126,7 +138,25 @@ export function LandingPage() {
                       </CardDescription>
                     ) : null}
                   </CardHeader>
-                  <CardContent className="pt-0">
+                  <CardContent className="space-y-3 pt-0">
+                    {exerciseStats.total > 0 ? (
+                      <div className="space-y-1.5">
+                        <div className="flex justify-between gap-2 text-xs text-muted-foreground">
+                          <span>{t("exercise.progress")}</span>
+                          <span>
+                            {t("exercise.progressCount", {
+                              passed: exerciseStats.passed,
+                              total: exerciseStats.total,
+                            })}
+                          </span>
+                        </div>
+                        <Progress value={exerciseProgress} className="gap-0">
+                          <ProgressTrack className="h-1">
+                            <ProgressIndicator />
+                          </ProgressTrack>
+                        </Progress>
+                      </div>
+                    ) : null}
                     <span className="inline-flex items-center gap-1 text-xs font-semibold text-primary opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300">
                       {t("landing.readChapter")} <ArrowRight className="size-3.5" />
                     </span>

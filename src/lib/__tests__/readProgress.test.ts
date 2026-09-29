@@ -1,16 +1,33 @@
-// @vitest-environment jsdom
-
-import { beforeEach, describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
   getReadChapters,
+  isChapterRead,
+  markChapterRead,
   READ_PROGRESS_STORAGE_KEY,
-} from "./readProgress";
+} from "../readProgress";
+import { PROGRESS_UPDATED_EVENT } from "../progressEvents";
 
 const LEGACY_STORAGE_KEY = "pb-read-chapters";
 
 describe("getReadChapters", () => {
   beforeEach(() => {
     localStorage.clear();
+  });
+
+  it("returns an empty set when there is no saved progress", () => {
+    expect(getReadChapters()).toEqual(new Set());
+  });
+
+  it("marks a known chapter as read and notifies listeners", () => {
+    const listener = vi.fn();
+    window.addEventListener(PROGRESS_UPDATED_EVENT, listener);
+
+    markChapterRead(1);
+
+    expect(isChapterRead(1)).toBe(true);
+    expect(localStorage.getItem(READ_PROGRESS_STORAGE_KEY)).toBe('["1"]');
+    expect(listener).toHaveBeenCalledOnce();
+    window.removeEventListener(PROGRESS_UPDATED_EVENT, listener);
   });
 
   it("migrates legacy chapter folders and removes the old value", () => {

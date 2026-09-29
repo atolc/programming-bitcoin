@@ -11,7 +11,15 @@ export default defineConfig({
     },
   },
   test: {
-    environment: "node",
-    include: ["src/**/*.{test,spec}.{ts,tsx}"],
+    environment: "jsdom",
+    include: [
+      "src/**/*.{test,spec}.{ts,tsx}",
+      "scripts/**/*.{test,spec}.{ts,tsx}",
+    ],
+    setupFiles: ["./src/test/setup.ts"],
+    coverage: {
+      reporter: ["text", "lcov"],
+      include: ["src/lib/**"],
+    },
   },
 });

@@ -7,6 +7,7 @@
   "scripts": {
     "dev": "vite",
     "test": "vitest",
+    "test:coverage": "vitest --coverage",
     "split-sections": "node scripts/split-sections.mjs",
     "generate:manifest": "node scripts/generate-manifest.mjs",
     "generate:exercises": "node scripts/generate-exercises.mjs",
@@ -48,9 +49,12 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.3.0",
+    "@testing-library/react": "^16.3.3",
+    "@testing-library/user-event": "^14.6.7",
     "@types/node": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",
+    "@vitest/coverage-v8": "^5.0.2",
     "autoprefixer": "latest",
     "gh-pages": "latest",
     "jsdom": "^30.1.1",

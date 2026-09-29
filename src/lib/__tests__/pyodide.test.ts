@@ -6,7 +6,7 @@ import {
   outputsMatch,
   runPython,
   runPythonWithTests,
-} from "./pyodide";
+} from "../pyodide";
 
 const localNamespace = { destroy: vi.fn() };
 const resultDestroy = vi.fn();
@@ -38,11 +38,13 @@ vi.mock("pyodide", () => ({ loadPyodide: loadPyodideMock }));
 describe("Pyodide helpers", () => {
   afterEach(() => {
     vi.useRealTimers();
+    vi.unstubAllGlobals();
   });
 
   beforeEach(async () => {
     vi.useRealTimers();
     vi.clearAllMocks();
+    vi.stubGlobal("window", undefined);
     loadPyodideMock.mockResolvedValue(pyodide);
     runPythonAsyncMock.mockResolvedValue(undefined);
     await initPyodide();

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { parseToc, slugify } from "./toc";
+import { parseToc, slugify } from "../toc";
 
 describe("slugify", () => {
   it("normalizes accents, punctuation, and repeated separators", () => {

@@ -31,6 +31,7 @@
     "badge": "Pyodide",
     "title": "Pratique",
     "subtitle": "Résolvez les exercices du livre et exécutez des exemples de code dans votre navigateur. Modifiez le Python à droite, lisez les instructions à gauche et cliquez sur Exécuter pour vérifier votre solution.",
+    "totalProgress": "Progression totale",
     "exerciseCount": "{{count}} exercices",
     "chapterExercises": "{{count}} exercices dans ce chapitre",
     "openChapter": "Voir les exercices",
@@ -140,7 +141,7 @@
   "pyodide": {
     "downloading": "Téléchargement du moteur Python...",
     "preparing": "Préparation de l'environnement...",
-    "timeout": "Délai d'exécution dépassé (5s)"
+    "timeout": "Délai d'exécution dépassé ({{seconds}}s)"
   },
   "notFound": {
     "title": "Page introuvable",

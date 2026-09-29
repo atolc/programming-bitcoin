@@ -31,6 +31,7 @@
     "badge": "Pyodide",
     "title": "练习",
     "subtitle": "在浏览器中解答书中练习并运行代码示例。在右侧编辑 Python 代码，在左侧阅读说明，点击“运行”验证你的答案。",
+    "totalProgress": "总体进度",
     "exerciseCount": "{{count}} 个练习",
     "chapterExercises": "本章共 {{count}} 个练习",
     "openChapter": "查看练习",
@@ -140,7 +141,7 @@
   "pyodide": {
     "downloading": "正在下载 Python 引擎...",
     "preparing": "正在准备环境...",
-    "timeout": "执行超时（5秒）"
+    "timeout": "执行超时（{{seconds}}秒）"
   },
   "notFound": {
     "title": "页面未找到",

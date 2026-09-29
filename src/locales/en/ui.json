@@ -31,6 +31,7 @@
     "badge": "Pyodide",
     "title": "Practice",
     "subtitle": "Solve book exercises and run coding examples in your browser. Edit Python on the right, read instructions on the left, and click Run to verify your solution.",
+    "totalProgress": "Overall progress",
     "exerciseCount": "{{count}} exercises",
     "chapterExercises": "{{count}} exercises in this chapter",
     "openChapter": "View exercises",
@@ -140,7 +141,7 @@
   "pyodide": {
     "downloading": "Downloading Python engine...",
     "preparing": "Preparing environment...",
-    "timeout": "Execution timed out (5s)"
+    "timeout": "Execution timed out ({{seconds}}s)"
   },
   "notFound": {
     "title": "Page not found",

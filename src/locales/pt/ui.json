@@ -31,6 +31,7 @@
     "badge": "Pyodide",
     "title": "Prática",
     "subtitle": "Resolva os exercícios do livro e execute exemplos de código no navegador. Edite Python à direita, leia as instruções à esquerda e clique em Executar para verificar sua solução.",
+    "totalProgress": "Progresso total",
     "exerciseCount": "{{count}} exercícios",
     "chapterExercises": "{{count}} exercícios neste capítulo",
     "openChapter": "Ver exercícios",
@@ -140,7 +141,7 @@
   "pyodide": {
     "downloading": "Baixando mecanismo Python...",
     "preparing": "Preparando ambiente...",
-    "timeout": "Tempo de execução esgotado (5s)"
+    "timeout": "Tempo de execução esgotado ({{seconds}}s)"
   },
   "notFound": {
     "title": "Página não encontrada",

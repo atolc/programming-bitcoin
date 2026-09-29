@@ -3,6 +3,7 @@ import {
   EXERCISES,
   getLocalizedExerciseContent,
 } from "../data/exercises";
+import type { Chapter, Section } from "../data/chapters";
 import type { Locale } from "./locale";
 import { chapterPath, practicePath } from "./routes";
 
@@ -19,6 +20,78 @@ export type SearchResult = {
 };
 
 const searchIndexes: Partial<Record<Locale, SearchResult[]>> = {};
+
+const MAX_INDEXED_CONTENT_LENGTH = 2000;
+
+export type SectionTokenIndex = {
+  sectionId: string;
+  tokens: Set<string>;
+};
+
+export type ChapterTokenIndex = {
+  chapterId: string;
+  tokens: Set<string>;
+  sections: SectionTokenIndex[];
+};
+
+function tokenize(text: string): string[] {
+  return text.toLowerCase().split(/[^\p{L}\p{N}]+/u).filter(Boolean);
+}
+
+function buildTokenSet(texts: string[]): Set<string> {
+  const tokens = new Set<string>();
+
+  for (const text of texts) {
+    for (const token of tokenize(text)) {
+      // Store prefixes as well as full words so results can update while the
+      // user is typing, without rescanning the original Markdown.
+      for (let length = 1; length <= token.length; length += 1) {
+        tokens.add(token.slice(0, length));
+      }
+    }
+  }
+
+  return tokens;
+}
+
+export function buildChapterSearchIndex(
+  chapters: Chapter[],
+): Map<string, ChapterTokenIndex> {
+  return new Map<string, ChapterTokenIndex>(
+    chapters.map((chapter): [string, ChapterTokenIndex] => [
+      chapter.id,
+      {
+        chapterId: chapter.id,
+        tokens: buildTokenSet([
+          chapter.title,
+          ...chapter.aliases,
+          chapter.content.slice(0, MAX_INDEXED_CONTENT_LENGTH),
+        ]),
+        sections: chapter.sections.map((section: Section) => ({
+          sectionId: section.id,
+          tokens: buildTokenSet([
+            section.title,
+            ...section.aliases,
+            section.content.slice(0, MAX_INDEXED_CONTENT_LENGTH),
+          ]),
+        })),
+      },
+    ]),
+  );
+}
+
+export function tokenizeSearchQuery(query: string): string[] {
+  return tokenize(query.trim());
+}
+
+export function matchesChapterTokens(
+  tokens: Set<string>,
+  queryTokens: string[],
+): boolean {
+  return (
+    queryTokens.length > 0 && queryTokens.every((token) => tokens.has(token))
+  );
+}
 
 export function buildSearchIndex(locale: Locale): SearchResult[] {
   const cachedIndex = searchIndexes[locale];

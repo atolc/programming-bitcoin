@@ -1,4 +1,12 @@
-import { lazy, Suspense, useEffect, useMemo, useState, type ReactNode } from "react";
+import {
+  lazy,
+  Suspense,
+  useDeferredValue,
+  useEffect,
+  useMemo,
+  useState,
+  type ReactNode,
+} from "react";
 import {
   useNavigate,
   useParams,
@@ -27,6 +35,11 @@ import { TableOfContents } from "../components/TableOfContents";
 import { AppHeader } from "../components/AppHeader";
 import { useLocale } from "../context/LocaleContext";
 import { markChapterRead, getReadChapters } from "../lib/readProgress";
+import {
+  buildChapterSearchIndex,
+  matchesChapterTokens,
+  tokenizeSearchQuery,
+} from "../lib/search-index";
 import { useProgressRevision } from "../hooks/useProgressRevision";
 import { cn } from "../lib/utils";
 import { LatexText } from "../components/LatexText";
@@ -86,10 +99,15 @@ function ChapterLayoutInner() {
   const navigate = useNavigate();
   const chapters = getChapters(locale);
   const [query, setQuery] = useState("");
+  const deferredQuery = useDeferredValue(query);
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrollPercent, setScrollPercent] = useState(0);
   const progressRevision = useProgressRevision();
   const readChapters = useMemo(() => getReadChapters(), [progressRevision]);
+  const chapterSearchIndex = useMemo(
+    () => buildChapterSearchIndex(chapters),
+    [chapters],
+  );
 
   const validChapter = findChapterById(locale, chapterId);
   const redirectHome = Boolean(chapterId && !validChapter);
@@ -145,23 +163,24 @@ function ChapterLayoutInner() {
   }, [activeChapter.number]);
 
   const filteredChapters = useMemo(() => {
-    const normalized = query.trim().toLowerCase();
-    if (!normalized) {
+    const queryTokens = tokenizeSearchQuery(deferredQuery);
+    if (queryTokens.length === 0) {
       return chapters.map((chapter) => ({ chapter, matchedSection: undefined }));
     }
 
     return chapters
       .map((chapter) => {
-        const matchedSection = chapter.sections.find((section) => {
-          return (
-            section.title.toLowerCase().includes(normalized) ||
-            section.content.toLowerCase().includes(normalized)
-          );
-        });
+        const chapterIndex = chapterSearchIndex.get(chapter.id);
+        const matchedSectionIndex = chapterIndex?.sections.find((section) =>
+          matchesChapterTokens(section.tokens, queryTokens),
+        );
+        const matchedSection = chapter.sections.find(
+          (section) => section.id === matchedSectionIndex?.sectionId,
+        );
 
         const matchesChapter =
-          chapter.title.toLowerCase().includes(normalized) ||
-          chapter.content.toLowerCase().includes(normalized) ||
+          (chapterIndex &&
+            matchesChapterTokens(chapterIndex.tokens, queryTokens)) ||
           !!matchedSection;
 
         if (matchesChapter) {
@@ -169,8 +188,15 @@ function ChapterLayoutInner() {
         }
         return null;
       })
-      .filter((item): item is { chapter: Chapter; matchedSection: Section | undefined } => item !== null);
-  }, [query, chapters]);
+      .filter(
+        (
+          item,
+        ): item is {
+          chapter: Chapter;
+          matchedSection: Section | undefined;
+        } => item !== null,
+      );
+  }, [deferredQuery, chapters, chapterSearchIndex]);
 
   const activeIndex = useMemo(() => {
     return chapters.findIndex((c) => c.id === activeChapter.id);
@@ -408,11 +434,11 @@ function ChapterLayoutInner() {
                           </span>
                           <div className="flex flex-col flex-1 min-w-0">
                             <span className="leading-snug truncate">
-                              {highlightMatch(chapter.title, query)}
+                              {highlightMatch(chapter.title, deferredQuery)}
                             </span>
                             {matchedSection && (
                               <span className="text-xs text-muted-foreground truncate">
-                                § {highlightMatch(matchedSection.title, query)}
+                                § {highlightMatch(matchedSection.title, deferredQuery)}
                               </span>
                             )}
                           </div>
@@ -422,10 +448,10 @@ function ChapterLayoutInner() {
                         </Button>
                       );
                     })
-                  ) : query ? (
+                  ) : deferredQuery ? (
                     <div className="px-3 py-6 text-center">
                       <p className="text-xs text-muted-foreground">
-                        {t("chapter.noResultsFor", { query })}
+                        {t("chapter.noResultsFor", { query: deferredQuery })}
                       </p>
                       <button
                         onClick={() => setQuery("")}

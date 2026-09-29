@@ -21,13 +21,13 @@ importers:
         specifier: ^0.5.20
         version: 0.5.20(tailwindcss@4.3.0)
       '@vitejs/plugin-react':
-        specifier: latest
+        specifier: ^6.0.2
         version: 6.0.2(vite@8.0.16(@types/node@25.9.2)(jiti@2.7.0))
       class-variance-authority:
-        specifier: latest
+        specifier: ^0.7.1
         version: 0.7.1
       clsx:
-        specifier: latest
+        specifier: ^2.1.1
         version: 2.1.1
       geist:
         specifier: ^1.7.2
@@ -39,25 +39,25 @@ importers:
         specifier: ^0.17.0
         version: 0.17.0
       lucide-react:
-        specifier: latest
+        specifier: ^1.17.0
         version: 1.17.0(react@19.2.7)
       pyodide:
         specifier: ^0.29.4
         version: 0.29.4
       react:
-        specifier: latest
+        specifier: ^19.2.7
         version: 19.2.7
       react-day-picker:
         specifier: ^10.0.1
         version: 10.0.1(@types/react@19.2.17)(react@19.2.7)
       react-dom:
-        specifier: latest
+        specifier: ^19.2.7
         version: 19.2.7(react@19.2.7)
       react-i18next:
         specifier: ^17.0.8
         version: 17.0.8(i18next@26.3.1(typescript@6.0.3))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(typescript@6.0.3)
       react-markdown:
-        specifier: latest
+        specifier: ^10.1.0
         version: 10.1.0(@types/react@19.2.17)(react@19.2.7)
       react-router-dom:
         specifier: ^7.17.0
@@ -75,7 +75,7 @@ importers:
         specifier: ^4.2.0
         version: 4.2.0
       tailwind-merge:
-        specifier: latest
+        specifier: ^3.6.0
         version: 3.6.0
       unist-util-visit:
         specifier: ^5.1.0
@@ -91,43 +91,43 @@ importers:
         specifier: ^14.6.7
         version: 14.6.7(@testing-library/dom@10.4.2)
       '@types/node':
-        specifier: latest
+        specifier: ^25.9.2
         version: 25.9.2
       '@types/react':
-        specifier: latest
+        specifier: ^19.2.17
         version: 19.2.17
       '@types/react-dom':
-        specifier: latest
+        specifier: ^19.2.3
         version: 19.2.3(@types/react@19.2.17)
       '@vitest/coverage-v8':
         specifier: ^5.0.2
         version: 5.0.2(vitest@5.0.2)
       autoprefixer:
-        specifier: latest
+        specifier: ^10.5.0
         version: 10.5.0(postcss@8.5.15)
       gh-pages:
-        specifier: latest
+        specifier: ^6.3.0
         version: 6.3.0
       jsdom:
         specifier: ^30.1.1
         version: 30.1.1
       postcss:
-        specifier: latest
+        specifier: ^8.5.15
         version: 8.5.15
       postcss-nesting:
         specifier: ^14.0.0
         version: 14.0.0(postcss@8.5.15)
       tailwindcss:
-        specifier: latest
+        specifier: ^4.3.0
         version: 4.3.0
       tw-animate-css:
         specifier: ^1.4.0
         version: 1.4.0
       typescript:
-        specifier: latest
+        specifier: ^6.0.3
         version: 6.0.3
       vite:
-        specifier: latest
+        specifier: ^8.0.16
         version: 8.0.16(@types/node@25.9.2)(jiti@2.7.0)
       vitest:
         specifier: ^5.0.2

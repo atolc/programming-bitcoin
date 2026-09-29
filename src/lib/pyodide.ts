@@ -118,12 +118,21 @@ export async function runPythonWithTests(
 
   const runWithTimeout = async (code: string) => {
     const runTask = pyodide.runPythonAsync(code, { globals: localNamespace });
-    const timeout = new Promise<never>((_, reject) => {
-      setTimeout(() => reject(new Error(i18n.t("pyodide.timeout"))), timeoutMs);
-    });
-    const result = await Promise.race([runTask, timeout]);
-    if (result && typeof result.destroy === "function") {
-      result.destroy();
+    let timeoutHandle: ReturnType<typeof setTimeout> | undefined;
+
+    try {
+      const timeout = new Promise<never>((_, reject) => {
+        timeoutHandle = setTimeout(
+          () => reject(new Error(i18n.t("pyodide.timeout"))),
+          timeoutMs,
+        );
+      });
+      const result = await Promise.race([runTask, timeout]);
+      if (result && typeof result.destroy === "function") {
+        result.destroy();
+      }
+    } finally {
+      if (timeoutHandle !== undefined) clearTimeout(timeoutHandle);
     }
   };
 

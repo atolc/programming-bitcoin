@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { lazy, Suspense, useEffect, useMemo, useState, type ReactNode } from "react";
 import {
   useNavigate,
   useParams,
@@ -90,7 +90,6 @@ function ChapterLayoutInner() {
   const [scrollPercent, setScrollPercent] = useState(0);
   const progressRevision = useProgressRevision();
   const readChapters = useMemo(() => getReadChapters(), [progressRevision]);
-  const searchInputRef = useRef<HTMLInputElement>(null);
 
   const validChapter = findChapterById(locale, chapterId);
   const redirectHome = Boolean(chapterId && !validChapter);
@@ -248,12 +247,6 @@ function ChapterLayoutInner() {
           target.closest(".monaco-editor") !== null);
       if (isEditing) return;
 
-      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
-        e.preventDefault();
-        searchInputRef.current?.focus();
-        return;
-      }
-
       if (e.altKey || e.ctrlKey || e.metaKey) return;
 
       if ((e.key === "ArrowLeft" || e.key === "[") && prevNav) {
@@ -362,8 +355,8 @@ function ChapterLayoutInner() {
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                   />
-                  <InputGroupAddon align="inline-end">
-                    {query ? (
+                  {query ? (
+                    <InputGroupAddon align="inline-end">
                       <Button
                         className="size-7"
                         onClick={() => setQuery("")}
@@ -374,13 +367,8 @@ function ChapterLayoutInner() {
                       >
                         <X className="size-3.5" />
                       </Button>
-                    ) : (
-                      <span className="hidden sm:inline-flex items-center gap-0.5">
-                        <Kbd>Ctrl</Kbd>
-                        <Kbd>K</Kbd>
-                      </span>
-                    )}
-                  </InputGroupAddon>
+                    </InputGroupAddon>
+                  ) : null}
                 </InputGroup>
 
                 <nav className="space-y-1" aria-label={t("chapter.chaptersNav")}>

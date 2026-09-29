@@ -6,6 +6,19 @@
     "practice": "Practice",
     "progressBackup": "Transfer progress"
   },
+  "search": {
+    "button": "Search",
+    "dialogTitle": "Search Programming Bitcoin",
+    "placeholder": "Search chapters, sections, and exercises...",
+    "groups": {
+      "chapter": "Chapters",
+      "section": "Sections",
+      "exercise": "Exercises"
+    },
+    "empty": "No results found.",
+    "startTyping": "Type to search chapters, sections, and exercises.",
+    "keyboardHint": "Use ↑ ↓ to navigate and Enter to open"
+  },
   "language": {
     "label": "Language",
     "es": "Español",

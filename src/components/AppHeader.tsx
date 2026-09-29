@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { ThemeToggle } from "./ThemeToggle";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { ProgressTransfer } from "./ProgressTransfer";
+import { CommandPalette } from "./CommandPalette";
 import { Button } from "@/components/ui/button";
 import {
   Breadcrumb,
@@ -91,6 +92,7 @@ export function AppHeader({
         )}
 
         <div className="flex items-center gap-2 shrink-0">
+          <CommandPalette />
           <Button
             render={<Link to={practicePath()} />}
             size="sm"

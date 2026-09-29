@@ -2,7 +2,7 @@ import { loadPyodide, type PyodideInterface } from "pyodide";
 import type {
   PyodideWorkerRequest,
   PyodideWorkerResponse,
-} from "./pyodide-worker-protocol";
+} from "../lib/pyodide-worker-protocol";
 
 const PYODIDE_INDEX_URL = "https://cdn.jsdelivr.net/pyodide/v0.29.4/full/";
 const workerScope = self as unknown as {

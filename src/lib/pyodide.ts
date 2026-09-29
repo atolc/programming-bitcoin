@@ -1,4 +1,5 @@
 import type { PyodideInterface } from "pyodide";
+import PyodideWorker from "../workers/pyodide.worker?worker";
 import i18n from "../i18n";
 import type {
   PyodideWorkerRequest,
@@ -8,6 +9,17 @@ import type {
 const PYODIDE_INDEX_URL = "https://cdn.jsdelivr.net/pyodide/v0.29.4/full/";
 
 export type PyodideStatus = "idle" | "loading" | "ready" | "error";
+
+export class PyodideExecutionCancelledError extends Error {
+  constructor() {
+    super(i18n.t("pyodide.cancelled"));
+    this.name = "AbortError";
+  }
+}
+
+export function isPyodideExecutionCancelledError(error: unknown) {
+  return error instanceof PyodideExecutionCancelledError;
+}
 
 let pyodideInstance: PyodideInterface | null = null;
 let loadPromise: Promise<PyodideInterface> | null = null;
@@ -74,7 +86,9 @@ function discardPyodideWorker(error: Error) {
   for (const [id, pending] of pendingWorkerRequests) {
     pendingWorkerRequests.delete(id);
     clearPendingTimeout(pending);
-    if (pending.requestType === "run") {
+    if (error instanceof PyodideExecutionCancelledError) {
+      pending.reject(error);
+    } else if (pending.requestType === "run") {
       pending.resolve({
         response: { id, type: "response", error: error.message, passed: false },
         stdout: pending.stdout,
@@ -84,6 +98,12 @@ function discardPyodideWorker(error: Error) {
       pending.reject(error);
     }
   }
+}
+
+export function cancelPyodideExecution() {
+  if (!pyodideWorker || pendingWorkerRequests.size === 0) return false;
+  discardPyodideWorker(new PyodideExecutionCancelledError());
+  return true;
 }
 
 function startWorkerTimeout(id: number, pending: PendingWorkerRequest) {
@@ -137,9 +157,7 @@ function handleWorkerMessage(message: PyodideWorkerResponse) {
 function getPyodideWorker() {
   if (pyodideWorker) return pyodideWorker;
 
-  const worker = new Worker(new URL("./pyodide.worker.ts", import.meta.url), {
-    type: "module",
-  });
+  const worker = new PyodideWorker();
   worker.onmessage = (event: MessageEvent<PyodideWorkerResponse>) => {
     handleWorkerMessage(event.data);
   };

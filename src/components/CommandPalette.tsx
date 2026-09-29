@@ -196,10 +196,11 @@ export function CommandPalette() {
           </Button>
         }
       />
-      <CommandDialogPopup className="max-w-2xl" showCloseButton={false}>
+      <CommandDialogPopup className="max-w-2xl">
         <DialogTitle className="sr-only">{t("search.dialogTitle")}</DialogTitle>
         <Command
           mode="none"
+          items={filteredResults.map((result) => result.id)}
           value={query}
           onValueChange={setQuery}
           className="flex min-h-0 flex-1 flex-col"
@@ -224,12 +225,20 @@ export function CommandPalette() {
               if (results.length === 0) return null;
 
               return (
-                <CommandGroup key={type}>
+                <CommandGroup
+                  key={type}
+                  items={results.map((result) => result.id)}
+                >
                   <CommandGroupLabel>
                     {t(`search.groups.${type}`)}
                   </CommandGroupLabel>
                   <CommandCollection>
-                    {results.map((result) => {
+                    {(resultId: string) => {
+                      const result = results.find(
+                        (candidate) => candidate.id === resultId,
+                      );
+                      if (!result) return null;
+
                       const titleMatches = findMatchRange(result.title, query);
                       const subtitleMatches = result.subtitle
                         ? findMatchRange(result.subtitle, query)
@@ -270,7 +279,7 @@ export function CommandPalette() {
                           />
                         </CommandItem>
                       );
-                    })}
+                    }}
                   </CommandCollection>
                 </CommandGroup>
               );

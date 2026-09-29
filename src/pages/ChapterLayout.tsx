@@ -375,7 +375,6 @@ function ChapterLayoutInner() {
                     <Search className="size-4 text-muted-foreground" />
                   </InputGroupAddon>
                   <InputGroupInput
-                    ref={searchInputRef}
                     type="text"
                     placeholder={t("chapter.searchPlaceholder")}
                     value={query}

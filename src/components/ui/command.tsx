@@ -96,18 +96,23 @@ export function CommandDialogPopup({
 }
 
 export function Command({
+  className,
   autoHighlight = "always",
   keepHighlight = true,
   ...props
-}: React.ComponentProps<typeof Autocomplete>): React.ReactElement {
+}: React.ComponentProps<typeof Autocomplete> & {
+  className?: string;
+}): React.ReactElement {
   return (
-    <Autocomplete
-      autoHighlight={autoHighlight}
-      inline
-      keepHighlight={keepHighlight}
-      open
-      {...props}
-    />
+    <div className={className}>
+      <Autocomplete
+        autoHighlight={autoHighlight}
+        inline
+        keepHighlight={keepHighlight}
+        open
+        {...props}
+      />
+    </div>
   );
 }
 
